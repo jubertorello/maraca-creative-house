@@ -1,26 +1,61 @@
 @import "tailwindcss";
 
+/*
+  MARACA design tokens — mapped from Figma (file FDilZf0LTdZnQjOwa4Hbzi).
+  Confirmed from the Navbar (6101:1537) / Footer (6129:782) / About Us frames.
+  Palette is still partial; extend as more frames are implemented.
+*/
+@theme {
+  /* Colors */
+  --color-cream: #ebedde; /* primary text / marks on dark */
+  --color-charcoal: #1a1a1b; /* navbar + footer + dark sections */
+  --color-red: #dc2729; /* active / hover accent */
+  --color-sky: #b8cce0; /* hero tint */
+  --color-mist: #d8d8d8; /* light neutral */
+  --color-paper: #ffffff;
+  --color-ink: #1a1a1b;
+
+  /* Typography */
+  --font-sans: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  /* Georgia Pro (real webfont, loaded locally) */
+  --font-serif: var(--font-georgia-pro), Georgia, "Times New Roman", serif;
+
+  /* Nav / small-label tracking seen across the design */
+  --tracking-nav: -0.75px;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --background: var(--color-paper);
+  --foreground: var(--color-ink);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+}
+
+/* Serif display type is Light by default (Figma "Georgia Pro Light"). */
+.font-serif {
+  font-weight: 300;
+}
+
+/* Brands marquee (BrandsCarousel) */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee {
+  animation: marquee 40s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee {
+    animation: none;
+  }
 }
