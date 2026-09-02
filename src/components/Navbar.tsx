@@ -12,6 +12,11 @@ const LOCALES: Locale[] = ["es", "en"];
 // Pages whose top section is a light (cream) background rather than a dark
 // hero — the resting (unpainted) navbar needs dark text on these.
 const LIGHT_AT_REST = ["/work", "/contact", "/privacy-policy"];
+// ...except these — a light-listed page (or one of its sub-paths) whose own
+// top is actually dark, like the Estrategia manifesto page.
+const LIGHT_AT_REST_EXCEPT = ["/work/estrategia"];
+// Pages painted charcoal (not cream) once scrolled, same as home.
+const CHARCOAL_ON_SCROLL = ["/", "/work/estrategia"];
 
 /**
  * Transparent over the hero on every page; paints a solid bar once scrolled.
@@ -30,18 +35,18 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const isHome = pathname === "/";
-  // At rest, Work pages open on a light section → dark text; elsewhere the hero
-  // is dark → light text. When painted, home is charcoal (light text), the rest
-  // is cream (dark text).
-  const restingDark = LIGHT_AT_REST.some(
-    (p) => pathname === p || pathname.startsWith(`${p}/`),
-  );
-  const lightText = scrolled ? isHome : !restingDark;
+  const matches = (list: string[]) =>
+    list.some((p) => pathname === p || pathname.startsWith(`${p}/`));
+
+  // At rest, Work pages open on a light section → dark text; elsewhere the
+  // hero is dark → light text (Estrategia is a `/work` page but opens dark).
+  const restingDark = matches(LIGHT_AT_REST) && !matches(LIGHT_AT_REST_EXCEPT);
+  const paintCharcoal = matches(CHARCOAL_ON_SCROLL);
+  const lightText = scrolled ? paintCharcoal : !restingDark;
 
   const barClass = !scrolled
     ? "bg-transparent"
-    : isHome
+    : paintCharcoal
       ? "bg-charcoal"
       : "bg-cream border-b border-ink/10";
 

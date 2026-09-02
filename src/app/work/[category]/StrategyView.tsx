@@ -1,73 +1,56 @@
 "use client";
 
-import MediaHero from "@/components/MediaHero";
 import { useLocale } from "@/lib/i18n";
 import type { Category } from "@/lib/work";
 
 /**
- * "Estrategia" — Figma "Work estrategia I" (6116:69). Unlike the other
- * categories this is a single manifesto page for the whole service: hero
- * video, headline + intro, a fanned collage of the strategy deliverables,
- * and a closing line. No client here gets its own page.
+ * "Estrategia" — Figma "Work estrategia I" (6116:69), adapted to lead with
+ * the brand video: title, description, video, closing line — the
+ * description overlaps the top of the video and the closing line overlaps
+ * its bottom. No client here gets its own page.
  */
-const DECK = [
-  { label: { es: "Brand Narrative", en: "Brand Narrative" }, rotate: -8 },
-  { label: { es: "Personalidad", en: "Personality" }, rotate: -4 },
-  { label: { es: "Tono", en: "Tone of voice" }, rotate: 0 },
-  { label: { es: "Pilares", en: "Pillars" }, rotate: 4 },
-  { label: { es: "Canales", en: "Channels" }, rotate: 8 },
-];
-
 export default function StrategyView({ category }: { category: Category }) {
   const { t, locale } = useLocale();
 
   return (
-    <article className="bg-charcoal text-cream">
-      <MediaHero kind="video" src="/media/estrategia.mp4" className="bg-charcoal" />
-
-      <section className="px-6 pb-24 pt-20 text-center md:px-[120px] md:pt-28">
-        <span className="mb-6 block text-xs tabular-nums text-cream/40">
-          [{category.index}]
-        </span>
+    <article className="-mt-20 bg-charcoal pb-24 pt-32 text-cream md:-mt-[120px] md:pt-40">
+      <header className="px-6 text-center md:px-[120px]">
         <h1 className="mx-auto max-w-3xl font-serif text-[clamp(1.75rem,4.2vw,3rem)] font-light uppercase leading-[1.15] tracking-[-0.03em]">
           {t({
             es: "Hablar es fácil. Tener algo que decir, no tanto.",
             en: "Talking is easy. Having something to say, not so much.",
           })}
         </h1>
-        <p className="mx-auto mt-6 max-w-xl font-serif text-lg italic leading-relaxed text-cream/80">
+      </header>
+
+      <div className="relative mt-14 px-4 md:px-8">
+        {/* description — overlaps the top edge of the video */}
+        <p className="relative z-10 mx-auto -mb-10 max-w-xl text-center font-serif text-lg italic leading-relaxed text-cream [text-shadow:0_2px_16px_rgba(0,0,0,0.85)] md:-mb-14 md:text-xl">
           {t({
             es: "En Maraca construimos la estrategia que hay detrás de cada conversación: definimos a quién hablamos, qué queremos contar, cómo queremos sonar y dónde tiene sentido hacerlo.",
             en: "At Maraca we build the strategy behind every conversation: who we're talking to, what we want to say, how we want to sound and where it makes sense to do it.",
           })}
         </p>
 
-        {/* fanned deck of strategy deliverables — placeholder cards until
-            the real deck photography/mockups are supplied */}
-        <div className="mx-auto mt-20 flex max-w-4xl justify-center">
-          {DECK.map((d, i) => (
-            <div
-              key={i}
-              style={{
-                transform: `rotate(${d.rotate}deg)`,
-                marginLeft: i === 0 ? 0 : "-2.5rem",
-              }}
-              className="relative flex aspect-[3/4] w-32 shrink-0 items-end justify-center overflow-hidden rounded-sm bg-cream/10 pb-3 shadow-lg shadow-black/30 transition-transform duration-300 hover:-translate-y-2 md:w-40"
-            >
-              <span className="text-[10px] uppercase tracking-wide text-cream/70">
-                {d.label[locale]}
-              </span>
-            </div>
-          ))}
-        </div>
+        <video
+          className="relative aspect-video w-full bg-black object-cover"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+        >
+          <source src="/media/estrategia.mp4" type="video/mp4" />
+        </video>
 
-        <p className="mx-auto mt-20 max-w-xl font-serif text-lg italic leading-relaxed text-cream/80">
+        {/* closing line — sits below the video, just grazing its bottom edge */}
+        <p className="relative z-10 mx-auto -mt-4 max-w-xl text-center font-serif text-lg italic leading-relaxed text-cream [text-shadow:0_2px_16px_rgba(0,0,0,0.85)] md:-mt-6 md:text-xl">
           {t({
             es: "Para que la marca no solo esté presente, sino que tenga una voz propia y sepa cuándo usarla.",
             en: "So the brand isn't just present, but has a voice of its own and knows when to use it.",
           })}
         </p>
-      </section>
+      </div>
     </article>
   );
 }
