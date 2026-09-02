@@ -39,6 +39,11 @@ export type Category = {
   enabled: boolean;
   /** Client names revealed on hover (Work index). */
   clients: string[];
+  /** "listing" (default) = area page with a grid of client cases, each with
+   * its own detail page. "manifesto" = one single page for the whole
+   * category (Figma "Work estrategia I", 6116:69) — clients are named but
+   * none of them has its own page. */
+  kind?: "listing" | "manifesto";
 };
 
 export const CATEGORIES: Category[] = [
@@ -72,7 +77,8 @@ export const CATEGORIES: Category[] = [
       es: "Estrategia de comunicación y RRSS",
       en: "Communication & social media strategy",
     },
-    enabled: false,
+    enabled: true,
+    kind: "manifesto",
     clients: [
       "Mira Miranda",
       "Gaby's Bagels",
