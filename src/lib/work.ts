@@ -17,6 +17,12 @@
  * In practice the template just renders `blocks` left-to-right; `version` is
  * kept for the CMS and to seed sensible defaults.
  *
+ * By explicit decision, every `branding` case is v1 (KISH&GO's design) —
+ * `version: 1`, no `layout` object (that's what actually selects v2/v3 in
+ * CaseStudyView, `version` alone doesn't). v2 and v3 stay implemented and in
+ * use for `campanas` (Natuka, VB Group) so they're ready when needed, but
+ * don't assign either to a branding case without asking first.
+ *
  * Only `branding` and `campanas` are live; the other four categories show on
  * the index but don't link anywhere yet.
  */
@@ -42,8 +48,10 @@ export type Category = {
   /** "listing" (default) = area page with a grid of client cases, each with
    * its own detail page. "manifesto" = one single page for the whole
    * category (Figma "Work estrategia I", 6116:69) — clients are named but
-   * none of them has its own page. */
-  kind?: "listing" | "manifesto";
+   * none of them has its own page. "pending" = clients are named (shown on
+   * hover from the Work index) but the category page itself isn't designed
+   * yet — just a "Diseño pendiente" placeholder. */
+  kind?: "listing" | "manifesto" | "pending";
 };
 
 export const CATEGORIES: Category[] = [
@@ -101,21 +109,43 @@ export const CATEGORIES: Category[] = [
       es: "Creación de contenido y shootings",
       en: "Content creation & shootings",
     },
-    enabled: false,
-    clients: [],
+    enabled: true,
+    kind: "pending",
+    clients: [
+      "Baía Food",
+      "Caixabank",
+      "Baudesson",
+      "MIM Shoes",
+      "Beston",
+      "Kish&Go",
+      "Gaby's Bagels",
+      "Oma by Luchi",
+      "Continuo Café",
+    ],
   },
   {
     slug: "web",
     index: "4",
     name: { es: "Diseño web", en: "Web design" },
-    enabled: false,
-    clients: [],
+    enabled: true,
+    kind: "pending",
+    clients: [
+      "Corpfin Capital",
+      "Beston",
+      "Kish&Go",
+      "Oma by Luchi",
+      "Volver a Casa by Fundación Manantial",
+      "Joia by Buccara",
+      "Beatriz Ortiz Clinic",
+      "Mesonero-Romanos Studio",
+    ],
   },
   {
     slug: "campanas",
     index: "5",
     name: { es: "Campañas de publicidad", en: "Advertising campaigns" },
     enabled: true,
+    kind: "pending",
     clients: [
       "Natuka",
       "VB Group",
@@ -129,8 +159,16 @@ export const CATEGORIES: Category[] = [
     slug: "eventos",
     index: "6",
     name: { es: "Eventos", en: "Events" },
-    enabled: false,
-    clients: [],
+    enabled: true,
+    kind: "pending",
+    clients: [
+      "BBC x Bluey",
+      "Beston 'Runway'",
+      "Beston 'Après Ski'",
+      "Beston 'Dinner'",
+      "Baïa Food",
+      "Baudesson 'Carnaval'",
+    ],
   },
 ];
 

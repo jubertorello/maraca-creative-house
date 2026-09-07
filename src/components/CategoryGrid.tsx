@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import { CATEGORIES, MAX_REVEAL_CLIENTS, getCaseHref } from "@/lib/work";
 import { useLocale } from "@/lib/i18n";
 
@@ -12,15 +13,39 @@ import { useLocale } from "@/lib/i18n";
  * Label block sits at y ~109 ([n]) / ~149 (name) — i.e. ~109px above [n],
  * ~26px from name to image. Labels are Bricolage ExtraLight 12px / -6%.
  *
+ * The name always reserves a fixed 2-line-tall slot (`min-h-[2.3em]`), even
+ * when it only needs one line — so the collapsed stack's total height, and
+ * therefore `[n]`'s position within it, is the same on every tile. A
+ * one-line name just leaves blank space at the bottom of its own slot,
+ * i.e. more room between the text and the photo.
+ *
  * `reveal` (Work index only): on hover the category name turns red and its
  * client list deploys **upward, above the title** — the title and image never
  * move (Figma 6054:162 / 6054:213). The page using `reveal` must leave enough
  * clearance above the grid for the tallest list (see MAX_REVEAL_CLIENTS).
+ *
+ * Touch devices have no hover, so the list would otherwise never be
+ * reachable there — on a device with `hover:none` (checked at click time,
+ * not render time, so this stays SSR-safe), the first tap on the name opens
+ * the list instead of navigating (`preventDefault`); a second tap on it (or
+ * a tap on the photo, which always still navigates) goes to the category.
+ * `data-open` mirrors the `:hover` classes via `group-data-[open=true]:`.
  */
 const HAS_PHOTOS = true;
 
+/** Forced 2-line breaks for names that must wrap a specific way regardless
+ * of length (e.g. "Diseño web" is short enough for one line by the
+ * character-count rule below, but should still break as "Diseño" / "web"). */
+const FORCED_BREAKS: Record<string, [string, string]> = {
+  "Campañas de publicidad": ["Campañas de", "publicidad"],
+  "Advertising campaigns": ["Advertising", "campaigns"],
+  "Diseño web": ["Diseño", "web"],
+  "Web design": ["Web", "design"],
+};
+
 /** ≤22 chars → one line; longer → two balanced lines split at a space. */
 function titleLines(name: string, max = 22): string[] {
+  if (FORCED_BREAKS[name]) return FORCED_BREAKS[name];
   if (name.length <= max) return [name];
   const words = name.split(" ");
   let first = "";
@@ -34,6 +59,7 @@ function titleLines(name: string, max = 22): string[] {
 
 export default function CategoryGrid({ reveal = false }: { reveal?: boolean }) {
   const { t, locale } = useLocale();
+  const [openSlug, setOpenSlug] = useState<string | null>(null);
 
   return (
     <div className="mx-auto w-full max-w-[1283px] px-[5.5vw] xl:px-0">
@@ -42,24 +68,37 @@ export default function CategoryGrid({ reveal = false }: { reveal?: boolean }) {
           // Hovering the tile reveals the client list (if any) — the type
           // name should redden whenever hover does something, i.e. it's
           // clickable OR it has a list to reveal.
-          const nameReacts = c.enabled || (reveal && c.clients.length > 0);
+          const hasList = reveal && c.clients.length > 0;
+          const nameReacts = c.enabled || hasList;
           const shown = c.clients.slice(0, MAX_REVEAL_CLIENTS);
           const hasMore = c.clients.length > MAX_REVEAL_CLIENTS;
+          const isOpen = openSlug === c.slug;
+
+          const handleLabelClick = (e: React.MouseEvent) => {
+            if (!hasList) return;
+            const touchOnly =
+              typeof window !== "undefined" &&
+              window.matchMedia("(hover: none)").matches;
+            if (touchOnly && !isOpen) {
+              e.preventDefault();
+              setOpenSlug(c.slug);
+            }
+          };
 
           const labelContent = (
             <>
               <span
                 className={[
                   "block text-center text-[12px] font-extralight leading-[1.2] tracking-[-0.06em] text-ink/70",
-                  nameReacts ? "transition-colors group-hover:text-red" : "",
+                  nameReacts ? `transition-colors group-hover:text-red ${isOpen ? "!text-red" : ""}` : "",
                 ].join(" ")}
               >
                 [{c.index}]
               </span>
               <span
                 className={[
-                  "mt-[10px] block whitespace-nowrap text-[12px] font-extralight uppercase leading-[1.15] tracking-[-0.06em] text-ink",
-                  nameReacts ? "transition-colors group-hover:text-red" : "",
+                  "mt-[10px] block min-h-[2.3em] whitespace-nowrap text-[12px] font-extralight uppercase leading-[1.15] tracking-[-0.06em] text-ink",
+                  nameReacts ? `transition-colors group-hover:text-red ${isOpen ? "!text-red" : ""}` : "",
                 ].join(" ")}
               >
                 {titleLines(c.name[locale]).map((line, i) => (
@@ -88,6 +127,7 @@ export default function CategoryGrid({ reveal = false }: { reveal?: boolean }) {
           return (
             <li
               key={c.slug}
+              data-open={isOpen ? "true" : undefined}
               className={[
                 "group flex flex-col",
                 c.enabled ? "" : "opacity-70",
@@ -104,10 +144,28 @@ export default function CategoryGrid({ reveal = false }: { reveal?: boolean }) {
                     the image's top edge, the growth pushes [n] and the name
                     upward together, with the list sitting between them and
                     the image (deploys upward, name rises, image never
-                    moves). */}
-                <div className="absolute inset-x-0 bottom-0 flex flex-col pb-3">
+                    moves).
+                    Below `lg` the grid stacks into several rows with only a
+                    tiny gap between them, so an expanding tile has nowhere
+                    near enough clearance and rises into the photo of the
+                    row above. Rather than force huge permanent gaps between
+                    every row (ruins the tight rest-state grid) or leave the
+                    label see-through against that photo, the whole block —
+                    label included — gets an opaque card background the
+                    moment it's expanded (hover or tapped open), so it reads
+                    as a floating panel over whatever it overlaps instead of
+                    broken, half-covered text. */}
+                <div
+                  className={`absolute inset-x-0 bottom-0 flex flex-col pb-3 transition-[background-color,box-shadow] duration-300 group-hover:rounded-t-sm group-hover:bg-cream group-hover:shadow-[0_-16px_20px_-12px_rgba(0,0,0,0.18)] ${
+                    isOpen ? "!rounded-t-sm !bg-cream !shadow-[0_-16px_20px_-12px_rgba(0,0,0,0.18)]" : ""
+                  }`}
+                >
                   {c.enabled ? (
-                    <Link href={`/work/${c.slug}`} className="block focus:outline-none">
+                    <Link
+                      href={`/work/${c.slug}`}
+                      onClick={handleLabelClick}
+                      className="block focus:outline-none"
+                    >
                       {labelContent}
                     </Link>
                   ) : (
@@ -115,11 +173,20 @@ export default function CategoryGrid({ reveal = false }: { reveal?: boolean }) {
                   )}
 
                   {reveal && c.clients.length > 0 && (
-                    <ul className="pointer-events-none max-h-0 overflow-hidden transition-[max-height] duration-500 ease-out group-hover:pointer-events-auto group-hover:max-h-[280px]">
+                    <ul
+                      className={`pointer-events-none max-h-0 overflow-hidden pt-2 transition-[max-height] duration-500 ease-out group-hover:pointer-events-auto group-hover:max-h-[280px] ${
+                        // Tapped open (touch devices): unlike hover, there's
+                        // no clearance reserved above the grid for this, so
+                        // cap it lower and let it scroll instead of growing
+                        // into whatever content sits above the tiles.
+                        isOpen ? "!pointer-events-auto !max-h-[160px] !overflow-y-auto" : ""
+                      }`}
+                    >
                       {shown.map((name, i) => {
                         const href = getCaseHref(c.slug, name);
-                        const itemClass =
-                          "block translate-y-2 text-[12px] font-extralight uppercase leading-[1.18] tracking-[-0.06em] text-ink opacity-0 transition duration-300 group-hover:translate-y-0 group-hover:opacity-100";
+                        const itemClass = `block translate-y-2 text-[12px] font-extralight uppercase leading-[1.18] tracking-[-0.06em] text-ink opacity-0 transition duration-300 group-hover:translate-y-0 group-hover:opacity-100 ${
+                          isOpen ? "!translate-y-0 !opacity-100" : ""
+                        }`;
                         return (
                           <li key={name} style={{ transitionDelay: `${i * 14}ms` }}>
                             {href ? (
@@ -138,7 +205,9 @@ export default function CategoryGrid({ reveal = false }: { reveal?: boolean }) {
                         >
                           <Link
                             href={`/work/${c.slug}`}
-                            className="block translate-y-2 text-[12px] font-extralight uppercase italic leading-[1.18] tracking-[-0.06em] text-ink/60 opacity-0 transition duration-300 hover:!text-red group-hover:translate-y-0 group-hover:opacity-100"
+                            className={`block translate-y-2 text-[12px] font-extralight uppercase italic leading-[1.18] tracking-[-0.06em] text-ink/60 opacity-0 transition duration-300 hover:!text-red group-hover:translate-y-0 group-hover:opacity-100 ${
+                              isOpen ? "!translate-y-0 !opacity-100" : ""
+                            }`}
                           >
                             {t({ es: "Ver todas →", en: "See all →" })}
                           </Link>
