@@ -2,6 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useLocale } from "@/lib/i18n";
+import type { ResponsiveVideo } from "@/lib/site-content";
+import ResponsiveVideoSources from "@/components/ResponsiveVideoSources";
+
+const FALLBACK: ResponsiveVideo = { desktop: "/media/hero.mp4" };
 
 /**
  * Landing hero — Figma "Landing entera" > Hero (5:8), 1440×900.
@@ -14,7 +18,7 @@ import { useLocale } from "@/lib/i18n";
  * muted so the video still plays. Either way a small, subtle icon lets the
  * visitor toggle sound on/off themselves.
  */
-export default function HeroVideo() {
+export default function HeroVideo({ video = FALLBACK }: { video?: ResponsiveVideo }) {
   const { t } = useLocale();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [muted, setMuted] = useState(true);
@@ -52,7 +56,7 @@ export default function HeroVideo() {
         playsInline
         preload="auto"
       >
-        <source src="/media/hero.mp4" type="video/mp4" />
+        <ResponsiveVideoSources video={video} />
       </video>
 
       <button

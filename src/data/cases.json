@@ -1,0 +1,733 @@
+[
+  {
+    "category": "branding",
+    "slug": "kish-and-go",
+    "title": "KISH&GO",
+    "client": "KISH&Go",
+    "year": "2026",
+    "index": "01",
+    "version": 1,
+    "area": {
+      "ratio": "portrait"
+    },
+    "blocks": [
+      {
+        "type": "text",
+        "variant": "lead",
+        "content": {
+          "es": "Para construir la identidad de Kish&Go rompimos con lo esperado: una quiche puede tener más de un lugar de origen. La receta nace en Francia, la marca en Madrid y su creadora en Rio de Janeiro. Tres culturas, tres códigos y una misma mesa.",
+          "en": "To build Kish&Go's identity we broke with the expected: a quiche can have more than one place of origin. The recipe is born in France, the brand in Madrid and its founder in Rio de Janeiro. Three cultures, three codes and one table."
+        }
+      },
+      {
+        "type": "image",
+        "ratio": "portrait"
+      },
+      {
+        "type": "image",
+        "ratio": "square"
+      },
+      {
+        "type": "text",
+        "variant": "body",
+        "content": {
+          "es": "A partir de ahí, llevamos esa mezcla al lenguaje visual. Las ondas del paseo de las aceras de Rio se convierten en un recurso gráfico que conecta la identidad con el origen de su creadora, mientras una paleta contemporánea sitúa la marca en el Madrid actual.",
+          "en": "From there we took that mix into the visual language. The wave pattern of Rio's pavements becomes a graphic device linking the identity to its founder's origin, while a contemporary palette places the brand in today's Madrid."
+        }
+      },
+      {
+        "type": "image",
+        "ratio": "landscape"
+      },
+      {
+        "type": "image",
+        "ratio": "square"
+      },
+      {
+        "type": "image",
+        "ratio": "portrait"
+      }
+    ]
+  },
+  {
+    "category": "branding",
+    "slug": "maruch",
+    "title": "Maruch",
+    "client": "Maruch",
+    "year": "2025",
+    "index": "02",
+    "version": 1,
+    "area": {
+      "ratio": "square"
+    },
+    "blocks": [
+      {
+        "type": "text",
+        "variant": "lead",
+        "content": {
+          "es": "Contenido pendiente.",
+          "en": "Content coming soon."
+        }
+      },
+      {
+        "type": "image",
+        "ratio": "square"
+      }
+    ]
+  },
+  {
+    "category": "branding",
+    "slug": "unrated",
+    "title": "UNRATED",
+    "client": "UNRATED",
+    "year": "2026",
+    "index": "03",
+    "version": 1,
+    "area": {
+      "ratio": "portrait"
+    },
+    "blocks": [
+      {
+        "type": "text",
+        "variant": "lead",
+        "content": {
+          "es": "Contenido pendiente.",
+          "en": "Content coming soon."
+        }
+      },
+      {
+        "type": "image",
+        "ratio": "portrait"
+      }
+    ]
+  },
+  {
+    "category": "branding",
+    "slug": "joia-by-buccara",
+    "title": "Joia by Buccara",
+    "client": "Joia by Buccara",
+    "year": "2026",
+    "index": "04",
+    "version": 1,
+    "area": {
+      "ratio": "landscape"
+    },
+    "blocks": [
+      {
+        "type": "text",
+        "variant": "lead",
+        "content": {
+          "es": "Contenido pendiente.",
+          "en": "Content coming soon."
+        }
+      },
+      {
+        "type": "image",
+        "ratio": "landscape"
+      }
+    ]
+  },
+  {
+    "category": "branding",
+    "slug": "awake",
+    "title": "Awake",
+    "client": "Awake",
+    "year": "2026",
+    "index": "05",
+    "version": 1,
+    "area": {
+      "ratio": "portrait"
+    },
+    "blocks": [
+      {
+        "type": "text",
+        "variant": "lead",
+        "content": {
+          "es": "Contenido pendiente.",
+          "en": "Content coming soon."
+        }
+      },
+      {
+        "type": "image",
+        "ratio": "portrait"
+      }
+    ]
+  },
+  {
+    "category": "branding",
+    "slug": "mesonero-romanos",
+    "title": "Mesonero-Romanos Studio",
+    "client": "Mesonero-Romanos Studio",
+    "year": "2025",
+    "index": "06",
+    "version": 1,
+    "area": {
+      "ratio": "landscape"
+    },
+    "blocks": [
+      {
+        "type": "text",
+        "variant": "lead",
+        "content": {
+          "es": "Contenido pendiente.",
+          "en": "Content coming soon."
+        }
+      },
+      {
+        "type": "image",
+        "ratio": "landscape"
+      }
+    ]
+  },
+  {
+    "category": "branding",
+    "slug": "espacio-trimmings",
+    "title": "Espacio Trimmings",
+    "client": "Espacio Trimmings",
+    "year": "2026",
+    "index": "07",
+    "version": 1,
+    "area": {
+      "ratio": "landscape"
+    },
+    "blocks": [
+      {
+        "type": "text",
+        "variant": "lead",
+        "content": {
+          "es": "Contenido pendiente.",
+          "en": "Content coming soon."
+        }
+      },
+      {
+        "type": "image",
+        "ratio": "landscape"
+      }
+    ]
+  },
+  {
+    "category": "branding",
+    "slug": "carpadiem",
+    "title": "CarpaDiem",
+    "client": "CarpaDiem",
+    "year": "2026",
+    "index": "08",
+    "version": 1,
+    "area": {
+      "ratio": "portrait"
+    },
+    "blocks": [
+      {
+        "type": "text",
+        "variant": "lead",
+        "content": {
+          "es": "Contenido pendiente.",
+          "en": "Content coming soon."
+        }
+      },
+      {
+        "type": "image",
+        "ratio": "portrait"
+      }
+    ]
+  },
+  {
+    "category": "branding",
+    "slug": "laberinto-studio",
+    "title": "Laberinto Studio",
+    "client": "Laberinto Studio",
+    "year": "2026",
+    "index": "09",
+    "version": 1,
+    "area": {
+      "ratio": "portrait"
+    },
+    "blocks": [
+      {
+        "type": "text",
+        "variant": "lead",
+        "content": {
+          "es": "Contenido pendiente.",
+          "en": "Content coming soon."
+        }
+      },
+      {
+        "type": "image",
+        "ratio": "portrait"
+      }
+    ]
+  },
+  {
+    "category": "branding",
+    "slug": "beatriz-ortiz-clinic",
+    "title": "Beatriz Ortiz Clinic",
+    "client": "Beatriz Ortiz Clinic",
+    "year": "2025",
+    "index": "10",
+    "version": 1,
+    "area": {
+      "ratio": "square"
+    },
+    "blocks": [
+      {
+        "type": "text",
+        "variant": "lead",
+        "content": {
+          "es": "Contenido pendiente.",
+          "en": "Content coming soon."
+        }
+      },
+      {
+        "type": "image",
+        "ratio": "square"
+      }
+    ]
+  },
+  {
+    "category": "branding",
+    "slug": "volver-a-casa",
+    "title": "Volver a Casa by Fundación Manantial",
+    "client": "Volver a Casa by Fundación Manantial",
+    "year": "2026",
+    "index": "11",
+    "version": 1,
+    "area": {
+      "ratio": "landscape"
+    },
+    "blocks": [
+      {
+        "type": "text",
+        "variant": "lead",
+        "content": {
+          "es": "Contenido pendiente.",
+          "en": "Content coming soon."
+        }
+      },
+      {
+        "type": "image",
+        "ratio": "landscape"
+      }
+    ]
+  },
+  {
+    "category": "branding",
+    "slug": "milton-education",
+    "title": "Milton Education",
+    "client": "Milton Education",
+    "year": "2024",
+    "index": "12",
+    "version": 1,
+    "area": {
+      "ratio": "landscape"
+    },
+    "blocks": [
+      {
+        "type": "text",
+        "variant": "lead",
+        "content": {
+          "es": "Contenido pendiente.",
+          "en": "Content coming soon."
+        }
+      },
+      {
+        "type": "image",
+        "ratio": "landscape"
+      }
+    ]
+  },
+  {
+    "category": "branding",
+    "slug": "beston",
+    "title": "Beston",
+    "client": "Beston",
+    "year": "2024",
+    "index": "13",
+    "version": 1,
+    "area": {
+      "ratio": "portrait"
+    },
+    "blocks": [
+      {
+        "type": "text",
+        "variant": "lead",
+        "content": {
+          "es": "Contenido pendiente.",
+          "en": "Content coming soon."
+        }
+      },
+      {
+        "type": "image",
+        "ratio": "portrait"
+      }
+    ]
+  },
+  {
+    "category": "branding",
+    "slug": "canica",
+    "title": "Canica",
+    "client": "Canica",
+    "year": "2024",
+    "index": "14",
+    "version": 1,
+    "area": {
+      "ratio": "square"
+    },
+    "blocks": [
+      {
+        "type": "text",
+        "variant": "lead",
+        "content": {
+          "es": "Contenido pendiente.",
+          "en": "Content coming soon."
+        }
+      },
+      {
+        "type": "image",
+        "ratio": "square"
+      }
+    ]
+  },
+  {
+    "category": "branding",
+    "slug": "natuka-branding",
+    "title": "Natuka",
+    "client": "Natuka",
+    "year": "2024",
+    "index": "15",
+    "version": 1,
+    "area": {
+      "ratio": "portrait"
+    },
+    "blocks": [
+      {
+        "type": "text",
+        "variant": "lead",
+        "content": {
+          "es": "Contenido pendiente.",
+          "en": "Content coming soon."
+        }
+      },
+      {
+        "type": "image",
+        "ratio": "portrait"
+      }
+    ]
+  },
+  {
+    "category": "campanas",
+    "slug": "natuka-camion-robado",
+    "title": "Camión Robado",
+    "client": "Natuka",
+    "year": "2025",
+    "index": "01",
+    "version": 2,
+    "area": {
+      "ratio": "landscape"
+    },
+    "layout": {
+      "columns": [
+        [
+          {
+            "content": {
+              "es": "¿Cómo lanzas una nueva forma de hacer las cosas sin decir que la anterior estaba mal?",
+              "en": "How do you launch a new way of doing things without saying the old one was wrong?"
+            }
+          },
+          {
+            "content": {
+              "es": "Natuka siempre había apostado por el BARF: alimentación cruda, natural y de calidad para perros y gatos. El reto era lanzar una nueva línea de comida cocinada sin enfrentarla a la anterior, porque no se trataba de sustituir una por otra, sino de ampliar las opciones.",
+              "en": "Natuka had always backed BARF: raw, natural, quality food for dogs and cats. The challenge was to launch a new cooked line without pitting it against the old one — it wasn't about replacing it, but widening the options."
+            }
+          },
+          {
+            "content": {
+              "es": "Así que decidimos no hablar de comida.",
+              "en": "So we decided not to talk about food."
+            }
+          },
+          {
+            "content": {
+              "es": "Hicimos que desapareciera un camión.",
+              "en": "We made a truck disappear."
+            },
+            "emphasis": true
+          },
+          {
+            "content": {
+              "es": "Lanzamos el rumor de que habían robado un camión de Natuka y pedimos a su comunidad que nos ayudara a encontrarlo. La historia empezó a crecer hasta involucrar a la propia comunidad, otras marcas e incluso a la competencia.",
+              "en": "We spread the rumour that a Natuka truck had been stolen and asked its community to help find it. The story grew until it pulled in the community, other brands and even the competition."
+            }
+          },
+          {
+            "content": {
+              "es": "Después llegó un telediario. El camión había desaparecido. Y el misterio seguía creciendo. Hasta que apareció.",
+              "en": "Then it hit the news. The truck had vanished. And the mystery kept growing. Until it turned up."
+            }
+          }
+        ],
+        [
+          {
+            "content": {
+              "es": "Lo tenía ese amigo al que le gusta la carne, muy, muy hecha.",
+              "en": "That friend of yours who likes his meat very, very well done had it."
+            },
+            "emphasis": true
+          },
+          {
+            "content": {
+              "es": "Ahí estaba el giro: el camión no había desaparecido. Nos estaba llevando hasta el lanzamiento de la nueva comida cocinada de Natuka.",
+              "en": "That was the twist: the truck hadn't vanished. It was driving us to the launch of Natuka's new cooked food."
+            }
+          },
+          {
+            "content": {
+              "es": "A partir de ahí, construimos una campaña alrededor de una idea sencilla: no tienes que elegir entre lo crudo y lo cocinado.",
+              "en": "From there, we built a campaign around a simple idea: you don't have to choose between raw and cooked."
+            }
+          },
+          {
+            "content": {
+              "es": "Igual de buenos, igual de naturales. Simplemente, diferentes.",
+              "en": "Just as good, just as natural. Simply different."
+            },
+            "emphasis": true
+          },
+          {
+            "content": {
+              "es": "La trasladamos a diferentes situaciones de la vida cotidiana: sushi o pescado al horno, jamón serrano o bacon. Porque, al final, hay decisiones que dependen de cómo te guste disfrutar las cosas.",
+              "en": "We carried it into everyday situations: sushi or baked fish, serrano ham or bacon. Because, in the end, some choices just come down to how you like to enjoy things."
+            }
+          },
+          {
+            "content": {
+              "es": "Una campaña que convirtió un lanzamiento de producto en una historia que la comunidad quiso seguir, compartir y descubrir.",
+              "en": "A campaign that turned a product launch into a story the community wanted to follow, share and discover."
+            }
+          }
+        ]
+      ],
+      "media": {
+        "type": "video"
+      },
+      "secondaryMedia": [
+        {
+          "type": "image",
+          "ratio": "landscape"
+        },
+        {
+          "type": "image",
+          "ratio": "portrait"
+        }
+      ]
+    },
+    "blocks": [
+      {
+        "type": "text",
+        "variant": "lead",
+        "content": {
+          "es": "¿Cómo lanzas una nueva forma de hacer las cosas sin decir que la anterior estaba mal?",
+          "en": "How do you launch a new way of doing things without saying the old one was wrong?"
+        }
+      },
+      {
+        "type": "video"
+      },
+      {
+        "type": "image",
+        "ratio": "landscape"
+      },
+      {
+        "type": "image",
+        "ratio": "portrait"
+      }
+    ]
+  },
+  {
+    "category": "campanas",
+    "slug": "vb-group-pasion-por-viajar",
+    "title": "Pasión por viajar",
+    "client": "VB Group",
+    "year": "2025",
+    "index": "02",
+    "version": 3,
+    "area": {
+      "ratio": "landscape"
+    },
+    "layout": {
+      "columns": [
+        [
+          {
+            "content": {
+              "es": "VB Group necesitaba una campaña audiovisual para sus espacios en los estadios del RCD Espanyol, FC Girona y RC Celta de Vigo. Tres equipos, tres piezas y muy poco tiempo para hacerlo realidad.",
+              "en": "VB Group needed an audiovisual campaign for its spaces at the RCD Espanyol, FC Girona and RC Celta de Vigo stadiums. Three teams, three pieces and very little time to make it real."
+            }
+          },
+          {
+            "content": {
+              "es": "El reto: conectar dos mundos aparentemente distintos: viajar y fútbol.",
+              "en": "The challenge: connecting two seemingly different worlds — travel and football."
+            }
+          },
+          {
+            "content": {
+              "es": "La clave estaba en encontrar un punto de encuentro: el fútbol también es un viaje de emociones. A partir de ahí, jugamos con las paradojas, rituales e insights que comparten ambos mundos: viajar es descubrir monumentos históricos —como el estadio—; probar comida experimental —las míticas pipas mientras vemos el partido—; encontrar tu bar de confianza —no sabemos si tan de confianza, pero hablamos del VAR—; una visita a los dioses —esos jugadores que han dejado huella y que siempre están presentes—; entre otras comparativas.",
+              "en": "The key was finding common ground: football is also an emotional journey. From there, we played with the paradoxes, rituals and insights both worlds share: travelling means discovering historic monuments —like the stadium—; trying experimental food —the legendary sunflower seeds during the match—; finding your trusted bar —we're not sure how trustworthy, but let's talk about VAR—; a visit to the gods —those players who left their mark and are always present—; among other comparisons."
+            }
+          },
+          {
+            "content": {
+              "es": "Un juego de dobles sentidos que nos permitió construir un concepto adaptable a cada equipo y a su propia identidad: VB Group. Viajar más allá del estadio.",
+              "en": "A play on double meanings that let us build a concept adaptable to each team and its own identity: VB Group. Travel beyond the stadium."
+            }
+          }
+        ]
+      ],
+      "media": {
+        "type": "video"
+      }
+    },
+    "blocks": [
+      {
+        "type": "text",
+        "variant": "lead",
+        "content": {
+          "es": "VB Group necesitaba una campaña audiovisual para sus espacios en los estadios del RCD Espanyol, FC Girona y RC Celta de Vigo: tres equipos, tres piezas y muy poco tiempo para hacerlo realidad. El reto: conectar dos mundos aparentemente distintos, viajar y fútbol.",
+          "en": "VB Group needed an audiovisual campaign for its spaces at the RCD Espanyol, FC Girona and RC Celta de Vigo stadiums: three teams, three pieces and very little time. The challenge: connecting two seemingly different worlds — travel and football."
+        }
+      },
+      {
+        "type": "video"
+      }
+    ]
+  },
+  {
+    "category": "campanas",
+    "slug": "fosters-hollywood-la-salsa",
+    "title": "La Salsa",
+    "client": "Foster's Hollywood",
+    "year": "2024",
+    "index": "03",
+    "version": 1,
+    "area": {
+      "ratio": "landscape"
+    },
+    "blocks": [
+      {
+        "type": "text",
+        "variant": "lead",
+        "content": {
+          "es": "Contenido pendiente.",
+          "en": "Content coming soon."
+        }
+      },
+      {
+        "type": "image",
+        "ratio": "landscape"
+      }
+    ]
+  },
+  {
+    "category": "campanas",
+    "slug": "natuka-latas",
+    "title": "Latas",
+    "client": "Natuka",
+    "year": "2026",
+    "index": "04",
+    "version": 1,
+    "area": {
+      "ratio": "landscape"
+    },
+    "blocks": [
+      {
+        "type": "text",
+        "variant": "lead",
+        "content": {
+          "es": "Contenido pendiente.",
+          "en": "Content coming soon."
+        }
+      },
+      {
+        "type": "image",
+        "ratio": "landscape"
+      }
+    ]
+  },
+  {
+    "category": "campanas",
+    "slug": "baudesson-lanzamientos",
+    "title": "Lanzamientos",
+    "client": "Baudesson",
+    "year": "2026",
+    "index": "05",
+    "version": 1,
+    "area": {
+      "ratio": "landscape"
+    },
+    "blocks": [
+      {
+        "type": "text",
+        "variant": "lead",
+        "content": {
+          "es": "Contenido pendiente.",
+          "en": "Content coming soon."
+        }
+      },
+      {
+        "type": "image",
+        "ratio": "landscape"
+      }
+    ]
+  },
+  {
+    "category": "campanas",
+    "slug": "mim-shoes-universal-sneakers",
+    "title": "Universal Sneakers",
+    "client": "MIM Shoes",
+    "year": "2025",
+    "index": "06",
+    "version": 1,
+    "area": {
+      "ratio": "landscape"
+    },
+    "blocks": [
+      {
+        "type": "text",
+        "variant": "lead",
+        "content": {
+          "es": "Contenido pendiente.",
+          "en": "Content coming soon."
+        }
+      },
+      {
+        "type": "image",
+        "ratio": "landscape"
+      }
+    ]
+  },
+  {
+    "category": "campanas",
+    "slug": "materh-seguros",
+    "title": "Seguros",
+    "client": "MatErh",
+    "year": "2025",
+    "index": "07",
+    "version": 1,
+    "area": {
+      "ratio": "portrait"
+    },
+    "blocks": [
+      {
+        "type": "text",
+        "variant": "lead",
+        "content": {
+          "es": "Contenido pendiente.",
+          "en": "Content coming soon."
+        }
+      },
+      {
+        "type": "image",
+        "ratio": "portrait"
+      }
+    ]
+  }
+]

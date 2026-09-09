@@ -48,6 +48,11 @@ export default function Navbar() {
     };
   }, [open]);
 
+  // The /admin backoffice has its own chrome — the public site's Navbar
+  // shouldn't wrap it. (Placed after every hook above so hook order stays
+  // stable across renders.)
+  if (pathname?.startsWith("/admin")) return null;
+
   const matches = (list: string[]) =>
     list.some((p) => pathname === p || pathname.startsWith(`${p}/`));
 

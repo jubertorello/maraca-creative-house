@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import type { ComponentType, SVGProps } from "react";
 import { useLocale } from "@/lib/i18n";
 
@@ -20,6 +21,11 @@ const SOCIALS: {
 export default function Footer() {
   const { t } = useLocale();
   const year = new Date().getFullYear();
+  const pathname = usePathname();
+
+  // The /admin backoffice has its own chrome — the public site's
+  // Navbar/Footer shouldn't wrap it.
+  if (pathname?.startsWith("/admin")) return null;
 
   return (
     <footer className="bg-charcoal text-cream">

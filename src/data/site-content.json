@@ -1,0 +1,177 @@
+{
+  "home": {
+    "heroVideo": {
+      "desktop": "https://res.cloudinary.com/klrhikvq/video/upload/v1788791396/maraca/media/hero.mp4"
+    },
+    "aboutText": {
+      "es": "Somos de darle una vuelta a las cosas. A veces dos. Porque hacer más ruido no siempre significa hacerse escuchar. Somos una *creative house* y *partner creativo* para marcas que quieren ir un poco más allá. Pensamos, creamos y damos forma a ideas que pueden convertirse en una identidad, una campaña, una experiencia, una web, un evento o, si hace falta, algo que todavía no sabemos cómo llamar. No nos interesa hacer por hacer. Ni dar por bueno lo que siempre se ha hecho así. Nos gusta encontrar el porqué. El insight. El concepto. La forma. Y llevarlo hasta el último detalle.",
+      "en": "We like to look at things twice. Sometimes three times. Because making more noise doesn't always mean being heard. We're a *creative house* and *creative partner* for brands that want to go a little further. We think, create and shape ideas that can become an identity, a campaign, an experience, a website, an event or, if needed, something we don't have a name for yet. We're not interested in doing things just to do them, or settling for the way it's always been done. We like finding the why. The insight. The concept. The form. And taking it down to the last detail."
+    },
+    "recentWorkVideo": {
+      "desktop": "https://res.cloudinary.com/klrhikvq/video/upload/v1788791401/maraca/media/recent-work.mov"
+    }
+  },
+  "about": {
+    "heroVideo": {
+      "desktop": "https://res.cloudinary.com/klrhikvq/video/upload/v1788791406/maraca/media/about-hero.mov"
+    },
+    "blocks": [
+      {
+        "title": {
+          "es": "Nos mueve la curiosidad. Nos obsesionan los detalles.",
+          "en": "Curiosity moves us. Details obsess us."
+        },
+        "body": {
+          "es": "Somos una agencia creativa boutique especializada en construir marcas con estrategia, criterio estético e ideas capaces de vivir en cualquier formato.",
+          "en": "We're a boutique creative agency focused on building brands with strategy, aesthetic judgement and ideas able to live in any format."
+        },
+        "bodyStyle": "italic"
+      },
+      {
+        "title": {
+          "es": "Construimos universos de marca.",
+          "en": "We build brand universes."
+        },
+        "body": {
+          "es": "A veces, ese universo empieza con una identidad visual, estrategia de comunicación, campaña de publicidad, evento, web o shooting. Nos adaptamos a lo que cada proyecto necesita porque entendemos que las mejores ideas no caben dentro de un departamento.",
+          "en": "Sometimes that universe starts with a visual identity, a communication strategy, an ad campaign, an event, a website or a shooting. We adapt to what each project needs, because the best ideas don't fit inside a single department."
+        },
+        "bodyStyle": "caps"
+      },
+      {
+        "title": {
+          "es": "Trabajamos como partners creativos.",
+          "en": "We work as creative partners."
+        },
+        "body": {
+          "es": "Cada decisión responde a una estrategia. Cada imagen tiene una intención. Cada concepto nace de un insight y cada buena idea se proyecta en un buen diseño.",
+          "en": "Every decision answers to a strategy. Every image has an intention. Every concept is born from an insight, and every good idea shows in good design."
+        },
+        "bodyStyle": "caps"
+      }
+    ],
+    "logosTitle": {
+      "es": "Marcas que nos han dejado darle una vuelta",
+      "en": "Brands that have let us look at things twice"
+    }
+  },
+  "team": {
+    "heroVideo": {
+      "desktop": "https://res.cloudinary.com/klrhikvq/video/upload/v1788791408/maraca/media/team-hero.mp4"
+    },
+    "tagline": "Many minds, one creative house",
+    "joinUs": {
+      "title": {
+        "es": "Nos gusta rodearnos de gente que ve las cosas de otra manera.",
+        "en": "We like surrounding ourselves with people who see things differently."
+      },
+      "paragraph1": {
+        "es": "Buscamos curiosidad, criterio y ganas de hacer cosas que merezcan la pena. Si tienes algo que enseñar, una idea que contar o simplemente crees que podríamos hacer buenas cosas juntos, queremos conocerte.",
+        "en": "We look for curiosity, judgement and the drive to make things worth making. If you have something to show, an idea to tell or you just think we could do good things together, we'd like to meet you."
+      },
+      "paragraph2": {
+        "es": "Mándanos tu portfolio o CV. Quién sabe qué puede salir de aquí.",
+        "en": "Send us your portfolio or CV. Who knows what could come of it."
+      },
+      "email": "hello@lamaraca.com"
+    }
+  },
+  "seo": {
+    "global": {
+      "titleSuffix": "MARACA — Creative House",
+      "defaultTitle": "MARACA — Creative House | Agencia Creativa en Madrid",
+      "description": "MARACA es una agencia creativa en Madrid: branding, estrategia de comunicación y redes sociales, creación de contenido y shootings, diseño web, campañas de publicidad y eventos.",
+      "keywords": [
+        "agencia creativa Madrid",
+        "agencia de publicidad Madrid",
+        "agencia de branding",
+        "agencia de eventos",
+        "agencia de redes sociales",
+        "agencia de shootings",
+        "branding",
+        "creatividad",
+        "creación de contenido",
+        "diseño web",
+        "campañas de publicidad",
+        "estrategia de comunicación",
+        "agencia creativa España"
+      ],
+      "ogImageUrl": "/brand/og-image.png"
+    },
+    "pages": {
+      "home": { "title": "", "description": "" },
+      "about": {
+        "title": "Sobre nosotros",
+        "description": "Somos MARACA, una agencia creativa boutique en Madrid especializada en branding, estrategia y creatividad — construimos marcas con criterio estético e ideas capaces de vivir en cualquier formato."
+      },
+      "team": {
+        "title": "El equipo",
+        "description": "Conoce al equipo de MARACA, agencia creativa de Madrid: dirección de estrategia, dirección creativa, contenido y social media."
+      },
+      "work": {
+        "title": "Nuestro trabajo",
+        "description": "Branding, estrategia de comunicación, creación de contenido y shootings, diseño web, campañas de publicidad y eventos — el trabajo de MARACA, agencia creativa de Madrid."
+      },
+      "contact": {
+        "title": "Contacto",
+        "description": "¿Tienes algo en mente? Escríbenos a hello@lamaraca.com — MARACA, agencia creativa de Madrid especializada en branding, publicidad y eventos."
+      },
+      "privacyPolicy": { "title": "Política de privacidad", "description": "" }
+    }
+  },
+  "privacyPolicy": {
+    "lastUpdated": { "es": "septiembre 2026", "en": "September 2026" },
+    "sections": [
+      {
+        "heading": { "es": "Responsable del tratamiento", "en": "Data controller" },
+        "body": {
+          "es": "MARACA (en adelante, «la agencia») es responsable del tratamiento de los datos personales que nos facilites a través de este sitio web. Puedes contactarnos en hello@lamaraca.com.",
+          "en": "MARACA (\"the agency\") is the controller of the personal data you provide through this website. You can reach us at hello@lamaraca.com."
+        }
+      },
+      {
+        "heading": { "es": "Datos que recogemos", "en": "Data we collect" },
+        "body": {
+          "es": "A través del formulario de contacto recogemos el nombre, la dirección de correo electrónico y el mensaje que nos envías. No recogemos categorías especiales de datos.",
+          "en": "Through the contact form we collect the name, email address and message you send us. We do not collect special categories of data."
+        }
+      },
+      {
+        "heading": { "es": "Finalidad y base legal", "en": "Purpose and legal basis" },
+        "body": {
+          "es": "Usamos tus datos únicamente para responder a tu consulta y, en su caso, gestionar una posible colaboración. La base legal es tu consentimiento y el interés legítimo en atender tu solicitud.",
+          "en": "We use your data only to respond to your enquiry and, where applicable, to manage a possible collaboration. The legal basis is your consent and our legitimate interest in handling your request."
+        }
+      },
+      {
+        "heading": { "es": "Conservación", "en": "Retention" },
+        "body": {
+          "es": "Conservamos los datos durante el tiempo necesario para atender tu consulta y, después, durante los plazos legalmente exigibles.",
+          "en": "We keep the data for as long as needed to handle your enquiry and, afterwards, for the periods required by law."
+        }
+      },
+      {
+        "heading": { "es": "Destinatarios", "en": "Recipients" },
+        "body": {
+          "es": "No cedemos tus datos a terceros salvo obligación legal. Utilizamos proveedores de servicios (por ejemplo, de envío de correo electrónico) que actúan como encargados del tratamiento.",
+          "en": "We do not share your data with third parties except where legally required. We use service providers (e.g. email delivery) acting as processors."
+        }
+      },
+      {
+        "heading": { "es": "Tus derechos", "en": "Your rights" },
+        "body": {
+          "es": "Puedes ejercer los derechos de acceso, rectificación, supresión, oposición, limitación y portabilidad escribiendo a hello@lamaraca.com. También puedes reclamar ante la autoridad de control competente.",
+          "en": "You can exercise your rights of access, rectification, erasure, objection, restriction and portability by writing to hello@lamaraca.com. You may also lodge a complaint with the competent supervisory authority."
+        }
+      }
+    ]
+  },
+  "contact": {
+    "tagline": {
+      "es": "We're in Madrid, but good ideas tend to travel:",
+      "en": "We're in Madrid, but good ideas tend to travel:"
+    },
+    "email": "hello@lamaraca.com",
+    "title": { "es": "Got something in mind?", "en": "Got something in mind?" }
+  }
+}

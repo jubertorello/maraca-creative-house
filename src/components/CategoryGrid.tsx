@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { CATEGORIES, MAX_REVEAL_CLIENTS, getCaseHref } from "@/lib/work";
+import { CATEGORIES, CASES, MAX_REVEAL_CLIENTS, type Category, type CaseStudy } from "@/lib/work";
 import { useLocale } from "@/lib/i18n";
 
 /**
@@ -57,14 +57,34 @@ function titleLines(name: string, max = 22): string[] {
   return [first, name.slice(first.length).trim()];
 }
 
-export default function CategoryGrid({ reveal = false }: { reveal?: boolean }) {
+export default function CategoryGrid({
+  reveal = false,
+  categories = CATEGORIES,
+  cases = CASES,
+}: {
+  reveal?: boolean;
+  /** Live-fetched categories/cases from the server component that renders
+   * this (see /work/page.tsx) — defaults to the build-time snapshot so
+   * every other caller keeps working unchanged. */
+  categories?: Category[];
+  cases?: CaseStudy[];
+}) {
   const { t, locale } = useLocale();
   const [openSlug, setOpenSlug] = useState<string | null>(null);
+
+  const getCaseHref = (category: string, client: string): string | null => {
+    const found = cases.find(
+      (c) =>
+        c.category === category &&
+        c.client.trim().toLowerCase() === client.trim().toLowerCase(),
+    );
+    return found ? `/work/${category}/${found.slug}` : null;
+  };
 
   return (
     <div className="mx-auto w-full max-w-[1283px] px-[5.5vw] xl:px-0">
       <ul className="grid grid-cols-2 gap-1 sm:grid-cols-3 lg:grid-cols-6">
-        {CATEGORIES.map((c) => {
+        {categories.map((c) => {
           // Hovering the tile reveals the client list (if any) — the type
           // name should redden whenever hover does something, i.e. it's
           // clickable OR it has a list to reveal.
@@ -114,7 +134,7 @@ export default function CategoryGrid({ reveal = false }: { reveal?: boolean }) {
             <div className="relative aspect-[211/178] w-full overflow-hidden bg-mist">
               {HAS_PHOTOS && (
                 <Image
-                  src={`/media/services/${c.slug}.jpg`}
+                  src={c.image ?? `/media/services/${c.slug}.jpg`}
                   alt=""
                   fill
                   sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 214px"
@@ -156,8 +176,17 @@ export default function CategoryGrid({ reveal = false }: { reveal?: boolean }) {
                     as a floating panel over whatever it overlaps instead of
                     broken, half-covered text. */}
                 <div
-                  className={`absolute inset-x-0 bottom-0 flex flex-col pb-3 transition-[background-color,box-shadow] duration-300 group-hover:rounded-t-sm group-hover:bg-cream group-hover:shadow-[0_-16px_20px_-12px_rgba(0,0,0,0.18)] ${
-                    isOpen ? "!rounded-t-sm !bg-cream !shadow-[0_-16px_20px_-12px_rgba(0,0,0,0.18)]" : ""
+                  className={`absolute inset-x-0 bottom-0 flex flex-col pb-3 transition-[background-color,box-shadow] duration-300 ${
+                    // Desktop hover deploys the list transparently over
+                    // whatever's below (there's reserved clearance above
+                    // the grid for it, so nothing gets covered) — same as
+                    // it always looked. Only the tap-opened state on touch
+                    // devices (no reserved clearance, so it can land over a
+                    // neighbouring photo) gets the opaque floating-card
+                    // background.
+                    isOpen
+                      ? "rounded-t-sm bg-cream shadow-[0_-16px_20px_-12px_rgba(0,0,0,0.18)]"
+                      : ""
                   }`}
                 >
                   {c.enabled ? (

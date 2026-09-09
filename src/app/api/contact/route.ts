@@ -1,5 +1,9 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
+import { isRateLimited, recordHit, clientIp } from "@/lib/rate-limit";
+
+const MAX_SUBMISSIONS = 5;
+const WINDOW_MS = 60 * 60 * 1000; // 1 hour
 
 /**
  * Contact form endpoint. Needs env vars:
@@ -9,6 +13,15 @@ import { Resend } from "resend";
  *                         (e.g. "MARACA web <web@lamaraca.com>")
  */
 export async function POST(req: Request) {
+  const ip = clientIp(req);
+  if (isRateLimited("contact", ip, MAX_SUBMISSIONS, WINDOW_MS)) {
+    return NextResponse.json(
+      { error: "Demasiados mensajes. Probá de nuevo más tarde." },
+      { status: 429 },
+    );
+  }
+  recordHit("contact", ip, WINDOW_MS);
+
   let data: { name?: string; email?: string; message?: string };
   try {
     data = await req.json();

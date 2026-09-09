@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect } from "react";
 import type { MediaBlock } from "@/lib/work";
+import { cldOptimize } from "@/lib/cloudinary-url";
 
 /**
  * Fullscreen media viewer for case studies. `index` null = closed.
@@ -91,7 +92,7 @@ export default function Lightbox({
       >
         {item.type === "video" ? (
           <video
-            src={item.src}
+            src={cldOptimize(item.src)}
             controls
             autoPlay
             loop
@@ -100,7 +101,7 @@ export default function Lightbox({
         ) : item.src ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={item.src}
+            src={cldOptimize(item.src)}
             alt=""
             className="max-h-[80vh] w-auto object-contain"
           />

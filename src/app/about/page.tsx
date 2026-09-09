@@ -1,16 +1,23 @@
 import type { Metadata } from "next";
 import AboutPageClient from "./AboutPageClient";
+import { getAboutContentLive, getSeoContentLive } from "@/lib/site-content";
+import { getClientsLive } from "@/lib/clients";
 
-const description =
-  "Somos MARACA, una agencia creativa boutique en Madrid especializada en branding, estrategia y creatividad — construimos marcas con criterio estético e ideas capaces de vivir en cualquier formato.";
+export const revalidate = 60;
 
-export const metadata: Metadata = {
-  title: "Sobre nosotros",
-  description,
-  alternates: { canonical: "/about" },
-  openGraph: { title: "Sobre nosotros | MARACA", description },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const seo = await getSeoContentLive();
+  const page = seo.pages.about;
+  const description = page.description || undefined;
+  return {
+    title: page.title || "Sobre nosotros",
+    description,
+    alternates: { canonical: "/about" },
+    openGraph: description ? { title: `${page.title || "Sobre nosotros"} | MARACA`, description } : undefined,
+  };
+}
 
-export default function AboutPage() {
-  return <AboutPageClient />;
+export default async function AboutPage() {
+  const [content, clients] = await Promise.all([getAboutContentLive(), getClientsLive()]);
+  return <AboutPageClient content={content} clients={clients} />;
 }

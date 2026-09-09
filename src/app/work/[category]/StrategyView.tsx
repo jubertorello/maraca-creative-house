@@ -57,7 +57,10 @@ export default function StrategyView({ category }: { category: Category }) {
           playsInline
           preload="auto"
         >
-          <source src="/media/estrategia.mp4" type="video/mp4" />
+          <source
+            src="https://res.cloudinary.com/klrhikvq/video/upload/v1788791411/maraca/media/estrategia.mov"
+            type="video/mp4"
+          />
         </video>
 
         {/* closing line — sits below the video, just grazing its bottom edge */}

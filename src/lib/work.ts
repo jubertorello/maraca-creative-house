@@ -25,7 +25,23 @@
  *
  * Only `branding` and `campanas` are live; the other four categories show on
  * the index but don't link anywhere yet.
+ *
+ * ---------------------------------------------------------------------------
+ * DATA SOURCE: categories and cases now live in `src/data/categories.json`
+ * and `src/data/cases.json` (not hardcoded here anymore) so the /admin
+ * backoffice can read and write them directly. This file just loads that
+ * JSON, types it, and re-exports the same helpers everything else already
+ * imports — no consumer of `work.ts` needed to change. When Supabase comes
+ * in, only this loading step changes (JSON import → DB query); the exported
+ * shape stays the same.
+ * ---------------------------------------------------------------------------
  */
+
+import categoriesData from "@/data/categories.json";
+import casesData from "@/data/cases.json";
+
+/** Client names for the two "stub" campañas cases share their brand's real
+ * client, not the case title (title = campaign name, client = brand name). */
 
 /** Work-index hover list: show at most this many clients, then "See all". */
 export const MAX_REVEAL_CLIENTS = 15;
@@ -52,125 +68,19 @@ export type Category = {
    * hover from the Work index) but the category page itself isn't designed
    * yet — just a "Diseño pendiente" placeholder. */
   kind?: "listing" | "manifesto" | "pending";
+  /** Tile image on the Home "Participadas" row and /work index (Figma
+   * 6013:15). Falls back to /media/services/<slug>.jpg when unset, so
+   * existing data without this field keeps working. Editable from
+   * /admin/work/[category]. */
+  image?: string;
+  /** SEO title/description overrides for /work/[category] — empty/unset
+   * falls back to the auto-generated ones in generateMetadata. Editable
+   * from /admin/work/[category]. */
+  seoTitle?: string;
+  seoDescription?: string;
 };
 
-export const CATEGORIES: Category[] = [
-  {
-    slug: "branding",
-    index: "1",
-    name: { es: "Branding", en: "Branding" },
-    enabled: true,
-    clients: [
-      "Kish&Go",
-      "Maruch",
-      "Unrated",
-      "Joia by Buccara",
-      "Awake",
-      "Mesonero-Romanos Studio",
-      "Espacio Trimmings",
-      "CarpaDiem",
-      "Laberinto Studio",
-      "Beatriz Ortiz Clinic",
-      "Volver a Casa by Fundación Manantial",
-      "Milton Education",
-      "Beston",
-      "Canica",
-      "Natuka",
-    ],
-  },
-  {
-    slug: "estrategia",
-    index: "2",
-    name: {
-      es: "Estrategia de comunicación y RRSS",
-      en: "Communication & social media strategy",
-    },
-    enabled: true,
-    kind: "manifesto",
-    clients: [
-      "Mira Miranda",
-      "Gaby's Bagels",
-      "Casabarré",
-      "Beston",
-      "Canica",
-      "Mesonero Romanos Studio",
-      "Beatriz Ortiz Clinic",
-      "Milton Education",
-      "Kish&Go",
-      "Unrated",
-      "Oma by Luchi",
-      "Continuo Café",
-    ],
-  },
-  {
-    slug: "contenido",
-    index: "3",
-    name: {
-      es: "Creación de contenido y shootings",
-      en: "Content creation & shootings",
-    },
-    enabled: true,
-    kind: "pending",
-    clients: [
-      "Baía Food",
-      "Caixabank",
-      "Baudesson",
-      "MIM Shoes",
-      "Beston",
-      "Kish&Go",
-      "Gaby's Bagels",
-      "Oma by Luchi",
-      "Continuo Café",
-    ],
-  },
-  {
-    slug: "web",
-    index: "4",
-    name: { es: "Diseño web", en: "Web design" },
-    enabled: true,
-    kind: "pending",
-    clients: [
-      "Corpfin Capital",
-      "Beston",
-      "Kish&Go",
-      "Oma by Luchi",
-      "Volver a Casa by Fundación Manantial",
-      "Joia by Buccara",
-      "Beatriz Ortiz Clinic",
-      "Mesonero-Romanos Studio",
-    ],
-  },
-  {
-    slug: "campanas",
-    index: "5",
-    name: { es: "Campañas de publicidad", en: "Advertising campaigns" },
-    enabled: true,
-    kind: "pending",
-    clients: [
-      "Natuka",
-      "VB Group",
-      "Foster's Hollywood",
-      "Baudesson",
-      "MIM Shoes",
-      "MatErh",
-    ],
-  },
-  {
-    slug: "eventos",
-    index: "6",
-    name: { es: "Eventos", en: "Events" },
-    enabled: true,
-    kind: "pending",
-    clients: [
-      "BBC x Bluey",
-      "Beston 'Runway'",
-      "Beston 'Après Ski'",
-      "Beston 'Dinner'",
-      "Baïa Food",
-      "Baudesson 'Carnaval'",
-    ],
-  },
-];
+export const CATEGORIES: Category[] = categoriesData as Category[];
 
 export const getCategory = (slug: string) =>
   CATEGORIES.find((c) => c.slug === slug);
@@ -216,171 +126,20 @@ export type CaseStudy = {
   layout?: StaticLayout;
   /** How this case's thumbnail renders on the /work/[category] area page —
    * always exactly one photo + [n], client name and (year) (Figma 6054:265 /
-   * 6096:1162) — independent of `blocks` (the case-detail gallery). */
-  area?: { ratio?: "square" | "portrait" | "landscape" };
+   * 6096:1162) — independent of `blocks` (the case-detail gallery). `image`
+   * is the brand's one identifying photo for that listing; when unset it
+   * falls back to the first image/video in the case's own gallery (see
+   * `caseMedia`), which is how every case behaved before this field
+   * existed. */
+  area?: { ratio?: "square" | "portrait" | "landscape"; image?: string };
+  /** SEO title/description overrides for this case's page — empty/unset
+   * falls back to the auto-generated ones in generateMetadata. Editable
+   * from /admin/work/[category]/[slug]. */
+  seoTitle?: string;
+  seoDescription?: string;
 };
 
-const lead = (content: Lang): CaseBlock => ({ type: "text", variant: "lead", content });
-const body = (content: Lang): CaseBlock => ({ type: "text", variant: "body", content });
-
-/** Stub for a case we know the name/year of but have no content for yet. */
-const stub = (
-  category: CategorySlug,
-  slug: string,
-  title: string,
-  year: string,
-  index: string,
-  area?: CaseStudy["area"],
-): CaseStudy => ({
-  category,
-  slug,
-  title,
-  client: title,
-  year,
-  index,
-  version: 1,
-  area,
-  blocks: [
-    lead({ es: "Contenido pendiente.", en: "Content coming soon." }),
-    { type: "image", ratio: area?.ratio ?? "landscape" },
-  ],
-});
-
-export const CASES: CaseStudy[] = [
-  // ---- BRANDING (6054:265, 15 projects) ---------------------------------
-  {
-    category: "branding",
-    slug: "kish-and-go",
-    title: "KISH&GO",
-    client: "KISH&Go",
-    year: "2026",
-    index: "01",
-    version: 1,
-    area: { ratio: "portrait" },
-    blocks: [
-      lead({
-        es: "Para construir la identidad de Kish&Go rompimos con lo esperado: una quiche puede tener más de un lugar de origen. La receta nace en Francia, la marca en Madrid y su creadora en Rio de Janeiro. Tres culturas, tres códigos y una misma mesa.",
-        en: "To build Kish&Go's identity we broke with the expected: a quiche can have more than one place of origin. The recipe is born in France, the brand in Madrid and its founder in Rio de Janeiro. Three cultures, three codes and one table.",
-      }),
-      { type: "image", ratio: "portrait" },
-      { type: "image", ratio: "square" },
-      body({
-        es: "A partir de ahí, llevamos esa mezcla al lenguaje visual. Las ondas del paseo de las aceras de Rio se convierten en un recurso gráfico que conecta la identidad con el origen de su creadora, mientras una paleta contemporánea sitúa la marca en el Madrid actual.",
-        en: "From there we took that mix into the visual language. The wave pattern of Rio's pavements becomes a graphic device linking the identity to its founder's origin, while a contemporary palette places the brand in today's Madrid.",
-      }),
-      { type: "image", ratio: "landscape" },
-      { type: "image", ratio: "square" },
-      { type: "image", ratio: "portrait" },
-    ],
-  },
-  stub("branding", "maruch", "Maruch", "2025", "02", { ratio: "square" }),
-  stub("branding", "unrated", "UNRATED", "2026", "03", { ratio: "portrait" }),
-  stub("branding", "joia-by-buccara", "Joia by Buccara", "2026", "04", { ratio: "landscape" }),
-  stub("branding", "awake", "Awake", "2026", "05", { ratio: "portrait" }),
-  stub("branding", "mesonero-romanos", "Mesonero-Romanos Studio", "2025", "06", { ratio: "landscape" }),
-  stub("branding", "espacio-trimmings", "Espacio Trimmings", "2026", "07", { ratio: "landscape" }),
-  stub("branding", "carpadiem", "CarpaDiem", "2026", "08", { ratio: "portrait" }),
-  stub("branding", "laberinto-studio", "Laberinto Studio", "2026", "09", { ratio: "portrait" }),
-  stub("branding", "beatriz-ortiz-clinic", "Beatriz Ortiz Clinic", "2025", "10", { ratio: "square" }),
-  stub("branding", "volver-a-casa", "Volver a Casa by Fundación Manantial", "2026", "11", { ratio: "landscape" }),
-  stub("branding", "milton-education", "Milton Education", "2024", "12", { ratio: "landscape" }),
-  stub("branding", "beston", "Beston", "2024", "13", { ratio: "portrait" }),
-  stub("branding", "canica", "Canica", "2024", "14", { ratio: "square" }),
-  stub("branding", "natuka-branding", "Natuka", "2024", "15", { ratio: "portrait" }),
-
-  // ---- CAMPAÑAS DE PUBLICIDAD (6096:1162, 7 projects) -------------------
-  {
-    category: "campanas",
-    slug: "natuka-camion-robado",
-    title: "Camión Robado",
-    client: "Natuka",
-    year: "2025",
-    index: "01",
-    version: 2,
-    area: { ratio: "landscape" },
-    // v2 (Figma 6100:1281): 2 text columns + 1 big video + a 2-image row below.
-    layout: {
-      columns: [
-        [
-          { content: { es: "¿Cómo lanzas una nueva forma de hacer las cosas sin decir que la anterior estaba mal?", en: "How do you launch a new way of doing things without saying the old one was wrong?" } },
-          { content: { es: "Natuka siempre había apostado por el BARF: alimentación cruda, natural y de calidad para perros y gatos. El reto era lanzar una nueva línea de comida cocinada sin enfrentarla a la anterior, porque no se trataba de sustituir una por otra, sino de ampliar las opciones.", en: "Natuka had always backed BARF: raw, natural, quality food for dogs and cats. The challenge was to launch a new cooked line without pitting it against the old one — it wasn't about replacing it, but widening the options." } },
-          { content: { es: "Así que decidimos no hablar de comida.", en: "So we decided not to talk about food." } },
-          { content: { es: "Hicimos que desapareciera un camión.", en: "We made a truck disappear." }, emphasis: true },
-          { content: { es: "Lanzamos el rumor de que habían robado un camión de Natuka y pedimos a su comunidad que nos ayudara a encontrarlo. La historia empezó a crecer hasta involucrar a la propia comunidad, otras marcas e incluso a la competencia.", en: "We spread the rumour that a Natuka truck had been stolen and asked its community to help find it. The story grew until it pulled in the community, other brands and even the competition." } },
-          { content: { es: "Después llegó un telediario. El camión había desaparecido. Y el misterio seguía creciendo. Hasta que apareció.", en: "Then it hit the news. The truck had vanished. And the mystery kept growing. Until it turned up." } },
-        ],
-        [
-          { content: { es: "Lo tenía ese amigo al que le gusta la carne, muy, muy hecha.", en: "That friend of yours who likes his meat very, very well done had it." }, emphasis: true },
-          { content: { es: "Ahí estaba el giro: el camión no había desaparecido. Nos estaba llevando hasta el lanzamiento de la nueva comida cocinada de Natuka.", en: "That was the twist: the truck hadn't vanished. It was driving us to the launch of Natuka's new cooked food." } },
-          { content: { es: "A partir de ahí, construimos una campaña alrededor de una idea sencilla: no tienes que elegir entre lo crudo y lo cocinado.", en: "From there, we built a campaign around a simple idea: you don't have to choose between raw and cooked." } },
-          { content: { es: "Igual de buenos, igual de naturales. Simplemente, diferentes.", en: "Just as good, just as natural. Simply different." }, emphasis: true },
-          { content: { es: "La trasladamos a diferentes situaciones de la vida cotidiana: sushi o pescado al horno, jamón serrano o bacon. Porque, al final, hay decisiones que dependen de cómo te guste disfrutar las cosas.", en: "We carried it into everyday situations: sushi or baked fish, serrano ham or bacon. Because, in the end, some choices just come down to how you like to enjoy things." } },
-          { content: { es: "Una campaña que convirtió un lanzamiento de producto en una historia que la comunidad quiso seguir, compartir y descubrir.", en: "A campaign that turned a product launch into a story the community wanted to follow, share and discover." } },
-        ],
-      ],
-      media: { type: "video" },
-      secondaryMedia: [
-        { type: "image", ratio: "landscape" },
-        { type: "image", ratio: "portrait" },
-      ],
-    },
-    blocks: [
-      lead({
-        es: "¿Cómo lanzas una nueva forma de hacer las cosas sin decir que la anterior estaba mal?",
-        en: "How do you launch a new way of doing things without saying the old one was wrong?",
-      }),
-      { type: "video" },
-      { type: "image", ratio: "landscape" },
-      { type: "image", ratio: "portrait" },
-    ],
-  },
-  {
-    category: "campanas",
-    slug: "vb-group-pasion-por-viajar",
-    title: "Pasión por viajar",
-    client: "VB Group",
-    year: "2025",
-    index: "02",
-    version: 3,
-    area: { ratio: "landscape" },
-    // v3 (Figma 6109:25): 1 text column + 1 big video, no secondary row.
-    layout: {
-      columns: [
-        [
-          { content: { es: "VB Group necesitaba una campaña audiovisual para sus espacios en los estadios del RCD Espanyol, FC Girona y RC Celta de Vigo. Tres equipos, tres piezas y muy poco tiempo para hacerlo realidad.", en: "VB Group needed an audiovisual campaign for its spaces at the RCD Espanyol, FC Girona and RC Celta de Vigo stadiums. Three teams, three pieces and very little time to make it real." } },
-          { content: { es: "El reto: conectar dos mundos aparentemente distintos: viajar y fútbol.", en: "The challenge: connecting two seemingly different worlds — travel and football." } },
-          { content: { es: "La clave estaba en encontrar un punto de encuentro: el fútbol también es un viaje de emociones. A partir de ahí, jugamos con las paradojas, rituales e insights que comparten ambos mundos: viajar es descubrir monumentos históricos —como el estadio—; probar comida experimental —las míticas pipas mientras vemos el partido—; encontrar tu bar de confianza —no sabemos si tan de confianza, pero hablamos del VAR—; una visita a los dioses —esos jugadores que han dejado huella y que siempre están presentes—; entre otras comparativas.", en: "The key was finding common ground: football is also an emotional journey. From there, we played with the paradoxes, rituals and insights both worlds share: travelling means discovering historic monuments —like the stadium—; trying experimental food —the legendary sunflower seeds during the match—; finding your trusted bar —we're not sure how trustworthy, but let's talk about VAR—; a visit to the gods —those players who left their mark and are always present—; among other comparisons." } },
-          { content: { es: "Un juego de dobles sentidos que nos permitió construir un concepto adaptable a cada equipo y a su propia identidad: VB Group. Viajar más allá del estadio.", en: "A play on double meanings that let us build a concept adaptable to each team and its own identity: VB Group. Travel beyond the stadium." } },
-        ],
-      ],
-      media: { type: "video" },
-    },
-    blocks: [
-      lead({
-        es: "VB Group necesitaba una campaña audiovisual para sus espacios en los estadios del RCD Espanyol, FC Girona y RC Celta de Vigo: tres equipos, tres piezas y muy poco tiempo para hacerlo realidad. El reto: conectar dos mundos aparentemente distintos, viajar y fútbol.",
-        en: "VB Group needed an audiovisual campaign for its spaces at the RCD Espanyol, FC Girona and RC Celta de Vigo stadiums: three teams, three pieces and very little time. The challenge: connecting two seemingly different worlds — travel and football.",
-      }),
-      { type: "video" },
-    ],
-  },
-  stub("campanas", "fosters-hollywood-la-salsa", "La Salsa", "2024", "03", { ratio: "landscape" }),
-  stub("campanas", "natuka-latas", "Latas", "2026", "04", { ratio: "landscape" }),
-  stub("campanas", "baudesson-lanzamientos", "Lanzamientos", "2026", "05", { ratio: "landscape" }),
-  stub("campanas", "mim-shoes-universal-sneakers", "Universal Sneakers", "2025", "06", { ratio: "landscape" }),
-  stub("campanas", "materh-seguros", "Seguros", "2025", "07", { ratio: "portrait" }),
-];
-
-// Client names for the two "stub" campañas cases share their brand's real
-// client, not the case title (title = campaign name, client = brand name).
-const overrideClient = (slug: string, client: string) => {
-  const c = CASES.find((c) => c.slug === slug);
-  if (c) c.client = client;
-};
-overrideClient("fosters-hollywood-la-salsa", "Foster's Hollywood");
-overrideClient("natuka-latas", "Natuka");
-overrideClient("baudesson-lanzamientos", "Baudesson");
-overrideClient("mim-shoes-universal-sneakers", "MIM Shoes");
-overrideClient("materh-seguros", "MatErh");
+export const CASES: CaseStudy[] = casesData as CaseStudy[];
 
 export const casesByCategory = (slug: string) =>
   CASES.filter((c) => c.category === slug);
@@ -402,15 +161,145 @@ export const getCaseHref = (category: string, client: string): string | null => 
   return found ? `/work/${category}/${found.slug}` : null;
 };
 
-/** Image/video blocks of a case, capped at 6 (for the lightbox + counters).
- * v2/v3 cases carry their media in `layout` instead of `blocks`. */
+/** Image/video blocks of a case, capped at 8 — v1's gallery canvas
+ * (GalleryLayout in CaseStudyView.tsx) has exactly 8 photo slots, so a case
+ * can supply up to 8 distinct images with none repeated. v2/v3 cases carry
+ * their media in `layout` instead of `blocks` and rarely need this many. */
 export const caseMedia = (c: CaseStudy): MediaBlock[] =>
   c.layout
-    ? [c.layout.media, ...(c.layout.secondaryMedia ?? [])].slice(0, 6)
+    ? [c.layout.media, ...(c.layout.secondaryMedia ?? [])].slice(0, 8)
     : c.blocks
         .filter((b): b is MediaBlock => b.type === "image" || b.type === "video")
-        .slice(0, 6);
+        .slice(0, 8);
+
+/** The one photo that identifies this case on the /work/[category] listing
+ * (Figma 6054:265 / 6096:1162) — `area.image` when set (its own dedicated
+ * field, editable from /admin), otherwise the first item of the case's own
+ * gallery, which is how every case behaved before that field existed. */
+export const caseThumbnail = (c: CaseStudy): MediaBlock | undefined =>
+  c.area?.image ? { type: "image", src: c.area.image } : caseMedia(c)[0];
 
 /** "2026" -> "[20 26]" as shown in the Figma case header. */
 export const yearTag = (year: string) =>
   year.length === 4 ? `[${year.slice(0, 2)} ${year.slice(2)}]` : `[${year}]`;
+
+/* ------------------------------------------------------------ live data --- */
+/**
+ * The exports above (CATEGORIES/CASES) are a build-time snapshot of
+ * src/data/*.json — fine for things that only need to run at build time.
+ * The functions below are what public pages should call instead once
+ * Supabase is connected: they read straight from Supabase (falling back to
+ * the same JSON snapshot when it isn't connected yet), so an edit made in
+ * /admin shows up on the live site without a rebuild (combined with
+ * `export const revalidate = ...` on the page).
+ */
+import { SUPABASE_ENABLED, supabasePublic } from "@/lib/supabase";
+
+type CategoryRow = {
+  slug: string;
+  index: string;
+  name_es: string;
+  name_en: string;
+  enabled: boolean;
+  kind: string | null;
+  clients: string[];
+  image: string | null;
+  seo_title: string | null;
+  seo_description: string | null;
+};
+
+type CaseRow = {
+  category: string;
+  slug: string;
+  title: string;
+  client: string;
+  year: string;
+  index: string;
+  version: number;
+  blocks: CaseBlock[];
+  layout: StaticLayout | null;
+  area: CaseStudy["area"] | null;
+  seo_title: string | null;
+  seo_description: string | null;
+};
+
+const categoryFromRow = (r: CategoryRow): Category => ({
+  slug: r.slug as CategorySlug,
+  index: r.index,
+  name: { es: r.name_es, en: r.name_en },
+  enabled: r.enabled,
+  kind: (r.kind ?? undefined) as Category["kind"],
+  clients: r.clients,
+  image: r.image ?? undefined,
+  seoTitle: r.seo_title ?? undefined,
+  seoDescription: r.seo_description ?? undefined,
+});
+
+const caseFromRow = (r: CaseRow): CaseStudy => ({
+  category: r.category as CategorySlug,
+  slug: r.slug,
+  title: r.title,
+  client: r.client,
+  year: r.year,
+  index: r.index,
+  version: r.version as CaseStudy["version"],
+  blocks: r.blocks,
+  layout: r.layout ?? undefined,
+  area: r.area ?? undefined,
+  seoTitle: r.seo_title ?? undefined,
+  seoDescription: r.seo_description ?? undefined,
+});
+
+export async function getCategoriesLive(): Promise<Category[]> {
+  if (!SUPABASE_ENABLED) return CATEGORIES;
+  const { data, error } = await supabasePublic().from("categories").select("*").order("index");
+  if (error) throw error;
+  // Tables created but not migrated yet (or emptied by mistake) — fall back
+  // to the JSON snapshot rather than rendering an empty site.
+  if (!data || data.length === 0) return CATEGORIES;
+  return (data as CategoryRow[]).map(categoryFromRow);
+}
+
+export async function getEnabledCategoriesLive(): Promise<Category[]> {
+  return (await getCategoriesLive()).filter((c) => c.enabled);
+}
+
+export async function getCategoryLive(slug: string): Promise<Category | undefined> {
+  return (await getCategoriesLive()).find((c) => c.slug === slug);
+}
+
+export async function getCasesLive(): Promise<CaseStudy[]> {
+  if (!SUPABASE_ENABLED) return CASES;
+  const { data, error } = await supabasePublic()
+    .from("cases")
+    .select("*")
+    .order("category")
+    .order("index");
+  if (error) throw error;
+  if (!data || data.length === 0) return CASES;
+  return (data as CaseRow[]).map(caseFromRow);
+}
+
+export async function casesByCategoryLive(slug: string): Promise<CaseStudy[]> {
+  return (await getCasesLive()).filter((c) => c.category === slug);
+}
+
+export async function getCaseLive(
+  category: string,
+  slug: string,
+): Promise<CaseStudy | undefined> {
+  return (await getCasesLive()).find((c) => c.category === category && c.slug === slug);
+}
+
+export async function getCaseHrefLive(
+  category: string,
+  client: string,
+): Promise<string | null> {
+  const cases = await getCasesLive();
+  const found = cases.find(
+    (c) =>
+      c.category === category &&
+      c.client.trim().toLowerCase() === client.trim().toLowerCase(),
+  );
+  return found ? `/work/${category}/${found.slug}` : null;
+}

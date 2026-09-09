@@ -3,7 +3,8 @@
 import Link from "next/link";
 import type { CSSProperties } from "react";
 import { useLocale } from "@/lib/i18n";
-import { caseMedia, getCase, type Category, type CaseStudy } from "@/lib/work";
+import { caseThumbnail, getCase, type Category, type CaseStudy } from "@/lib/work";
+import { cldOptimize } from "@/lib/cloudinary-url";
 
 /**
  * Category / area page — Figma "work branding" (6054:265) & "work campañas
@@ -205,7 +206,7 @@ function FeatureRow({ cells, category }: { cells: FeatureCell[]; category: strin
         const study = getCase(category, cell.slug);
         if (!study) return null;
         const href = `/work/${category}/${cell.slug}`;
-        const photo = caseMedia(study)[0];
+        const photo = caseThumbnail(study);
         const growStyle = { flexGrow: cell.width, flexBasis: 0 } as CSSProperties;
 
         // Same cross-item dimming the generic grid below already has: this
@@ -244,7 +245,7 @@ function FeatureRow({ cells, category }: { cells: FeatureCell[]; category: strin
                 {photo?.type === "image" && photo.src && (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
-                    src={photo.src}
+                    src={cldOptimize(photo.src)}
                     alt=""
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                   />
@@ -297,7 +298,7 @@ function MobileFeatureList({ rows, category }: { rows: FeatureCell[][]; category
       {slugs.map((slug) => {
         const study = getCase(category, slug);
         if (!study) return null;
-        const photo = caseMedia(study)[0];
+        const photo = caseThumbnail(study);
         return (
           <Link
             key={slug}
@@ -312,7 +313,7 @@ function MobileFeatureList({ rows, category }: { rows: FeatureCell[][]; category
               {photo?.type === "image" && photo.src && (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
-                  src={photo.src}
+                  src={cldOptimize(photo.src)}
                   alt=""
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                 />
@@ -376,7 +377,7 @@ export default function CategoryView({
         <ul className="mt-16 grid grid-cols-1 gap-x-10 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
           {remainingCases.map((c, i) => {
           const ratio = RATIO[c.area?.ratio ?? "landscape"];
-          const photo = caseMedia(c)[0];
+          const photo = caseThumbnail(c);
           const n = parseInt(c.index, 10);
 
           return (
@@ -391,7 +392,7 @@ export default function CategoryView({
                   {photo?.type === "image" && photo.src && (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
-                      src={photo.src}
+                      src={cldOptimize(photo.src)}
                       alt=""
                       className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                     />

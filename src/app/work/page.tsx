@@ -1,15 +1,22 @@
 import type { Metadata } from "next";
 import CategoryGrid from "@/components/CategoryGrid";
+import { getCategoriesLive, getCasesLive } from "@/lib/work";
+import { getSeoContentLive } from "@/lib/site-content";
 
-const description =
-  "Branding, estrategia de comunicación, creación de contenido y shootings, diseño web, campañas de publicidad y eventos — el trabajo de MARACA, agencia creativa de Madrid.";
+export const revalidate = 60;
 
-export const metadata: Metadata = {
-  title: "Nuestro trabajo",
-  description,
-  alternates: { canonical: "/work" },
-  openGraph: { title: "Nuestro trabajo | MARACA", description },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const seo = await getSeoContentLive();
+  const page = seo.pages.work;
+  const title = page.title || "Nuestro trabajo";
+  const description = page.description || undefined;
+  return {
+    title,
+    description,
+    alternates: { canonical: "/work" },
+    openGraph: description ? { title: `${title} | MARACA`, description } : undefined,
+  };
+}
 
 /**
  * Work index — Figma "work general" (6047:448 / header 6047:449).
@@ -21,7 +28,9 @@ export const metadata: Metadata = {
  * Subtitle "Here's what we've been cooking.": Georgia Pro Light Italic 30px /
  * 120% / -5%, centered, #1A1A1B.
  */
-export default function WorkPage() {
+export default async function WorkPage() {
+  const [categories, cases] = await Promise.all([getCategoriesLive(), getCasesLive()]);
+
   return (
     <section className="-mt-20 bg-cream pt-32 pb-24 md:-mt-[120px] md:pt-[184px]">
       {/* Bottom padding: the hover client-lists below rise into this space
@@ -39,7 +48,7 @@ export default function WorkPage() {
         </p>
       </header>
 
-      <CategoryGrid reveal />
+      <CategoryGrid reveal categories={categories} cases={cases} />
     </section>
   );
 }

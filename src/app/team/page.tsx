@@ -1,16 +1,24 @@
 import type { Metadata } from "next";
 import TeamPageClient from "./TeamPageClient";
+import { getTeamContentLive, getSeoContentLive } from "@/lib/site-content";
+import { getTeamLive } from "@/lib/team";
 
-const description =
-  "Conoce al equipo de MARACA, agencia creativa de Madrid: dirección de estrategia, dirección creativa, contenido y social media.";
+export const revalidate = 60;
 
-export const metadata: Metadata = {
-  title: "El equipo",
-  description,
-  alternates: { canonical: "/team" },
-  openGraph: { title: "El equipo | MARACA", description },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const seo = await getSeoContentLive();
+  const page = seo.pages.team;
+  const title = page.title || "El equipo";
+  const description = page.description || undefined;
+  return {
+    title,
+    description,
+    alternates: { canonical: "/team" },
+    openGraph: description ? { title: `${title} | MARACA`, description } : undefined,
+  };
+}
 
-export default function TeamPage() {
-  return <TeamPageClient />;
+export default async function TeamPage() {
+  const [content, team] = await Promise.all([getTeamContentLive(), getTeamLive()]);
+  return <TeamPageClient content={content} team={team} />;
 }

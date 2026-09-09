@@ -1,9 +1,11 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { ENABLED_CATEGORIES, getCategory, casesByCategory } from "@/lib/work";
+import { ENABLED_CATEGORIES, getCategoryLive, casesByCategoryLive } from "@/lib/work";
 import CategoryView from "./CategoryView";
 import StrategyView from "./StrategyView";
 import PendingView from "./PendingView";
+
+export const revalidate = 60;
 
 export function generateStaticParams() {
   return ENABLED_CATEGORIES.map((c) => ({ category: c.slug }));
@@ -13,7 +15,7 @@ export async function generateMetadata({
   params,
 }: PageProps<"/work/[category]">): Promise<Metadata> {
   const { category } = await params;
-  const cat = getCategory(category);
+  const cat = await getCategoryLive(category);
   if (!cat || !cat.enabled) return {};
 
   // Pending categories have no real content yet — keep them out of search
@@ -23,14 +25,17 @@ export async function generateMetadata({
   }
 
   const clients = cat.clients.slice(0, 6).join(", ");
-  const description = clients
-    ? `${cat.name.es} en MARACA, agencia creativa de Madrid — con marcas como ${clients}.`
-    : `${cat.name.es} en MARACA, agencia creativa de Madrid.`;
+  const title = cat.seoTitle || cat.name.es;
+  const description =
+    cat.seoDescription ||
+    (clients
+      ? `${cat.name.es} en MARACA, agencia creativa de Madrid — con marcas como ${clients}.`
+      : `${cat.name.es} en MARACA, agencia creativa de Madrid.`);
   return {
-    title: cat.name.es,
+    title,
     description,
     alternates: { canonical: `/work/${cat.slug}` },
-    openGraph: { title: `${cat.name.es} | MARACA`, description },
+    openGraph: { title: `${title} | MARACA`, description },
   };
 }
 
@@ -38,7 +43,7 @@ export default async function CategoryPage({
   params,
 }: PageProps<"/work/[category]">) {
   const { category } = await params;
-  const cat = getCategory(category);
+  const cat = await getCategoryLive(category);
   if (!cat || !cat.enabled) notFound();
 
   if (cat.kind === "manifesto") {
@@ -49,5 +54,5 @@ export default async function CategoryPage({
     return <PendingView category={cat} />;
   }
 
-  return <CategoryView category={cat} cases={casesByCategory(cat.slug)} />;
+  return <CategoryView category={cat} cases={await casesByCategoryLive(cat.slug)} />;
 }

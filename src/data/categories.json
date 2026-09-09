@@ -1,0 +1,135 @@
+[
+  {
+    "slug": "branding",
+    "index": "1",
+    "name": {
+      "es": "Branding",
+      "en": "Branding"
+    },
+    "enabled": true,
+    "clients": [
+      "Kish&Go",
+      "Maruch",
+      "Unrated",
+      "Joia by Buccara",
+      "Awake",
+      "Mesonero-Romanos Studio",
+      "Espacio Trimmings",
+      "CarpaDiem",
+      "Laberinto Studio",
+      "Beatriz Ortiz Clinic",
+      "Volver a Casa by Fundación Manantial",
+      "Milton Education",
+      "Beston",
+      "Canica",
+      "Natuka"
+    ],
+    "image": "https://res.cloudinary.com/klrhikvq/image/upload/v1788791376/maraca/media/services/branding.jpg"
+  },
+  {
+    "slug": "estrategia",
+    "index": "2",
+    "name": {
+      "es": "Estrategia de comunicación y RRSS",
+      "en": "Communication & social media strategy"
+    },
+    "enabled": true,
+    "kind": "manifesto",
+    "clients": [
+      "Mira Miranda",
+      "Gaby's Bagels",
+      "Casabarré",
+      "Beston",
+      "Canica",
+      "Mesonero Romanos Studio",
+      "Beatriz Ortiz Clinic",
+      "Milton Education",
+      "Kish&Go",
+      "Unrated",
+      "Oma by Luchi",
+      "Continuo Café"
+    ],
+    "image": "https://res.cloudinary.com/klrhikvq/image/upload/v1788791377/maraca/media/services/estrategia.jpg"
+  },
+  {
+    "slug": "contenido",
+    "index": "3",
+    "name": {
+      "es": "Creación de contenido y shootings",
+      "en": "Content creation & shootings"
+    },
+    "enabled": true,
+    "kind": "pending",
+    "clients": [
+      "Baía Food",
+      "Caixabank",
+      "Baudesson",
+      "MIM Shoes",
+      "Beston",
+      "Kish&Go",
+      "Gaby's Bagels",
+      "Oma by Luchi",
+      "Continuo Café"
+    ],
+    "image": "https://res.cloudinary.com/klrhikvq/image/upload/v1788791378/maraca/media/services/contenido.jpg"
+  },
+  {
+    "slug": "web",
+    "index": "4",
+    "name": {
+      "es": "Diseño web",
+      "en": "Web design"
+    },
+    "enabled": true,
+    "kind": "pending",
+    "clients": [
+      "Corpfin Capital",
+      "Beston",
+      "Kish&Go",
+      "Oma by Luchi",
+      "Volver a Casa by Fundación Manantial",
+      "Joia by Buccara",
+      "Beatriz Ortiz Clinic",
+      "Mesonero-Romanos Studio"
+    ],
+    "image": "https://res.cloudinary.com/klrhikvq/image/upload/v1788791379/maraca/media/services/web.jpg"
+  },
+  {
+    "slug": "campanas",
+    "index": "5",
+    "name": {
+      "es": "Campañas de publicidad",
+      "en": "Advertising campaigns"
+    },
+    "enabled": true,
+    "kind": "pending",
+    "clients": [
+      "Natuka",
+      "VB Group",
+      "Foster's Hollywood",
+      "Baudesson",
+      "MIM Shoes",
+      "MatErh"
+    ],
+    "image": "https://res.cloudinary.com/klrhikvq/image/upload/v1788791380/maraca/media/services/campanas.jpg"
+  },
+  {
+    "slug": "eventos",
+    "index": "6",
+    "name": {
+      "es": "Eventos",
+      "en": "Events"
+    },
+    "enabled": true,
+    "kind": "pending",
+    "clients": [
+      "BBC x Bluey",
+      "Beston 'Runway'",
+      "Beston 'Après Ski'",
+      "Beston 'Dinner'",
+      "Baïa Food",
+      "Baudesson 'Carnaval'"
+    ],
+    "image": "https://res.cloudinary.com/klrhikvq/image/upload/v1788791381/maraca/media/services/eventos.jpg"
+  }
+]

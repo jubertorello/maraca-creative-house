@@ -1,0 +1,65 @@
+[
+  {
+    "slug": "macarena-erhardt",
+    "name": "Macarena Erhardt",
+    "role": {
+      "es": "Strategy Director",
+      "en": "Strategy Director"
+    },
+    "photoUrl": "https://res.cloudinary.com/klrhikvq/image/upload/v1788791382/maraca/media/team/macarena-erhardt.jpg"
+  },
+  {
+    "slug": "jimena-moreno",
+    "name": "Jimena Moreno",
+    "role": {
+      "es": "Operations Director",
+      "en": "Operations Director"
+    },
+    "photoUrl": "https://res.cloudinary.com/klrhikvq/image/upload/v1788791383/maraca/media/team/jimena-moreno.jpg"
+  },
+  {
+    "slug": "lilian-tolleson",
+    "name": "Lilian Tolleson",
+    "role": {
+      "es": "Creative Director",
+      "en": "Creative Director"
+    },
+    "photoUrl": "https://res.cloudinary.com/klrhikvq/image/upload/v1788791383/maraca/media/team/lilian-tolleson.jpg"
+  },
+  {
+    "slug": "bia-ribeiro",
+    "name": "Bia Ribeiro",
+    "role": {
+      "es": "Creative & Social Media Content Creator",
+      "en": "Creative & Social Media Content Creator"
+    },
+    "photoUrl": "https://res.cloudinary.com/klrhikvq/image/upload/v1788791384/maraca/media/team/bia-ribeiro.jpg"
+  },
+  {
+    "slug": "lorena-fusulier",
+    "name": "Lorena Fusulier",
+    "role": {
+      "es": "Social Media & Graphic Designer",
+      "en": "Social Media & Graphic Designer"
+    },
+    "photoUrl": "https://res.cloudinary.com/klrhikvq/image/upload/v1788791385/maraca/media/team/lorena-fusulier.jpg"
+  },
+  {
+    "slug": "carla-escobar",
+    "name": "Carla Escobar",
+    "role": {
+      "es": "Social Media & Content Creator",
+      "en": "Social Media & Content Creator"
+    },
+    "photoUrl": "https://res.cloudinary.com/klrhikvq/image/upload/v1788791386/maraca/media/team/carla-escobar.jpg"
+  },
+  {
+    "slug": "ines-lopez-de-garayo",
+    "name": "Inés López de Garayo",
+    "role": {
+      "es": "Communications & PR Strategist",
+      "en": "Communications & PR Strategist"
+    },
+    "photoUrl": "https://res.cloudinary.com/klrhikvq/image/upload/v1788791388/maraca/media/team/ines-lopez-de-garayo.jpg"
+  }
+]

@@ -1,16 +1,23 @@
 import type { Metadata } from "next";
 import ContactPageClient from "./ContactPageClient";
+import { getSeoContentLive, getContactContentLive } from "@/lib/site-content";
 
-const description =
-  "¿Tienes algo en mente? Escríbenos a hello@lamaraca.com — MARACA, agencia creativa de Madrid especializada en branding, publicidad y eventos.";
+export const revalidate = 60;
 
-export const metadata: Metadata = {
-  title: "Contacto",
-  description,
-  alternates: { canonical: "/contact" },
-  openGraph: { title: "Contacto | MARACA", description },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const seo = await getSeoContentLive();
+  const page = seo.pages.contact;
+  const title = page.title || "Contacto";
+  const description = page.description || undefined;
+  return {
+    title,
+    description,
+    alternates: { canonical: "/contact" },
+    openGraph: description ? { title: `${title} | MARACA`, description } : undefined,
+  };
+}
 
-export default function ContactPage() {
-  return <ContactPageClient />;
+export default async function ContactPage() {
+  const content = await getContactContentLive();
+  return <ContactPageClient content={content} />;
 }

@@ -1,43 +1,45 @@
 /**
  * Clients / brands. Figma "About us" logos section (6081:450) + landing
- * carousel (6183:1245). This list will come from the content admin later;
- * for now `logo: true` marks the ones with a real file in
- * /public/brand/clients/<slug>.png.
+ * carousel (6183:1245).
+ *
+ * Data lives in src/data/clients.json (editable from /admin/clients) —
+ * this file just loads it, types it, and adds the live (Supabase-aware)
+ * fetcher public pages should use. See src/lib/work.ts for the same
+ * pattern, explained in full there.
  */
-export type Client = { name: string; slug: string; logo?: boolean };
 
-export const CLIENTS: Client[] = [
-  { name: "CaixaBank", slug: "caixabank", logo: true },
-  { name: "BBC", slug: "bbc", logo: true },
-  { name: "Foster's Hollywood", slug: "fosters-hollywood", logo: true },
-  { name: "Bluey", slug: "bluey", logo: true },
-  { name: "BUCCARA", slug: "buccara", logo: true },
-  { name: "Corpfin Capital", slug: "corpfin-capital", logo: true },
-  { name: "VB Group", slug: "vb-group", logo: true },
-  { name: "Beston", slug: "beston", logo: true },
-  { name: "baïa", slug: "baia", logo: true },
-  { name: "Natuka", slug: "natuka", logo: true },
-  { name: "Casabarré", slug: "casabarre" },
-  { name: "Milton Education", slug: "milton-education" },
-  { name: "Mira Miranda", slug: "mira-miranda" },
-  { name: "MatErh.", slug: "materh" },
-  { name: "Canica", slug: "canica" },
-  { name: "OMA by Luchi", slug: "oma-by-luchi" },
-  { name: "KISH&Go", slug: "kish-and-go" },
-  { name: "Fundación Manantial", slug: "fundacion-manantial" },
-  { name: "Mesonero Romanos", slug: "mesonero-romanos" },
-  { name: "Beatriz Ortiz", slug: "beatriz-ortiz" },
-  { name: "Volver a Casa", slug: "volver-a-casa" },
-  { name: "UNRATED", slug: "unrated" },
-  { name: "BAUDESSON", slug: "baudesson" },
-  { name: "AWAKE", slug: "awake" },
-  { name: "Continuo", slug: "continuo" },
-  { name: "Espacio Trimmings", slug: "espacio-trimmings" },
-  { name: "Maruch", slug: "maruch" },
-  { name: "CarpaDiem", slug: "carpadiem" },
-  { name: "Laberinto", slug: "laberinto" },
-  { name: "MiM", slug: "mim" },
-];
+import clientsData from "@/data/clients.json";
+import { SUPABASE_ENABLED, supabasePublic } from "@/lib/supabase";
 
-/** Only the clients that have a real logo asset (dynamic — grows via the CMS). */
-export const CLIENTS_WITH_LOGO = CLIENTS.filter((c) => c.logo);
+export type Client = { name: string; slug: string; logoUrl?: string };
+
+/** Build-time snapshot — fine for anything that only runs at build time. */
+export const CLIENTS: Client[] = clientsData as Client[];
+
+/** Only the clients that have a real logo (dynamic — grows via the CMS). */
+export const CLIENTS_WITH_LOGO = CLIENTS.filter((c) => c.logoUrl);
+
+type ClientRow = { slug: string; name: string; logo_url: string | null; sort_order: number };
+
+const clientFromRow = (r: ClientRow): Client => ({
+  name: r.name,
+  slug: r.slug,
+  logoUrl: r.logo_url ?? undefined,
+});
+
+/** Live (Supabase-aware) fetch — use from Server Components on the public
+ * site so /admin/clients edits show up without a rebuild. */
+export async function getClientsLive(): Promise<Client[]> {
+  if (!SUPABASE_ENABLED) return CLIENTS;
+  const { data, error } = await supabasePublic()
+    .from("clients")
+    .select("*")
+    .order("sort_order");
+  if (error) throw error;
+  if (!data || data.length === 0) return CLIENTS;
+  return (data as ClientRow[]).map(clientFromRow);
+}
+
+export async function getClientsWithLogoLive(): Promise<Client[]> {
+  return (await getClientsLive()).filter((c) => c.logoUrl);
+}

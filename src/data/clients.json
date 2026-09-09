@@ -1,0 +1,152 @@
+[
+  {
+    "name": "CaixaBank",
+    "slug": "caixabank",
+    "logoUrl": "https://res.cloudinary.com/klrhikvq/image/upload/v1788791389/maraca/brand/clients/caixabank.png"
+  },
+  {
+    "name": "BBC",
+    "slug": "bbc",
+    "logoUrl": "https://res.cloudinary.com/klrhikvq/image/upload/v1788791389/maraca/brand/clients/bbc.png"
+  },
+  {
+    "name": "Foster's Hollywood",
+    "slug": "fosters-hollywood",
+    "logoUrl": "https://res.cloudinary.com/klrhikvq/image/upload/v1788791390/maraca/brand/clients/fosters-hollywood.png"
+  },
+  {
+    "name": "Bluey",
+    "slug": "bluey",
+    "logoUrl": "https://res.cloudinary.com/klrhikvq/image/upload/v1788791391/maraca/brand/clients/bluey.png"
+  },
+  {
+    "name": "BUCCARA",
+    "slug": "buccara",
+    "logoUrl": "https://res.cloudinary.com/klrhikvq/image/upload/v1788791392/maraca/brand/clients/buccara.png"
+  },
+  {
+    "name": "Corpfin Capital",
+    "slug": "corpfin-capital",
+    "logoUrl": "https://res.cloudinary.com/klrhikvq/image/upload/v1788791393/maraca/brand/clients/corpfin-capital.png"
+  },
+  {
+    "name": "VB Group",
+    "slug": "vb-group",
+    "logoUrl": "https://res.cloudinary.com/klrhikvq/image/upload/v1788791393/maraca/brand/clients/vb-group.png"
+  },
+  {
+    "name": "Beston",
+    "slug": "beston",
+    "logoUrl": "https://res.cloudinary.com/klrhikvq/image/upload/v1788791394/maraca/brand/clients/beston.png"
+  },
+  {
+    "name": "baïa",
+    "slug": "baia",
+    "logoUrl": "https://res.cloudinary.com/klrhikvq/image/upload/v1788791395/maraca/brand/clients/baia.png"
+  },
+  {
+    "name": "Natuka",
+    "slug": "natuka",
+    "logoUrl": "https://res.cloudinary.com/klrhikvq/image/upload/v1788791395/maraca/brand/clients/natuka.png"
+  },
+  {
+    "name": "Casabarré",
+    "slug": "casabarre",
+    "logoUrl": null
+  },
+  {
+    "name": "Milton Education",
+    "slug": "milton-education",
+    "logoUrl": null
+  },
+  {
+    "name": "Mira Miranda",
+    "slug": "mira-miranda",
+    "logoUrl": null
+  },
+  {
+    "name": "MatErh.",
+    "slug": "materh",
+    "logoUrl": null
+  },
+  {
+    "name": "Canica",
+    "slug": "canica",
+    "logoUrl": null
+  },
+  {
+    "name": "OMA by Luchi",
+    "slug": "oma-by-luchi",
+    "logoUrl": null
+  },
+  {
+    "name": "KISH&Go",
+    "slug": "kish-and-go",
+    "logoUrl": null
+  },
+  {
+    "name": "Fundación Manantial",
+    "slug": "fundacion-manantial",
+    "logoUrl": null
+  },
+  {
+    "name": "Mesonero Romanos",
+    "slug": "mesonero-romanos",
+    "logoUrl": null
+  },
+  {
+    "name": "Beatriz Ortiz",
+    "slug": "beatriz-ortiz",
+    "logoUrl": null
+  },
+  {
+    "name": "Volver a Casa",
+    "slug": "volver-a-casa",
+    "logoUrl": null
+  },
+  {
+    "name": "UNRATED",
+    "slug": "unrated",
+    "logoUrl": null
+  },
+  {
+    "name": "BAUDESSON",
+    "slug": "baudesson",
+    "logoUrl": null
+  },
+  {
+    "name": "AWAKE",
+    "slug": "awake",
+    "logoUrl": null
+  },
+  {
+    "name": "Continuo",
+    "slug": "continuo",
+    "logoUrl": null
+  },
+  {
+    "name": "Espacio Trimmings",
+    "slug": "espacio-trimmings",
+    "logoUrl": null
+  },
+  {
+    "name": "Maruch",
+    "slug": "maruch",
+    "logoUrl": null
+  },
+  {
+    "name": "CarpaDiem",
+    "slug": "carpadiem",
+    "logoUrl": null
+  },
+  {
+    "name": "Laberinto",
+    "slug": "laberinto",
+    "logoUrl": null
+  },
+  {
+    "name": "MiM",
+    "slug": "mim",
+    "logoUrl": null
+  }
+]

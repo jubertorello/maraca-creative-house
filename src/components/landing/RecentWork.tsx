@@ -2,6 +2,10 @@
 
 import Link from "next/link";
 import { useLocale } from "@/lib/i18n";
+import type { ResponsiveVideo } from "@/lib/site-content";
+import ResponsiveVideoSources from "@/components/ResponsiveVideoSources";
+
+const FALLBACK: ResponsiveVideo = { desktop: "/media/recent-work.mp4" };
 
 /**
  * "Recent Work" — Figma "Landing entera" > Hero #2 (6044:285), bg #1A1A1B.
@@ -9,7 +13,7 @@ import { useLocale } from "@/lib/i18n";
  * type on top of the video). The whole section links through to /work.
  * Video: /public/media/recent-work.mp4.
  */
-export default function RecentWork() {
+export default function RecentWork({ video = FALLBACK }: { video?: ResponsiveVideo }) {
   const { t } = useLocale();
 
   return (
@@ -24,7 +28,7 @@ export default function RecentWork() {
             playsInline
             preload="auto"
           >
-            <source src="/media/recent-work.mp4" type="video/mp4" />
+            <ResponsiveVideoSources video={video} />
           </video>
 
           <div className="absolute inset-0 bg-charcoal/45" />

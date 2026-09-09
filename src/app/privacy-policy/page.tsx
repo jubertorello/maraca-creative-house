@@ -1,12 +1,20 @@
 import type { Metadata } from "next";
 import PrivacyPolicyClient from "./PrivacyPolicyClient";
+import { getSeoContentLive, getPrivacyPolicyContentLive } from "@/lib/site-content";
 
-export const metadata: Metadata = {
-  title: "Política de privacidad",
-  robots: { index: false, follow: true },
-  alternates: { canonical: "/privacy-policy" },
-};
+export const revalidate = 60;
 
-export default function PrivacyPolicyPage() {
-  return <PrivacyPolicyClient />;
+export async function generateMetadata(): Promise<Metadata> {
+  const seo = await getSeoContentLive();
+  const page = seo.pages.privacyPolicy;
+  return {
+    title: page.title || "Política de privacidad",
+    robots: { index: false, follow: true },
+    alternates: { canonical: "/privacy-policy" },
+  };
+}
+
+export default async function PrivacyPolicyPage() {
+  const content = await getPrivacyPolicyContentLive();
+  return <PrivacyPolicyClient content={content} />;
 }

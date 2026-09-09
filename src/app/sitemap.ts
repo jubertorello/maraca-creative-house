@@ -1,8 +1,13 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/site";
-import { ENABLED_CATEGORIES, CASES } from "@/lib/work";
+import { getEnabledCategoriesLive, getCasesLive } from "@/lib/work";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const [enabledCategories, cases] = await Promise.all([
+    getEnabledCategoriesLive(),
+    getCasesLive(),
+  ]);
+
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: `${SITE_URL}/`, changeFrequency: "monthly", priority: 1 },
     { url: `${SITE_URL}/work`, changeFrequency: "weekly", priority: 0.9 },
@@ -17,18 +22,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Campañas) just show "Diseño pendiente" right now — thin/no-content
   // pages aren't worth submitting for indexing until they have a real
   // design (they're also marked `noindex` — see generateMetadata there).
-  const categoryRoutes: MetadataRoute.Sitemap = ENABLED_CATEGORIES.filter(
-    (c) => c.kind !== "pending",
-  ).map((c) => ({
-    url: `${SITE_URL}/work/${c.slug}`,
-    changeFrequency: "weekly",
-    priority: 0.8,
-  }));
+  const categoryRoutes: MetadataRoute.Sitemap = enabledCategories
+    .filter((c) => c.kind !== "pending")
+    .map((c) => ({
+      url: `${SITE_URL}/work/${c.slug}`,
+      changeFrequency: "weekly",
+      priority: 0.8,
+    }));
 
   // Every case gets a static detail page regardless of its category's own
   // listing state (see generateStaticParams in [slug]/page.tsx) — none are
   // filed under the "manifesto" category (Estrategia), which has no cases.
-  const caseRoutes: MetadataRoute.Sitemap = CASES.map((study) => ({
+  const caseRoutes: MetadataRoute.Sitemap = cases.map((study) => ({
     url: `${SITE_URL}/work/${study.category}/${study.slug}`,
     changeFrequency: "monthly",
     priority: 0.6,

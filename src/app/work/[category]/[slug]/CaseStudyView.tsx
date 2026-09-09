@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useLocale } from "@/lib/i18n";
 import Lightbox from "@/components/Lightbox";
+import { cldOptimize } from "@/lib/cloudinary-url";
 import {
   getCategory,
   casesByCategory,
@@ -105,7 +106,7 @@ function MediaTile({
     >
       {item.type === "video" && item.src && (
         <video
-          src={item.src}
+          src={cldOptimize(item.src)}
           muted
           loop
           autoPlay
@@ -116,7 +117,7 @@ function MediaTile({
       {item.type === "image" && item.src && (
         // eslint-disable-next-line @next/next/no-img-element
         <img
-          src={item.src}
+          src={cldOptimize(item.src)}
           alt=""
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
         />
@@ -142,14 +143,11 @@ const PCT = (v: number, total: number) => `${(v / total) * 100}%`;
  * design". ‹ › page to the previous/next case in the category, and × closes
  * back to the category, both absolutely positioned like the rest.
  *
- * The 5 real photos (`caseMedia`, up to 5) fill 8 card slots by reuse,
- * matching the repeated source filenames in the Figma export exactly:
- * media[0] → the big hero (Card 6) *and* the tall far-right strip (Card 13);
- * media[1] → the small top-right pair (Cards 7/8); media[2] → one tile of
- * the small mid pair (Card 9); media[3] → its partner (Card 14); media[4] →
- * the stacked right pair (Cards 11/12, the second one mirrored). A case
- * with fewer than 5 photos (every stub) just repeats its last one into the
- * remaining slots — better than an empty gap.
+ * 8 fixed card slots (`caseMedia`, up to 8 — see work.ts and the admin's
+ * V1ContentEditor), each its own distinct photo by position — never
+ * repeated. A slot with no photo uploaded yet renders visibly empty
+ * (dashed outline) instead of duplicating another slot's image or showing
+ * a blank white rectangle.
  *
  * Below `lg` this absolute 1440-wide canvas isn't practical (text would be
  * unreadably small) — `MobileGalleryView` takes over instead with a plain
@@ -159,7 +157,7 @@ function GalleryLayout({ study }: { study: CaseStudy }) {
   const { t, locale } = useLocale();
   const [lightbox, setLightbox] = useState<number | null>(null);
   const media = caseMedia(study);
-  const at = (i: number) => media[Math.min(i, media.length - 1)];
+  const at = (i: number) => media[i];
 
   const texts = study.blocks.filter(
     (b): b is TextBlock => b.type === "text",
@@ -180,6 +178,7 @@ function GalleryLayout({ study }: { study: CaseStudy }) {
     width,
     height,
     flip = false,
+    align,
   }: {
     idx: number;
     left: number;
@@ -187,9 +186,30 @@ function GalleryLayout({ study }: { study: CaseStudy }) {
     width: number;
     height: number;
     flip?: boolean;
+    /** Crop anchor for object-cover — position 8 (the tall right strip) is
+     * narrow enough that a center crop can cut off the subject; pinning it
+     * to the image's left edge keeps that instead. */
+    align?: "left";
   }) => {
     const item = at(idx);
-    if (!item) return null;
+    const hasContent = Boolean(item?.src);
+
+    if (!hasContent) {
+      // Empty slot (no photo uploaded for this position yet) — visibly
+      // empty, not an inert blank-white rectangle that reads as broken.
+      return (
+        <div
+          style={{
+            left: PCT(left, 1440),
+            top: PCT(top, 900),
+            width: PCT(width, 1440),
+            height: PCT(height, 900),
+          }}
+          className="absolute overflow-hidden border border-dashed border-ink/15 bg-mist/40"
+        />
+      );
+    }
+
     return (
       <button
         type="button"
@@ -203,12 +223,21 @@ function GalleryLayout({ study }: { study: CaseStudy }) {
         }}
         className="group absolute overflow-hidden bg-white"
       >
-        {item.type === "image" && item.src && (
+        {item!.type === "image" ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={item.src}
+            src={cldOptimize(item!.src)}
             alt=""
-            className={`h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03] ${flip ? "scale-x-[-1]" : ""}`}
+            className={`h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03] ${align === "left" ? "object-left" : ""} ${flip ? "scale-x-[-1]" : ""}`}
+          />
+        ) : (
+          <video
+            src={cldOptimize(item!.src)}
+            muted
+            loop
+            playsInline
+            autoPlay
+            className={`h-full w-full object-cover ${align === "left" ? "object-left" : ""}`}
           />
         )}
       </button>
@@ -278,14 +307,17 @@ function GalleryLayout({ study }: { study: CaseStudy }) {
           </p>
         )}
 
-        <Tile idx={0} left={89} top={269} width={526} height={296} />
-        <Tile idx={1} left={686} top={151} width={137} height={81} />
+        {/* Order = upload position 1-8 exactly, per the numbered reference:
+            1/2 the small top pair, 3 the big hero, 4/5 the small mid pair,
+            6/7 the stacked pair, 8 the tall right strip. */}
+        <Tile idx={0} left={686} top={151} width={137} height={81} />
         <Tile idx={1} left={832} top={151} width={137} height={81} />
-        <Tile idx={2} left={686} top={433} width={137} height={89} />
-        <Tile idx={3} left={832} top={433} width={137} height={89} />
-        <Tile idx={4} left={978} top={531} width={178} height={124} />
-        <Tile idx={4} left={978} top={664} width={178} height={124} flip />
-        <Tile idx={0} left={1291} top={269} width={149} height={434} />
+        <Tile idx={2} left={89} top={269} width={526} height={296} />
+        <Tile idx={3} left={686} top={433} width={137} height={89} />
+        <Tile idx={4} left={832} top={433} width={137} height={89} />
+        <Tile idx={5} left={978} top={531} width={178} height={124} />
+        <Tile idx={6} left={978} top={664} width={178} height={124} />
+        <Tile idx={7} left={1291} top={269} width={149} height={434} align="left" />
 
         <Link
           href={`/work/${prev.category}/${prev.slug}`}
@@ -394,7 +426,7 @@ function MobileGalleryView({
           >
             {media[0].type === "image" && media[0].src && (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={media[0].src} alt="" className="h-full w-full object-cover" />
+              <img src={cldOptimize(media[0].src)} alt="" className="h-full w-full object-cover" />
             )}
           </button>
         )}
@@ -412,7 +444,7 @@ function MobileGalleryView({
           >
             {item.type === "image" && item.src && (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={item.src} alt="" className="h-full w-full object-cover" />
+              <img src={cldOptimize(item.src)} alt="" className="h-full w-full object-cover" />
             )}
           </button>
         ))}

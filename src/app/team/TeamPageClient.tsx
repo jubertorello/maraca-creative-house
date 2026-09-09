@@ -2,8 +2,9 @@
 
 import Image from "next/image";
 import MediaHero from "@/components/MediaHero";
-import { TEAM } from "@/lib/team";
+import { TEAM, type Member } from "@/lib/team";
 import { useLocale } from "@/lib/i18n";
+import type { ResponsiveVideo, TeamContent } from "@/lib/site-content";
 
 // Figma "Equipo" > Participadas (6049:575): rows of 4 + 3, photos ~216×178,
 // role + name in cream below.
@@ -13,7 +14,34 @@ function chunk<T>(arr: T[], size: number): T[][] {
   return out;
 }
 
-export default function TeamPageClient() {
+const FALLBACK_VIDEO: ResponsiveVideo = { desktop: "/media/team-hero.mp4" };
+const FALLBACK_CONTENT: TeamContent = {
+  heroVideo: FALLBACK_VIDEO,
+  tagline: "Many minds, one creative house",
+  joinUs: {
+    title: {
+      es: "Nos gusta rodearnos de gente que ve las cosas de otra manera.",
+      en: "We like surrounding ourselves with people who see things differently.",
+    },
+    paragraph1: {
+      es: "Buscamos curiosidad, criterio y ganas de hacer cosas que merezcan la pena. Si tienes algo que enseñar, una idea que contar o simplemente crees que podríamos hacer buenas cosas juntos, queremos conocerte.",
+      en: "We look for curiosity, judgement and the drive to make things worth making. If you have something to show, an idea to tell or you just think we could do good things together, we'd like to meet you.",
+    },
+    paragraph2: {
+      es: "Mándanos tu portfolio o CV. Quién sabe qué puede salir de aquí.",
+      en: "Send us your portfolio or CV. Who knows what could come of it.",
+    },
+    email: "hello@lamaraca.com",
+  },
+};
+
+export default function TeamPageClient({
+  content = FALLBACK_CONTENT,
+  team = TEAM,
+}: {
+  content?: TeamContent;
+  team?: Member[];
+}) {
   const { t, locale } = useLocale();
 
   return (
@@ -23,26 +51,20 @@ export default function TeamPageClient() {
         kind="video"
         alt="El equipo de MARACA"
         className="bg-sky"
-        src="/media/team-hero.mp4"
+        video={content.heroVideo}
       />
 
       {/* Figma "Equipo" > Participadas (6049:575) */}
       <section className="bg-charcoal px-6 py-20 text-cream md:px-[80px] md:py-28">
         <h1 className="text-center font-serif text-[clamp(1.6rem,3.4vw,2.5rem)] font-light uppercase leading-[1.2] tracking-[-0.04em]">
-          Many minds,
-          <br />
-          one creative house
+          {content.tagline}
         </h1>
 
         <div className="mx-auto mt-16 flex max-w-[1054px] flex-col items-center gap-y-14">
-          {chunk(TEAM, 4).map((row, ri) => (
+          {chunk(team, 4).map((row, ri) => (
             <ul
               key={ri}
-              className={`flex w-full flex-wrap gap-x-[clamp(1.5rem,4vw,63px)] gap-y-12 ${
-                // An incomplete row (fewer than the full row size) starts
-                // from the left instead of centering the leftover members.
-                row.length < 4 ? "justify-start" : "justify-center"
-              }`}
+              className="flex w-full flex-wrap justify-center gap-x-[clamp(1.5rem,4vw,63px)] gap-y-12"
             >
               {row.map((m) => (
                 <li
@@ -50,9 +72,9 @@ export default function TeamPageClient() {
                   className="w-[clamp(140px,40vw,216px)] text-center"
                 >
                   <div className="relative aspect-[216/178] w-full overflow-hidden bg-cream/10 grayscale">
-                    {m.photo && (
+                    {m.photoUrl && (
                       <Image
-                        src={`/media/team/${m.slug}.jpg`}
+                        src={m.photoUrl}
                         alt={m.name}
                         fill
                         sizes="216px"
@@ -79,28 +101,19 @@ export default function TeamPageClient() {
       {/* Figma "Equipo" > Quiénes somos (6068:388) — join us */}
       <section className="bg-charcoal px-6 pb-28 text-center text-cream md:px-[120px]">
         <h2 className="mx-auto max-w-3xl font-serif text-[clamp(1.5rem,3.06vw,2.75rem)] uppercase leading-[1.2] tracking-[-0.06em]">
-          {t({
-            es: "Nos gusta rodearnos de gente que ve las cosas de otra manera.",
-            en: "We like surrounding ourselves with people who see things differently.",
-          })}
+          {t(content.joinUs.title)}
         </h2>
         <p className="mx-auto mt-8 max-w-xl text-[clamp(0.8rem,0.97vw,0.875rem)] font-extralight leading-[1.2] tracking-[-0.05em] text-cream">
-          {t({
-            es: "Buscamos curiosidad, criterio y ganas de hacer cosas que merezcan la pena. Si tienes algo que enseñar, una idea que contar o simplemente crees que podríamos hacer buenas cosas juntos, queremos conocerte.",
-            en: "We look for curiosity, judgement and the drive to make things worth making. If you have something to show, an idea to tell or you just think we could do good things together, we'd like to meet you.",
-          })}
+          {t(content.joinUs.paragraph1)}
         </p>
         <p className="mx-auto mt-4 max-w-xl text-[clamp(0.8rem,0.97vw,0.875rem)] font-extralight uppercase leading-[1.2] tracking-[-0.05em] text-cream">
-          {t({
-            es: "Mándanos tu portfolio o CV. Quién sabe qué puede salir de aquí.",
-            en: "Send us your portfolio or CV. Who knows what could come of it.",
-          })}
+          {t(content.joinUs.paragraph2)}
         </p>
         <a
-          href="mailto:hello@lamaraca.com"
+          href={`mailto:${content.joinUs.email}`}
           className="mt-10 inline-block font-serif text-[clamp(1.5rem,3.06vw,2.75rem)] tracking-[-0.06em] transition-colors hover:text-red"
         >
-          hello@lamaraca.com
+          {content.joinUs.email}
         </a>
       </section>
     </>
