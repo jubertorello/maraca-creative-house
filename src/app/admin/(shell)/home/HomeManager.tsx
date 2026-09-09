@@ -12,10 +12,12 @@ export default function HomeManager({ home }: { home: HomeContent }) {
   const [recentWorkVideo, setRecentWorkVideo] = useState(home.recentWorkVideo);
   const [saving, setSaving] = useState(false);
   const [savedAt, setSavedAt] = useState<number | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   async function save() {
     setSaving(true);
-    await fetch("/api/admin/content/home", {
+    setError(null);
+    const res = await fetch("/api/admin/content/home", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -25,6 +27,10 @@ export default function HomeManager({ home }: { home: HomeContent }) {
       } satisfies HomeContent),
     });
     setSaving(false);
+    if (!res.ok) {
+      setError("No se pudo guardar. Probá de nuevo.");
+      return;
+    }
     setSavedAt(Date.now());
   }
 
@@ -91,6 +97,7 @@ export default function HomeManager({ home }: { home: HomeContent }) {
             {saving ? "Guardando…" : "Guardar cambios"}
           </button>
           {savedAt && <span className="text-sm text-green-600">Guardado ✓</span>}
+          {error && <span className="text-sm text-red-600">{error}</span>}
         </div>
       </section>
     </div>

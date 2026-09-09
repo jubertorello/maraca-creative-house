@@ -5,20 +5,27 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ComponentType, SVGProps } from "react";
 import { useLocale } from "@/lib/i18n";
+import type { FooterContent } from "@/lib/site-content";
 
-/** Footer — Figma frame 6129:782 (About Us). Charcoal bar, single centered row. */
+/** Footer — Figma frame 6129:782 (About Us). Charcoal bar, single centered row.
+ * Email and social links are editable from /admin (see FooterManager). */
 
-const SOCIALS: {
-  label: string;
-  href: string;
-  Icon: ComponentType<SVGProps<SVGSVGElement>>;
-}[] = [
-  { label: "Instagram", href: "https://instagram.com", Icon: InstagramIcon },
-  { label: "LinkedIn", href: "https://linkedin.com", Icon: LinkedInIcon },
-  { label: "TikTok", href: "https://tiktok.com", Icon: TikTokIcon },
-];
+const ICONS: Record<string, ComponentType<SVGProps<SVGSVGElement>>> = {
+  Instagram: InstagramIcon,
+  LinkedIn: LinkedInIcon,
+  TikTok: TikTokIcon,
+};
 
-export default function Footer() {
+const FALLBACK: FooterContent = {
+  email: "hello@lamaraca.com",
+  socials: [
+    { label: "Instagram", href: "https://instagram.com" },
+    { label: "LinkedIn", href: "https://linkedin.com" },
+    { label: "TikTok", href: "https://tiktok.com" },
+  ],
+};
+
+export default function Footer({ content = FALLBACK }: { content?: FooterContent }) {
   const { t } = useLocale();
   const year = new Date().getFullYear();
   const pathname = usePathname();
@@ -50,23 +57,26 @@ export default function Footer() {
 
         <div className="flex items-center gap-5">
           <a
-            href="mailto:hello@lamaraca.com"
+            href={`mailto:${content.email}`}
             className="text-[15px] font-light transition-colors hover:text-red"
           >
             {t({ es: "Contacto", en: "Contact" })}
           </a>
-          {SOCIALS.map(({ label, href, Icon }) => (
-            <a
-              key={label}
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={label}
-              className="transition-colors hover:text-red"
-            >
-              <Icon className="h-[18px] w-[18px]" />
-            </a>
-          ))}
+          {content.socials.map(({ label, href }) => {
+            const Icon = ICONS[label];
+            return (
+              <a
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={label}
+                className="transition-colors hover:text-red"
+              >
+                <Icon className="h-[18px] w-[18px]" />
+              </a>
+            );
+          })}
         </div>
       </div>
     </footer>

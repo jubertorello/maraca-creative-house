@@ -25,10 +25,12 @@ export default function TeamManager({
   const [email, setEmail] = useState(content.joinUs.email);
   const [saving, setSaving] = useState(false);
   const [savedAt, setSavedAt] = useState<number | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   async function save() {
     setSaving(true);
-    await fetch("/api/admin/content/team", {
+    setError(null);
+    const res = await fetch("/api/admin/content/team", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -43,6 +45,10 @@ export default function TeamManager({
       } satisfies TeamContent),
     });
     setSaving(false);
+    if (!res.ok) {
+      setError("No se pudo guardar. Probá de nuevo.");
+      return;
+    }
     setSavedAt(Date.now());
   }
 
@@ -168,6 +174,7 @@ export default function TeamManager({
             {saving ? "Guardando…" : "Guardar cambios"}
           </button>
           {savedAt && <span className="text-sm text-green-600">Guardado ✓</span>}
+          {error && <span className="text-sm text-red-600">{error}</span>}
         </div>
       </section>
     </div>

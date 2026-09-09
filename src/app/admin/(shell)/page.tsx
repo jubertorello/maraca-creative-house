@@ -48,6 +48,12 @@ const PAGES: {
     description: "Configuración general del sitio y título/descripción de cada página.",
     ready: true,
   },
+  {
+    href: "/admin/footer",
+    name: "Footer",
+    description: "Mail de contacto y links a redes sociales, igual en todas las páginas.",
+    ready: true,
+  },
 ];
 
 export default function AdminDashboard() {

@@ -4,7 +4,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { LocaleProvider } from "@/lib/i18n";
 import { SITE_URL, SITE_NAME } from "@/lib/site";
-import { getSeoContentLive } from "@/lib/site-content";
+import { getSeoContentLive, getFooterContentLive } from "@/lib/site-content";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import MainArea from "@/components/MainArea";
@@ -69,7 +69,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
-  const seo = await getSeoContentLive();
+  const [seo, footer] = await Promise.all([getSeoContentLive(), getFooterContentLive()]);
 
   // Organization structured data (JSON-LD) — helps Google show a knowledge
   // panel / rich result for brand-name searches ("MARACA agencia creativa").
@@ -81,7 +81,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
     url: SITE_URL,
     logo: `${SITE_URL}/brand/maraca-lockup.png`,
     description: seo.global.description,
-    email: "hello@lamaraca.com",
+    email: footer.email,
     address: {
       "@type": "PostalAddress",
       addressLocality: "Madrid",
@@ -113,7 +113,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
         <LocaleProvider>
           <Navbar />
           <MainArea>{children}</MainArea>
-          <Footer />
+          <Footer content={footer} />
         </LocaleProvider>
       </body>
     </html>

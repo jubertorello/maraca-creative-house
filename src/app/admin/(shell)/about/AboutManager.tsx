@@ -34,13 +34,15 @@ export default function AboutManager({
   const [logosTitleEn, setLogosTitleEn] = useState(about.logosTitle.en);
   const [saving, setSaving] = useState(false);
   const [savedAt, setSavedAt] = useState<number | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const updateBlock = (i: number, patch: Partial<AboutTextBlock>) =>
     setBlocks((list) => list.map((b, idx) => (idx === i ? { ...b, ...patch } : b)));
 
   async function save() {
     setSaving(true);
-    await fetch("/api/admin/content/about", {
+    setError(null);
+    const res = await fetch("/api/admin/content/about", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -50,6 +52,10 @@ export default function AboutManager({
       } satisfies AboutContent),
     });
     setSaving(false);
+    if (!res.ok) {
+      setError("No se pudo guardar. Probá de nuevo.");
+      return;
+    }
     setSavedAt(Date.now());
   }
 
@@ -194,6 +200,7 @@ export default function AboutManager({
           {saving ? "Guardando…" : "Guardar cambios"}
         </button>
         {savedAt && <span className="text-sm text-green-600">Guardado ✓</span>}
+        {error && <span className="text-sm text-red-600">{error}</span>}
       </div>
 
       <section>

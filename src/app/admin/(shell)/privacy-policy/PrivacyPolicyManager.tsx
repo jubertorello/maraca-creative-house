@@ -23,13 +23,15 @@ export default function PrivacyPolicyManager({ content }: { content: PrivacyPoli
   const [sections, setSections] = useState(content.sections);
   const [saving, setSaving] = useState(false);
   const [savedAt, setSavedAt] = useState<number | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const updateSection = (i: number, patch: Partial<PrivacyPolicySection>) =>
     setSections((list) => list.map((s, idx) => (idx === i ? { ...s, ...patch } : s)));
 
   async function save() {
     setSaving(true);
-    await fetch("/api/admin/content/privacyPolicy", {
+    setError(null);
+    const res = await fetch("/api/admin/content/privacyPolicy", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -38,6 +40,10 @@ export default function PrivacyPolicyManager({ content }: { content: PrivacyPoli
       } satisfies PrivacyPolicyContent),
     });
     setSaving(false);
+    if (!res.ok) {
+      setError("No se pudo guardar. Probá de nuevo.");
+      return;
+    }
     setSavedAt(Date.now());
   }
 
@@ -159,6 +165,7 @@ export default function PrivacyPolicyManager({ content }: { content: PrivacyPoli
           {saving ? "Guardando…" : "Guardar cambios"}
         </button>
         {savedAt && <span className="text-sm text-green-600">Guardado ✓</span>}
+        {error && <span className="text-sm text-red-600">{error}</span>}
       </div>
     </div>
   );

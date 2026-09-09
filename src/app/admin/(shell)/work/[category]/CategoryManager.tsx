@@ -35,10 +35,12 @@ export default function CategoryManager({
   const [caseList, setCaseList] = useState(cases);
   const [saving, setSaving] = useState(false);
   const [savedAt, setSavedAt] = useState<number | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   async function saveSettings() {
     setSaving(true);
-    await fetch(`/api/admin/categories/${category.slug}`, {
+    setError(null);
+    const res = await fetch(`/api/admin/categories/${category.slug}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -55,6 +57,10 @@ export default function CategoryManager({
       }),
     });
     setSaving(false);
+    if (!res.ok) {
+      setError("No se pudo guardar. Probá de nuevo.");
+      return;
+    }
     setSavedAt(Date.now());
     router.refresh();
   }
@@ -269,6 +275,7 @@ export default function CategoryManager({
             {saving ? "Guardando…" : "Guardar cambios"}
           </button>
           {savedAt && <span className="text-sm text-green-600">Guardado ✓</span>}
+          {error && <span className="text-sm text-red-600">{error}</span>}
         </div>
       </section>
 

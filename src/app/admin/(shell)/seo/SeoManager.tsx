@@ -32,13 +32,15 @@ export default function SeoManager({ seo }: { seo: SeoContent }) {
   const [pages, setPages] = useState(seo.pages);
   const [saving, setSaving] = useState(false);
   const [savedAt, setSavedAt] = useState<number | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const updatePage = (key: SeoPageKey, patch: { title?: string; description?: string }) =>
     setPages((p) => ({ ...p, [key]: { ...p[key], ...patch } }));
 
   async function save() {
     setSaving(true);
-    await fetch("/api/admin/content/seo", {
+    setError(null);
+    const res = await fetch("/api/admin/content/seo", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -56,6 +58,10 @@ export default function SeoManager({ seo }: { seo: SeoContent }) {
       } satisfies SeoContent),
     });
     setSaving(false);
+    if (!res.ok) {
+      setError("No se pudo guardar. Probá de nuevo.");
+      return;
+    }
     setSavedAt(Date.now());
   }
 
@@ -175,6 +181,7 @@ export default function SeoManager({ seo }: { seo: SeoContent }) {
           {saving ? "Guardando…" : "Guardar cambios"}
         </button>
         {savedAt && <span className="text-sm text-green-600">Guardado ✓</span>}
+        {error && <span className="text-sm text-red-600">{error}</span>}
       </div>
     </div>
   );

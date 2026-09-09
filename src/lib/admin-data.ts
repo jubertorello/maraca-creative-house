@@ -25,6 +25,7 @@ import type {
   SeoContent,
   PrivacyPolicyContent,
   ContactContent,
+  FooterContent,
 } from "@/lib/site-content";
 import { SUPABASE_ENABLED, supabaseAdmin } from "@/lib/supabase";
 import { deleteCloudinaryAssetByUrl } from "@/lib/cloudinary";
@@ -300,6 +301,7 @@ type SiteContentData = {
   seo: SeoContent;
   privacyPolicy: PrivacyPolicyContent;
   contact: ContactContent;
+  footer: FooterContent;
 };
 
 async function readSiteContentJson(): Promise<SiteContentData> {

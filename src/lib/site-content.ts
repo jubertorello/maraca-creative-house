@@ -95,6 +95,13 @@ export type SeoContent = {
   pages: Record<SeoPageKey, SeoPageFields>;
 };
 
+export type FooterSocialLink = { label: "Instagram" | "LinkedIn" | "TikTok"; href: string };
+
+export type FooterContent = {
+  email: string;
+  socials: FooterSocialLink[];
+};
+
 type SiteContentData = {
   home: HomeContent;
   about: AboutContent;
@@ -102,6 +109,7 @@ type SiteContentData = {
   seo: SeoContent;
   privacyPolicy: PrivacyPolicyContent;
   contact: ContactContent;
+  footer: FooterContent;
 };
 
 const STATIC: SiteContentData = siteContentData as SiteContentData;
@@ -123,6 +131,7 @@ export const getTeamContentLive = () => readRow("team");
 export const getSeoContentLive = () => readRow("seo");
 export const getPrivacyPolicyContentLive = () => readRow("privacyPolicy");
 export const getContactContentLive = () => readRow("contact");
+export const getFooterContentLive = () => readRow("footer");
 
 /** "Somos una *creative house* y *partner creativo*..." -> chunks, so the
  * component can render the starred parts as red italic without the field
