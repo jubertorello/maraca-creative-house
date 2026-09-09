@@ -98,8 +98,13 @@ export default function TeamPageClient({
         </div>
       </section>
 
-      {/* Figma "Equipo" > Quiénes somos (6068:388) — join us */}
-      <section className="bg-charcoal px-6 pb-28 text-center text-cream md:px-[120px]">
+      {/* Figma "Equipo" > Quiénes somos (6068:388) — join us.
+          -mt-px: seals the seam against the section above — both are
+          bg-charcoal, but on some viewports the browser leaves a hairline
+          subpixel gap between adjacent blocks where the page's white
+          background peeks through as a thin white line. Overlapping by
+          1px is invisible (same color on both sides) and removes it. */}
+      <section className="-mt-px bg-charcoal px-6 pb-28 text-center text-cream md:px-[120px]">
         <h2 className="mx-auto max-w-3xl font-serif text-[clamp(1.5rem,3.06vw,2.75rem)] uppercase leading-[1.2] tracking-[-0.06em]">
           {t(content.joinUs.title)}
         </h2>

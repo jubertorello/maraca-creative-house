@@ -59,8 +59,10 @@ export default function AboutPageClient({
       {/* Figma "About us" > Hero — dark video */}
       <MediaHero kind="video" className="bg-charcoal" video={content.heroVideo} />
 
-      {/* Figma "About us" > Quiénes somos (6019:50) */}
-      <section className="space-y-20 bg-charcoal px-6 py-24 text-center text-cream md:px-[120px] md:py-32">
+      {/* Figma "About us" > Quiénes somos (6019:50). -mt-px seals the seam
+          against the hero above — see the equivalent fix in
+          TeamPageClient.tsx for why. */}
+      <section className="-mt-px space-y-20 bg-charcoal px-6 py-24 text-center text-cream md:px-[120px] md:py-32">
         {content.blocks.map((b, i) => (
           <div key={i} className="mx-auto max-w-[760px]">
             {/* Georgia Pro Light 44px / -6% / 120% */}

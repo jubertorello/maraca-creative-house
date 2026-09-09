@@ -35,7 +35,9 @@ export default function Footer({ content = FALLBACK }: { content?: FooterContent
   if (pathname?.startsWith("/admin")) return null;
 
   return (
-    <footer className="bg-charcoal text-cream">
+    // -mt-px seals the seam against whatever the page ends with — see the
+    // comment on the equivalent fix in TeamPageClient.tsx for why.
+    <footer className="-mt-px bg-charcoal text-cream">
       <div className="mx-auto flex min-h-[229px] flex-col items-start justify-center gap-8 px-6 py-12 md:flex-row md:items-center md:justify-between md:px-[88px] md:py-0">
         <Link href="/" aria-label="MARACA — Creative House" className="shrink-0">
           <Image
