@@ -268,7 +268,20 @@ export async function deleteCase(category: string, slug: string): Promise<void> 
     const cases = await readCases();
     await writeCases(cases.filter((c) => !(c.category === category && c.slug === slug)));
   }
-  await syncCategoryClientsFromCases(category);
+
+  // Close the gap the deleted case left in `index` (01, 02, 03, ...) —
+  // otherwise a case created afterwards, whose index is just "current
+  // count + 1" (see admin/work/[category]/new/page.tsx), can collide with
+  // an existing one instead of landing on the next free number. Reuses
+  // reorderCases, which already does this renumbering and also calls
+  // syncCategoryClientsFromCases.
+  const remaining = (await readCases())
+    .filter((c) => c.category === category)
+    .sort((a, b) => a.index.localeCompare(b.index));
+  await reorderCases(
+    category,
+    remaining.map((c) => c.slug),
+  );
 }
 
 export async function reorderCases(category: string, orderedSlugs: string[]): Promise<void> {
@@ -395,6 +408,10 @@ export async function deleteClient(slug: string): Promise<void> {
   if (SUPABASE_ENABLED) {
     const { error } = await supabaseAdmin().from("clients").delete().eq("slug", slug);
     if (error) throw error;
+    // Close the gap the deleted row left in sort_order — otherwise a
+    // client added afterwards (sort_order = current count) can land on a
+    // number an existing row already has (see upsertClient above).
+    await reorderClients((await readClients()).map((c) => c.slug));
     return;
   }
   const clients = await readClients();
@@ -486,6 +503,9 @@ export async function deleteMember(slug: string): Promise<void> {
   if (SUPABASE_ENABLED) {
     const { error } = await supabaseAdmin().from("team_members").delete().eq("slug", slug);
     if (error) throw error;
+    // Close the gap the deleted row left in sort_order — same reasoning as
+    // deleteClient above.
+    await reorderTeam((await readTeam()).map((m) => m.slug));
     return;
   }
   const team = await readTeam();

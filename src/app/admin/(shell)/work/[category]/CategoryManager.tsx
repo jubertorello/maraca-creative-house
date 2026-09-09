@@ -68,8 +68,13 @@ export default function CategoryManager({
 
   async function deleteCase(slug: string) {
     if (!confirm("¿Eliminar este caso? No se puede deshacer.")) return;
-    await fetch(`/api/admin/cases/${category.slug}/${slug}`, { method: "DELETE" });
+    const prev = caseList;
     setCaseList((list) => list.filter((c) => c.slug !== slug));
+    const res = await fetch(`/api/admin/cases/${category.slug}/${slug}`, { method: "DELETE" });
+    if (!res.ok) {
+      setCaseList(prev);
+      setError("No se pudo eliminar el caso. Probá de nuevo.");
+    }
   }
 
   async function reorderCase(from: number, to: number) {
@@ -77,16 +82,21 @@ export default function CategoryManager({
     // in this list (case #1 is whatever sits first) — recompute it here so
     // it updates immediately instead of waiting for a refresh; the server
     // recomputes the same way when it persists the new order.
+    const prev = caseList;
     const reordered = move(caseList, from, to).map((c, i) => ({
       ...c,
       index: String(i + 1).padStart(2, "0"),
     }));
     setCaseList(reordered);
-    await fetch("/api/admin/cases", {
+    const res = await fetch("/api/admin/cases", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ category: category.slug, slugs: reordered.map((c) => c.slug) }),
     });
+    if (!res.ok) {
+      setCaseList(prev);
+      setError("No se pudo reordenar. Probá de nuevo.");
+    }
   }
 
   return (

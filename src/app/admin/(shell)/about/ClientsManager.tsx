@@ -24,38 +24,58 @@ function slugify(s: string) {
 export default function ClientsManager({ initial }: { initial: Client[] }) {
   const [clients, setClients] = useState(initial);
   const [newName, setNewName] = useState("");
+  const [error, setError] = useState<string | null>(null);
 
   async function save(client: Client) {
-    await fetch("/api/admin/clients", {
+    const res = await fetch("/api/admin/clients", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(client),
     });
+    return res.ok;
   }
 
   function update(slug: string, patch: Partial<Client>) {
+    const prev = clients;
     setClients((list) => {
       const next = list.map((c) => (c.slug === slug ? { ...c, ...patch } : c));
       const updated = next.find((c) => c.slug === slug);
-      if (updated) save(updated);
+      if (updated) {
+        save(updated).then((ok) => {
+          if (!ok) {
+            setClients(prev);
+            setError("No se pudo guardar el cambio. Probá de nuevo.");
+          }
+        });
+      }
       return next;
     });
   }
 
   async function remove(slug: string) {
     if (!confirm("¿Eliminar esta marca?")) return;
+    const prev = clients;
     setClients((list) => list.filter((c) => c.slug !== slug));
-    await fetch(`/api/admin/clients/${slug}`, { method: "DELETE" });
+    const res = await fetch(`/api/admin/clients/${slug}`, { method: "DELETE" });
+    if (!res.ok) {
+      setClients(prev);
+      setError("No se pudo eliminar la marca. Probá de nuevo.");
+    }
   }
 
   async function reorder(from: number, to: number) {
+    const prev = clients;
     const next = move(clients, from, to);
     setClients(next);
-    await fetch("/api/admin/clients", {
+    const res = await fetch("/api/admin/clients", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ slugs: next.map((c) => c.slug) }),
     });
+    if (!res.ok) {
+      setClients(prev);
+      setError("No se pudo reordenar. Probá de nuevo.");
+    }
   }
 
   async function addClient() {
@@ -69,7 +89,11 @@ export default function ClientsManager({ initial }: { initial: Client[] }) {
     const client: Client = { name, slug };
     setClients((list) => [...list, client]);
     setNewName("");
-    await save(client);
+    const ok = await save(client);
+    if (!ok) {
+      setClients((list) => list.filter((c) => c.slug !== slug));
+      setError("No se pudo agregar la marca. Probá de nuevo.");
+    }
   }
 
   return (
@@ -78,6 +102,7 @@ export default function ClientsManager({ initial }: { initial: Client[] }) {
         Alimenta el carrusel de la Home y esta grilla de logos. Una marca sin logo se
         muestra como texto.
       </p>
+      {error && <p className="mb-4 text-sm text-red-600">{error}</p>}
 
       <ul className="mb-6 divide-y divide-black/10 rounded-lg border border-black/10 bg-white">
         {clients.map((c, i) => (

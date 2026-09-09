@@ -24,38 +24,58 @@ function slugify(s: string) {
 export default function MembersManager({ initial }: { initial: Member[] }) {
   const [team, setTeam] = useState(initial);
   const [newName, setNewName] = useState("");
+  const [error, setError] = useState<string | null>(null);
 
   async function save(member: Member) {
-    await fetch("/api/admin/team", {
+    const res = await fetch("/api/admin/team", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(member),
     });
+    return res.ok;
   }
 
   function update(slug: string, patch: Partial<Member>) {
+    const prev = team;
     setTeam((list) => {
       const next = list.map((m) => (m.slug === slug ? { ...m, ...patch } : m));
       const updated = next.find((m) => m.slug === slug);
-      if (updated) save(updated);
+      if (updated) {
+        save(updated).then((ok) => {
+          if (!ok) {
+            setTeam(prev);
+            setError("No se pudo guardar el cambio. Probá de nuevo.");
+          }
+        });
+      }
       return next;
     });
   }
 
   async function remove(slug: string) {
     if (!confirm("¿Eliminar a esta persona del equipo?")) return;
+    const prev = team;
     setTeam((list) => list.filter((m) => m.slug !== slug));
-    await fetch(`/api/admin/team/${slug}`, { method: "DELETE" });
+    const res = await fetch(`/api/admin/team/${slug}`, { method: "DELETE" });
+    if (!res.ok) {
+      setTeam(prev);
+      setError("No se pudo eliminar. Probá de nuevo.");
+    }
   }
 
   async function reorder(from: number, to: number) {
+    const prev = team;
     const next = move(team, from, to);
     setTeam(next);
-    await fetch("/api/admin/team", {
+    const res = await fetch("/api/admin/team", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ slugs: next.map((m) => m.slug) }),
     });
+    if (!res.ok) {
+      setTeam(prev);
+      setError("No se pudo reordenar. Probá de nuevo.");
+    }
   }
 
   async function addMember() {
@@ -69,11 +89,16 @@ export default function MembersManager({ initial }: { initial: Member[] }) {
     const member: Member = { name, slug, role: { es: "", en: "" } };
     setTeam((list) => [...list, member]);
     setNewName("");
-    await save(member);
+    const ok = await save(member);
+    if (!ok) {
+      setTeam((list) => list.filter((m) => m.slug !== slug));
+      setError("No se pudo agregar. Probá de nuevo.");
+    }
   }
 
   return (
     <div>
+      {error && <p className="mb-4 text-sm text-red-600">{error}</p>}
       <ul className="mb-6 divide-y divide-black/10 rounded-lg border border-black/10 bg-white">
         {team.map((m, i) => (
           <li key={m.slug} className="flex flex-col gap-2 px-4 py-3 sm:flex-row sm:items-center">
