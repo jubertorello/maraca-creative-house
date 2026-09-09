@@ -645,16 +645,21 @@ export default function CaseForm({
         )}
       </section>
 
-      {error && <p className="text-sm text-red-600">{error}</p>}
-
-      <div className="flex items-center gap-3 pb-10">
-        <button
-          type="submit"
-          disabled={saving}
-          className="rounded-md bg-ink px-5 py-2.5 text-sm font-medium text-white disabled:opacity-40"
-        >
-          {saving ? "Guardando…" : isNew ? "Crear caso" : "Guardar cambios"}
-        </button>
+      {/* Fixed to the viewport bottom (not the end of the form) — this
+          editor is long (8 media slots), so the button needs to be
+          reachable without scrolling past everything first. Stays a plain
+          type="submit" so it still triggers the form's onSubmit. */}
+      <div className="fixed inset-x-0 bottom-0 z-20 border-t border-black/10 bg-[#f4f4ef]/95 backdrop-blur">
+        <div className="mx-auto flex max-w-5xl items-center gap-3 px-6 py-3">
+          <button
+            type="submit"
+            disabled={saving}
+            className="rounded-md bg-ink px-5 py-2.5 text-sm font-medium text-white disabled:opacity-40"
+          >
+            {saving ? "Guardando…" : isNew ? "Crear caso" : "Guardar cambios"}
+          </button>
+          {error && <span className="text-sm text-red-600">{error}</span>}
+        </div>
       </div>
     </form>
   );

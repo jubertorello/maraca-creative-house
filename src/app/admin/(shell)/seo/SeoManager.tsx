@@ -5,6 +5,7 @@ import Link from "next/link";
 import type { SeoContent, SeoPageKey } from "@/lib/site-content";
 import MediaUrlInput from "../MediaUrlInput";
 import CharCounter from "../CharCounter";
+import SaveBar from "../SaveBar";
 
 const TITLE_MAX = 60;
 const DESCRIPTION_MAX = 160;
@@ -172,17 +173,7 @@ export default function SeoManager({ seo }: { seo: SeoContent }) {
         </div>
       </section>
 
-      <div className="flex items-center gap-3">
-        <button
-          onClick={save}
-          disabled={saving}
-          className="rounded-md bg-ink px-4 py-2 text-sm font-medium text-white disabled:opacity-40"
-        >
-          {saving ? "Guardando…" : "Guardar cambios"}
-        </button>
-        {savedAt && <span className="text-sm text-green-600">Guardado ✓</span>}
-        {error && <span className="text-sm text-red-600">{error}</span>}
-      </div>
+      <SaveBar saving={saving} savedAt={savedAt} error={error} onSave={save} />
     </div>
   );
 }

@@ -6,6 +6,7 @@ import type { TeamContent } from "@/lib/site-content";
 import type { Member } from "@/lib/team";
 import ResponsiveVideoField from "../ResponsiveVideoField";
 import MembersManager from "./MembersManager";
+import SaveBar from "../SaveBar";
 
 export default function TeamManager({
   content,
@@ -165,18 +166,9 @@ export default function TeamManager({
           />
         </label>
 
-        <div className="flex items-center gap-3">
-          <button
-            onClick={save}
-            disabled={saving}
-            className="rounded-md bg-ink px-4 py-2 text-sm font-medium text-white disabled:opacity-40"
-          >
-            {saving ? "Guardando…" : "Guardar cambios"}
-          </button>
-          {savedAt && <span className="text-sm text-green-600">Guardado ✓</span>}
-          {error && <span className="text-sm text-red-600">{error}</span>}
-        </div>
       </section>
+
+      <SaveBar saving={saving} savedAt={savedAt} error={error} onSave={save} />
     </div>
   );
 }

@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import type { Category, CaseStudy } from "@/lib/work";
 import MediaUrlInput from "../../MediaUrlInput";
 import CharCounter from "../../CharCounter";
+import SaveBar from "../../SaveBar";
 
 function move<T>(arr: T[], from: number, to: number): T[] {
   if (to < 0 || to >= arr.length) return arr;
@@ -266,18 +267,9 @@ export default function CategoryManager({
           </>
         )}
 
-        <div className="flex items-center gap-3">
-          <button
-            onClick={saveSettings}
-            disabled={saving}
-            className="rounded-md bg-ink px-4 py-2 text-sm font-medium text-white disabled:opacity-40"
-          >
-            {saving ? "Guardando…" : "Guardar cambios"}
-          </button>
-          {savedAt && <span className="text-sm text-green-600">Guardado ✓</span>}
-          {error && <span className="text-sm text-red-600">{error}</span>}
-        </div>
       </section>
+
+      <SaveBar saving={saving} savedAt={savedAt} error={error} onSave={saveSettings} />
 
       {/* --- Cases with their own page — only "listado" categories ever
           render one (StrategyView/PendingView never show cases regardless

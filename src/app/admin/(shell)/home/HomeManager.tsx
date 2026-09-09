@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import type { HomeContent } from "@/lib/site-content";
 import ResponsiveVideoField from "../ResponsiveVideoField";
+import SaveBar from "../SaveBar";
 
 export default function HomeManager({ home }: { home: HomeContent }) {
   const [heroVideo, setHeroVideo] = useState(home.heroVideo);
@@ -88,18 +89,9 @@ export default function HomeManager({ home }: { home: HomeContent }) {
           onChange={setRecentWorkVideo}
         />
 
-        <div className="flex items-center gap-3">
-          <button
-            onClick={save}
-            disabled={saving}
-            className="rounded-md bg-ink px-4 py-2 text-sm font-medium text-white disabled:opacity-40"
-          >
-            {saving ? "Guardando…" : "Guardar cambios"}
-          </button>
-          {savedAt && <span className="text-sm text-green-600">Guardado ✓</span>}
-          {error && <span className="text-sm text-red-600">{error}</span>}
-        </div>
       </section>
+
+      <SaveBar saving={saving} savedAt={savedAt} error={error} onSave={save} />
     </div>
   );
 }

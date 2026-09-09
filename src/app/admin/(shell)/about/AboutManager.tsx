@@ -6,6 +6,7 @@ import type { AboutContent, AboutTextBlock } from "@/lib/site-content";
 import type { Client } from "@/lib/clients";
 import ResponsiveVideoField from "../ResponsiveVideoField";
 import ClientsManager from "./ClientsManager";
+import SaveBar from "../SaveBar";
 
 function move<T>(arr: T[], from: number, to: number): T[] {
   if (to < 0 || to >= arr.length) return arr;
@@ -191,19 +192,9 @@ export default function AboutManager({
         </div>
       </section>
 
-      <div className="mb-10 flex items-center gap-3">
-        <button
-          onClick={save}
-          disabled={saving}
-          className="rounded-md bg-ink px-4 py-2 text-sm font-medium text-white disabled:opacity-40"
-        >
-          {saving ? "Guardando…" : "Guardar cambios"}
-        </button>
-        {savedAt && <span className="text-sm text-green-600">Guardado ✓</span>}
-        {error && <span className="text-sm text-red-600">{error}</span>}
-      </div>
+      <SaveBar saving={saving} savedAt={savedAt} error={error} onSave={save} />
 
-      <section>
+      <section className="mb-10">
         <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-ink/50">
           Marcas
         </h2>

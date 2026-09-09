@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import type { ContactContent } from "@/lib/site-content";
+import SaveBar from "../SaveBar";
 
 export default function ContactManager({ content }: { content: ContactContent }) {
   const [taglineEs, setTaglineEs] = useState(content.tagline.es);
@@ -94,18 +95,9 @@ export default function ContactManager({ content }: { content: ContactContent })
           </label>
         </div>
 
-        <div className="flex items-center gap-3">
-          <button
-            onClick={save}
-            disabled={saving}
-            className="rounded-md bg-ink px-4 py-2 text-sm font-medium text-white disabled:opacity-40"
-          >
-            {saving ? "Guardando…" : "Guardar cambios"}
-          </button>
-          {savedAt && <span className="text-sm text-green-600">Guardado ✓</span>}
-          {error && <span className="text-sm text-red-600">{error}</span>}
-        </div>
       </section>
+
+      <SaveBar saving={saving} savedAt={savedAt} error={error} onSave={save} />
     </div>
   );
 }

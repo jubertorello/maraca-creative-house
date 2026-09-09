@@ -39,7 +39,9 @@ export default function AdminShellLayout({ children }: { children: React.ReactNo
           <LogoutButton />
         </nav>
       </header>
-      <main className="mx-auto max-w-5xl px-6 py-10">{children}</main>
+      {/* pb-24: room for SaveBar, which fixes itself to the bottom of the
+          viewport on pages that have one */}
+      <main className="mx-auto max-w-5xl px-6 py-10 pb-24">{children}</main>
     </div>
   );
 }
