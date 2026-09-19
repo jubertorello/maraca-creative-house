@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { ENABLED_CATEGORIES, getCategoryLive, casesByCategoryLive } from "@/lib/work";
+import { getStrategyContentLive } from "@/lib/site-content";
 import CategoryView from "./CategoryView";
 import StrategyView from "./StrategyView";
 import PendingView from "./PendingView";
@@ -47,7 +48,7 @@ export default async function CategoryPage({
   if (!cat || !cat.enabled) notFound();
 
   if (cat.kind === "manifesto") {
-    return <StrategyView category={cat} />;
+    return <StrategyView category={cat} content={await getStrategyContentLive()} />;
   }
 
   if (cat.kind === "pending") {

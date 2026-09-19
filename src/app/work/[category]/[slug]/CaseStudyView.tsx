@@ -246,28 +246,34 @@ function GalleryLayout({ study }: { study: CaseStudy }) {
 
   return (
     <article className="-mt-20 bg-cream text-ink md:-mt-[120px]">
-      {/* desktop: exact Figma canvas, lg and up only */}
+      {/* desktop: exact Figma canvas, lg and up only. Every `top` here is
+          the Figma value minus a flat 35px (`Y_SHIFT`) — moves the whole
+          canvas's content up as one block (same 900px-tall canvas, same
+          relative spacing throughout) so there's less dead air between the
+          navbar and the title, and correspondingly more clearance below
+          the prev/next arrows instead of them sitting right at the bottom
+          edge on real (shorter-than-900px) viewports. */}
       <div className="relative hidden lg:block" style={{ aspectRatio: "1440 / 900" }}>
         <h1
-          style={{ left: PCT(88, 1440), top: PCT(142, 900), width: PCT(200, 1440) }}
+          style={{ left: PCT(88, 1440), top: PCT(107, 900), width: PCT(200, 1440) }}
           className="absolute font-serif text-[clamp(1rem,1.7vw,1.5rem)] font-light leading-[1.2] tracking-[-0.06em] text-ink"
         >
           {study.title}
         </h1>
         <span
-          style={{ left: PCT(335, 1440), top: PCT(151, 900) }}
+          style={{ left: PCT(335, 1440), top: PCT(116, 900) }}
           className="absolute whitespace-nowrap text-[clamp(0.65rem,0.85vw,0.75rem)] font-extralight tracking-[-0.06em] tabular-nums text-ink"
         >
           [{parseInt(study.index, 10)}]
         </span>
         <span
-          style={{ left: PCT(406, 1440), top: PCT(151, 900) }}
+          style={{ left: PCT(406, 1440), top: PCT(116, 900) }}
           className="absolute whitespace-nowrap text-[clamp(0.65rem,0.85vw,0.75rem)] font-extralight uppercase tracking-[-0.06em] text-ink"
         >
           {category ? category.name[locale] : null}
         </span>
         <span
-          style={{ left: PCT(1243, 1440), top: PCT(151, 900), width: PCT(17, 1440) }}
+          style={{ left: PCT(1243, 1440), top: PCT(116, 900), width: PCT(17, 1440) }}
           className="absolute text-[clamp(0.65rem,0.85vw,0.75rem)] font-extralight leading-[1.2] tracking-[-0.06em] tabular-nums text-ink"
         >
           {yearTag(study.year).split(" ").map((line, i) => (
@@ -281,7 +287,7 @@ function GalleryLayout({ study }: { study: CaseStudy }) {
           aria-label={t({ es: "Cerrar", en: "Close" })}
           style={{
             left: PCT(1336, 1440),
-            top: PCT(151, 900),
+            top: PCT(116, 900),
             width: PCT(14, 1440),
             height: PCT(14, 900),
           }}
@@ -292,7 +298,7 @@ function GalleryLayout({ study }: { study: CaseStudy }) {
 
         {lead && (
           <p
-            style={{ left: PCT(686, 1440), top: PCT(267, 900), width: PCT(379, 1440) }}
+            style={{ left: PCT(686, 1440), top: PCT(232, 900), width: PCT(379, 1440) }}
             className="absolute text-[clamp(0.75rem,0.97vw,0.875rem)] font-extralight leading-[1.2] tracking-[-0.05em] text-ink"
           >
             {lead.content[locale]}
@@ -300,7 +306,7 @@ function GalleryLayout({ study }: { study: CaseStudy }) {
         )}
         {body && (
           <p
-            style={{ left: PCT(89, 1440), top: PCT(621, 900), width: PCT(379, 1440) }}
+            style={{ left: PCT(89, 1440), top: PCT(586, 900), width: PCT(379, 1440) }}
             className="absolute text-[clamp(0.75rem,0.97vw,0.875rem)] font-extralight leading-[1.2] tracking-[-0.05em] text-ink"
           >
             {body.content[locale]}
@@ -310,21 +316,21 @@ function GalleryLayout({ study }: { study: CaseStudy }) {
         {/* Order = upload position 1-8 exactly, per the numbered reference:
             1/2 the small top pair, 3 the big hero, 4/5 the small mid pair,
             6/7 the stacked pair, 8 the tall right strip. */}
-        <Tile idx={0} left={686} top={151} width={137} height={81} />
-        <Tile idx={1} left={832} top={151} width={137} height={81} />
-        <Tile idx={2} left={89} top={269} width={526} height={296} />
-        <Tile idx={3} left={686} top={433} width={137} height={89} />
-        <Tile idx={4} left={832} top={433} width={137} height={89} />
-        <Tile idx={5} left={978} top={531} width={178} height={124} />
-        <Tile idx={6} left={978} top={664} width={178} height={124} />
-        <Tile idx={7} left={1291} top={269} width={149} height={434} align="left" />
+        <Tile idx={0} left={686} top={116} width={137} height={81} />
+        <Tile idx={1} left={832} top={116} width={137} height={81} />
+        <Tile idx={2} left={89} top={234} width={526} height={296} />
+        <Tile idx={3} left={686} top={398} width={137} height={89} />
+        <Tile idx={4} left={832} top={398} width={137} height={89} />
+        <Tile idx={5} left={978} top={496} width={178} height={124} />
+        <Tile idx={6} left={978} top={629} width={178} height={124} />
+        <Tile idx={7} left={1291} top={234} width={149} height={434} align="left" />
 
         <Link
           href={`/work/${prev.category}/${prev.slug}`}
           aria-label={t({ es: "Anterior", en: "Previous" })}
           style={{
             left: PCT(191, 1440),
-            top: PCT(785, 900),
+            top: PCT(750, 900),
             width: PCT(6, 1440),
             height: PCT(14, 900),
           }}
@@ -337,7 +343,7 @@ function GalleryLayout({ study }: { study: CaseStudy }) {
           aria-label={t({ es: "Siguiente", en: "Next" })}
           style={{
             left: PCT(1254, 1440),
-            top: PCT(785, 900),
+            top: PCT(750, 900),
             width: PCT(6, 1440),
             height: PCT(14, 900),
           }}

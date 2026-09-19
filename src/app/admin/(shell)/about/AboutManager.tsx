@@ -129,17 +129,23 @@ export default function AboutManager({
                 </div>
               </div>
 
+              <p className="mb-1 text-xs text-ink/40">
+                Título — apretá Enter donde quieras que corte la línea (si no, se acomoda solo
+                según el ancho de pantalla).
+              </p>
               <div className="mb-2 grid gap-2 sm:grid-cols-2">
-                <input
+                <textarea
                   value={b.title.es}
                   onChange={(e) => updateBlock(i, { title: { ...b.title, es: e.target.value } })}
                   placeholder="Título (ES)"
+                  rows={2}
                   className="rounded-md border border-black/15 px-3 py-2 text-sm outline-none focus:border-ink/40"
                 />
-                <input
+                <textarea
                   value={b.title.en}
                   onChange={(e) => updateBlock(i, { title: { ...b.title, en: e.target.value } })}
                   placeholder="Title (EN)"
+                  rows={2}
                   className="rounded-md border border-black/15 px-3 py-2 text-sm outline-none focus:border-ink/40"
                 />
               </div>
@@ -173,20 +179,25 @@ export default function AboutManager({
       </section>
 
       <section className="mb-10 rounded-lg border border-black/10 bg-white p-6">
-        <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-ink/50">
+        <h2 className="mb-1 text-sm font-semibold uppercase tracking-wide text-ink/50">
           Título sobre la grilla de marcas
         </h2>
+        <p className="mb-4 text-xs text-ink/40">
+          Apretá Enter donde quieras que corte la línea.
+        </p>
         <div className="grid gap-2 sm:grid-cols-2">
-          <input
+          <textarea
             value={logosTitleEs}
             onChange={(e) => setLogosTitleEs(e.target.value)}
             placeholder="Título (ES)"
+            rows={2}
             className="rounded-md border border-black/15 px-3 py-2 text-sm outline-none focus:border-ink/40"
           />
-          <input
+          <textarea
             value={logosTitleEn}
             onChange={(e) => setLogosTitleEn(e.target.value)}
             placeholder="Title (EN)"
+            rows={2}
             className="rounded-md border border-black/15 px-3 py-2 text-sm outline-none focus:border-ink/40"
           />
         </div>

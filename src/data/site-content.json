@@ -220,5 +220,26 @@
         "href": "https://tiktok.com"
       }
     ]
+  },
+  "strategy": {
+    "heroVideo": {
+      "desktop": "https://res.cloudinary.com/klrhikvq/video/upload/v1788791411/maraca/media/estrategia.mov"
+    },
+    "titleLine1": {
+      "es": "Hablar es fácil.",
+      "en": "Talking is easy."
+    },
+    "titleLine2": {
+      "es": "Tener algo que decir, no tanto.",
+      "en": "Having something to say, not so much."
+    },
+    "description": {
+      "es": "En Maraca construimos la estrategia que hay detrás de cada conversación:\ndefinimos a quién hablamos, qué queremos contar,\ncómo queremos sonar y dónde tiene sentido hacerlo.",
+      "en": "At Maraca we build the strategy behind every conversation:\nwho we are talking to, what we want to say,\nhow we want to sound and where it makes sense to do it."
+    },
+    "closingLine": {
+      "es": "Para que la marca no solo esté presente, sino que tenga una voz propia y sepa cuándo usarla.",
+      "en": "So the brand isn't just present, but has a voice of its own and knows when to use it."
+    }
   }
 }

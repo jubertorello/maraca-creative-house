@@ -3,9 +3,13 @@ import { configuredCloudinary, CLOUDINARY_ENABLED } from "@/lib/cloudinary";
 
 export const runtime = "nodejs";
 
-/** Lists what's already been uploaded to Cloudinary under the "maraca"
- * folder, so the admin's media picker can offer "choose an existing file"
- * instead of only "upload a new one" — see MediaLibraryPicker.tsx. */
+/** Lists what's already been uploaded to Cloudinary — everything in the
+ * account, not just under the "maraca" folder our own upload widget uses —
+ * so the admin's media picker can offer "choose an existing file" instead
+ * of only "upload a new one" (see MediaLibraryPicker.tsx) even for files
+ * someone uploaded straight from Cloudinary's own console into some other
+ * folder. Safe to list the whole account unscoped: this Cloudinary account
+ * is dedicated to this one site. */
 export async function GET(req: NextRequest) {
   if (!CLOUDINARY_ENABLED) {
     return NextResponse.json({ error: "Cloudinary no está conectado." }, { status: 501 });
@@ -18,7 +22,6 @@ export async function GET(req: NextRequest) {
     const result = await cloudinary.api.resources({
       type: "upload",
       resource_type: resourceType,
-      prefix: "maraca",
       max_results: 200,
       context: false,
     });

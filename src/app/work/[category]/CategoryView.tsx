@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import type { CSSProperties } from "react";
+import { useState, type CSSProperties } from "react";
 import { useLocale } from "@/lib/i18n";
-import { caseThumbnail, getCase, type Category, type CaseStudy } from "@/lib/work";
+import { caseThumbnail, type Category, type CaseStudy } from "@/lib/work";
 import { cldOptimize } from "@/lib/cloudinary-url";
 
 /**
@@ -147,15 +147,27 @@ function CaptionText({
   study,
   width = 112,
   yearOnOwnLine = false,
+  active,
 }: {
   study: CaseStudy;
   width?: number;
   yearOnOwnLine?: boolean;
+  /** Forces red text from state instead of this element's own CSS :hover —
+   * FeatureRow's photo and caption are separate elements for the same case
+   * (exact Figma row), so they need to redden together no matter which one
+   * the mouse is actually over. Omit to fall back to plain group-hover
+   * (self-contained callers, e.g. MobileFeatureList, where the photo and
+   * caption share one Link and CSS alone is enough). */
+  active?: boolean;
 }) {
+  const colorClass =
+    active === undefined
+      ? "text-ink transition-colors group-hover:text-red"
+      : `transition-colors ${active ? "text-red" : "text-ink"}`;
   return (
     <span
       style={{ width }}
-      className="text-[12px] font-extralight uppercase leading-[1.2] tracking-[-0.06em] text-ink transition-colors group-hover:text-red"
+      className={`text-[12px] font-extralight uppercase leading-[1.2] tracking-[-0.06em] ${colorClass}`}
     >
       <span className="block">[{parseInt(study.index, 10)}]</span>
       {yearOnOwnLine ? (
@@ -194,7 +206,29 @@ function rowReservedSpacePct(cells: FeatureCell[]): number {
  * takes over with a much simpler stacked layout instead (same type/image
  * styling, none of the precise widths or floating captions, which don't
  * make sense on a single mobile column anyway). */
-function FeatureRow({ cells, category }: { cells: FeatureCell[]; category: string }) {
+function FeatureRow({
+  cells,
+  category,
+  getCase,
+  hoveredSlug,
+  onHoverSlug,
+}: {
+  cells: FeatureCell[];
+  category: string;
+  /** Looks up a case by slug in the *live* cases passed into CategoryView
+   * (Supabase-backed, includes admin edits) — never the static build-time
+   * `@/lib/work` CASES snapshot, which is stale the moment someone edits a
+   * case's thumbnail or anything else from /admin. */
+  getCase: (slug: string) => CaseStudy | undefined;
+  /** A case's photo, caption and floating extraCaption are separate
+   * elements here (the exact Figma row splits them into their own flex
+   * cells) but represent one card — this (lifted to CategoryView, shared
+   * with every row) is what makes hovering any one of them redden/brighten
+   * all the others for the same slug, instead of each reacting only to its
+   * own CSS :hover. */
+  hoveredSlug: string | null;
+  onHoverSlug: (slug: string | null) => void;
+}) {
   const reservedPct = rowReservedSpacePct(cells);
 
   return (
@@ -203,67 +237,86 @@ function FeatureRow({ cells, category }: { cells: FeatureCell[]; category: strin
       className={`hidden items-start gap-1 lg:flex ${reservedPct > 0 ? "lg:[padding-bottom:var(--rowPb)]" : ""}`}
     >
       {cells.map((cell, i) => {
-        const study = getCase(category, cell.slug);
+        const study = getCase(cell.slug);
         if (!study) return null;
         const href = `/work/${category}/${cell.slug}`;
         const photo = caseThumbnail(study);
         const growStyle = { flexGrow: cell.width, flexBasis: 0 } as CSSProperties;
+        const isActive = hoveredSlug === cell.slug;
 
         // Same cross-item dimming the generic grid below already has: this
         // row shares its `group/list` with that grid, so hovering any card
-        // anywhere on the page dims every other one.
-        const dim = "transition-opacity duration-300 group-hover/list:opacity-40 hover:!opacity-100";
+        // anywhere on the page dims every other one. The "stay bright"
+        // exception is driven by `isActive` (state) instead of this
+        // element's own :hover, so it also applies when a *different* cell
+        // for the same slug is what's actually under the mouse.
+        const dim = `transition-opacity duration-300 group-hover/list:opacity-40 ${isActive ? "!opacity-100" : ""}`;
 
         if (cell.kind === "text") {
           return (
             <Link
               key={i}
               href={href}
+              onMouseEnter={() => onHoverSlug(cell.slug)}
+              onMouseLeave={() => onHoverSlug(null)}
               style={{ aspectRatio: `${cell.width} / 178`, ...growStyle }}
-              className={`group flex min-w-0 items-center justify-center bg-cream ${dim}`}
+              className={`flex min-w-0 items-center justify-center bg-cream ${dim}`}
             >
-              <CaptionText study={study} width={cell.textWidth} yearOnOwnLine={cell.yearOnOwnLine} />
+              <CaptionText
+                study={study}
+                width={cell.textWidth}
+                yearOnOwnLine={cell.yearOnOwnLine}
+                active={isActive}
+              />
             </Link>
           );
         }
 
-        const extra = cell.extraCaption ? getCase(category, cell.extraCaption.slug) : null;
+        const extra = cell.extraCaption ? getCase(cell.extraCaption.slug) : null;
 
         return (
           <div key={i} style={growStyle} className="flex min-w-0 flex-col">
             {/* the photo's own number — its own line above it, never
                 overlaid on the image itself, right-aligned over it */}
-            <span className="mb-2 text-right text-[12px] font-extralight tracking-[-0.06em] tabular-nums text-ink">
+            <span
+              className={`mb-2 text-right text-[12px] font-extralight tracking-[-0.06em] tabular-nums transition-colors ${isActive ? "text-red" : "text-ink"}`}
+            >
               [{parseInt(study.index, 10)}]
             </span>
 
             <div className="relative" style={{ aspectRatio: `${cell.width} / 178` }}>
               <Link
                 href={href}
-                className={`group absolute inset-0 block overflow-hidden bg-white ${dim}`}
+                onMouseEnter={() => onHoverSlug(cell.slug)}
+                onMouseLeave={() => onHoverSlug(null)}
+                className={`absolute inset-0 block overflow-hidden bg-white ${dim}`}
               >
                 {photo?.type === "image" && photo.src && (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={cldOptimize(photo.src)}
                     alt=""
-                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                    className={`h-full w-full object-cover transition-transform duration-500 ${isActive ? "scale-[1.03]" : ""}`}
                   />
                 )}
               </Link>
 
               {/* Maruch-style floating caption, positioned relative to its
-                  own photo's box exactly like the supplied Figma px. */}
+                  own photo's box exactly like the supplied Figma px. Always
+                  the same slug as the photo it floats under (see
+                  BRANDING_ROWS), so it shares that same `isActive`. */}
               {extra && cell.extraCaption && (
                 <Link
                   href={`/work/${category}/${cell.extraCaption.slug}`}
+                  onMouseEnter={() => onHoverSlug(cell.slug)}
+                  onMouseLeave={() => onHoverSlug(null)}
                   style={{
                     left: `${cell.extraCaption.leftPct}%`,
                     top: `calc(100% + ${cell.extraCaption.topPct}%)`,
                   }}
-                  className={`group absolute ${dim}`}
+                  className={`absolute ${dim}`}
                 >
-                  <CaptionText study={extra} />
+                  <CaptionText study={extra} active={isActive} />
                 </Link>
               )}
             </div>
@@ -279,7 +332,15 @@ function FeatureRow({ cells, category }: { cells: FeatureCell[]; category: strin
  * case named across all `rows` (including ones whose caption only exists as
  * a desktop-only floating extra, like Maruch/Joia) gets exactly one
  * text+photo pair here, deduped by slug, first-seen order. */
-function MobileFeatureList({ rows, category }: { rows: FeatureCell[][]; category: string }) {
+function MobileFeatureList({
+  rows,
+  category,
+  getCase,
+}: {
+  rows: FeatureCell[][];
+  category: string;
+  getCase: (slug: string) => CaseStudy | undefined;
+}) {
   const seen = new Set<string>();
   const slugs: string[] = [];
   for (const cell of rows.flat()) {
@@ -296,7 +357,7 @@ function MobileFeatureList({ rows, category }: { rows: FeatureCell[][]; category
   return (
     <div className="mt-16 flex flex-col gap-24 lg:hidden">
       {slugs.map((slug) => {
-        const study = getCase(category, slug);
+        const study = getCase(slug);
         if (!study) return null;
         const photo = caseThumbnail(study);
         return (
@@ -306,7 +367,7 @@ function MobileFeatureList({ rows, category }: { rows: FeatureCell[][]; category
             className="group block transition-opacity duration-300 group-hover/list:opacity-40 hover:!opacity-100"
           >
             <CaptionText study={study} />
-            <span className="mb-2 mt-4 block text-right text-[12px] font-extralight tracking-[-0.06em] tabular-nums text-ink">
+            <span className="mb-2 mt-4 block text-right text-[12px] font-extralight tracking-[-0.06em] tabular-nums text-ink transition-colors group-hover:text-red">
               [{parseInt(study.index, 10)}]
             </span>
             <div className="relative aspect-[4/3] w-full overflow-hidden bg-white">
@@ -334,10 +395,19 @@ export default function CategoryView({
   cases: CaseStudy[];
 }) {
   const { t, locale } = useLocale();
+  const [hoveredSlug, setHoveredSlug] = useState<string | null>(null);
 
   const exactRows = category.slug === "branding" ? BRANDING_ROWS : [];
   const exactSlugs = new Set(exactRows.flat().map((cell) => cell.slug));
   const remainingCases = cases.filter((c) => !exactSlugs.has(c.slug));
+
+  // Looks up a case by slug in the *live* `cases` prop (Supabase-backed —
+  // reflects admin edits immediately) instead of the static build-time
+  // `@/lib/work` CASES snapshot, which FeatureRow/MobileFeatureList used to
+  // read from directly — stale the moment a thumbnail or anything else got
+  // edited from /admin, e.g. a newly-set case thumbnail never showing up.
+  const caseBySlug = new Map(cases.map((c) => [c.slug, c]));
+  const getLiveCase = (slug: string) => caseBySlug.get(slug);
 
   return (
     <section className="-mt-20 bg-cream px-6 pb-24 pt-[104px] md:-mt-[120px] md:px-[80px] md:pb-32 md:pt-[144px]">
@@ -366,10 +436,17 @@ export default function CategoryView({
                 margin gap on mobile when its children render nothing. */}
             <div className="hidden lg:mt-16 lg:flex lg:flex-col lg:gap-12">
               {exactRows.map((cells, i) => (
-                <FeatureRow key={i} cells={cells} category={category.slug} />
+                <FeatureRow
+                  key={i}
+                  cells={cells}
+                  category={category.slug}
+                  getCase={getLiveCase}
+                  hoveredSlug={hoveredSlug}
+                  onHoverSlug={setHoveredSlug}
+                />
               ))}
             </div>
-            <MobileFeatureList rows={exactRows} category={category.slug} />
+            <MobileFeatureList rows={exactRows} category={category.slug} getCase={getLiveCase} />
           </>
         )}
 
@@ -400,11 +477,13 @@ export default function CategoryView({
                 </div>
 
                 <div className="mt-3 flex items-start gap-2 text-[11px] uppercase leading-[1.3] tracking-[-0.04em]">
-                  <span className="tabular-nums text-ink/40">[{n}]</span>
+                  <span className="tabular-nums text-ink/40 transition-colors group-hover:text-red">
+                    [{n}]
+                  </span>
                   <span className="text-ink transition-colors group-hover:text-red">
                     {c.client}
                   </span>
-                  <span className="ml-auto shrink-0 tabular-nums text-ink/40">
+                  <span className="ml-auto shrink-0 tabular-nums text-ink/40 transition-colors group-hover:text-red">
                     [{c.year}]
                   </span>
                 </div>

@@ -3,20 +3,48 @@
 import Link from "next/link";
 import { useLocale } from "@/lib/i18n";
 import type { Category } from "@/lib/work";
+import type { StrategyContent } from "@/lib/site-content";
+import ResponsiveVideoSources from "@/components/ResponsiveVideoSources";
+
+const FALLBACK: StrategyContent = {
+  heroVideo: {
+    desktop: "https://res.cloudinary.com/klrhikvq/video/upload/v1788791411/maraca/media/estrategia.mov",
+  },
+  titleLine1: { es: "Hablar es fácil.", en: "Talking is easy." },
+  titleLine2: {
+    es: "Tener algo que decir, no tanto.",
+    en: "Having something to say, not so much.",
+  },
+  description: {
+    es: "En Maraca construimos la estrategia que hay detrás de cada conversación:\ndefinimos a quién hablamos, qué queremos contar,\ncómo queremos sonar y dónde tiene sentido hacerlo.",
+    en: "At Maraca we build the strategy behind every conversation:\nwho we're talking to, what we want to say,\nhow we want to sound and where it makes sense to do it.",
+  },
+  closingLine: {
+    es: "Para que la marca no solo esté presente, sino que tenga una voz propia y sepa cuándo usarla.",
+    en: "So the brand isn't just present, but has a voice of its own and knows when to use it.",
+  },
+};
 
 /**
  * "Estrategia" — Figma "Work estrategia I" (6116:69), adapted to lead with
  * the brand video: title, description, video, closing line — the
  * description overlaps the top of the video and the closing line overlaps
- * its bottom. No client here gets its own page.
+ * its bottom. No client here gets its own page. Content editable from
+ * /admin/strategy.
  */
-export default function StrategyView({ category }: { category: Category }) {
-  const { t, locale } = useLocale();
+export default function StrategyView({
+  category,
+  content = FALLBACK,
+}: {
+  category: Category;
+  content?: StrategyContent;
+}) {
+  const { t } = useLocale();
 
   return (
-    <article className="-mt-20 bg-charcoal pb-24 pt-32 text-cream md:-mt-[120px] md:pt-40">
+    <article className="-mt-20 bg-charcoal pb-24 pt-24 text-cream md:-mt-[120px] md:pt-28">
       <header className="px-6 text-center md:px-[120px]">
-        <div className="mb-6 flex justify-end md:mb-10">
+        <div className="mb-3 flex justify-end md:mb-4">
           <Link
             href="/work"
             className="text-xs uppercase tracking-widest text-cream/50 transition-colors hover:text-red"
@@ -25,15 +53,8 @@ export default function StrategyView({ category }: { category: Category }) {
           </Link>
         </div>
         <h1 className="mx-auto max-w-3xl font-serif text-[clamp(1.75rem,3.06vw,2.75rem)] font-light uppercase leading-[1.2] tracking-[-0.06em]">
-          <span className="block">
-            {t({ es: "Hablar es fácil.", en: "Talking is easy." })}
-          </span>
-          <span className="block">
-            {t({
-              es: "Tener algo que decir, no tanto.",
-              en: "Having something to say, not so much.",
-            })}
-          </span>
+          <span className="block">{t(content.titleLine1)}</span>
+          <span className="block">{t(content.titleLine2)}</span>
         </h1>
       </header>
 
@@ -41,12 +62,17 @@ export default function StrategyView({ category }: { category: Category }) {
         {/* description — overlaps the top edge of the video. The overlap is a
             fixed px amount but the video's height (aspect-video) shrinks a
             lot on narrow screens, so it's kept small at mobile widths and
-            only grows to the tuned desktop amount from `md` up. */}
-        <p className="relative z-10 mx-auto -mb-4 max-w-xl text-center font-serif text-[clamp(1rem,2.08vw,1.875rem)] italic leading-[1.2] tracking-[-0.05em] text-cream [text-shadow:0_2px_16px_rgba(0,0,0,0.85)] md:-mb-14">
-          {t({
-            es: "En Maraca construimos la estrategia que hay detrás de cada conversación: definimos a quién hablamos, qué queremos contar, cómo queremos sonar y dónde tiene sentido hacerlo.",
-            en: "At Maraca we build the strategy behind every conversation: who we're talking to, what we want to say, how we want to sound and where it makes sense to do it.",
-          })}
+            only grows to the tuned desktop amount from `md` up. Line breaks
+            are literal `\n`s in the stored text (see StrategyContent) —
+            Figma sets this in exactly 3 lines, not flowing/reflowing text. */}
+        <p className="relative z-10 mx-auto -mb-4 max-w-4xl text-center font-serif text-[clamp(1rem,2.08vw,1.875rem)] italic leading-[1.2] tracking-[-0.05em] text-cream [text-shadow:0_2px_16px_rgba(0,0,0,0.85)] md:-mb-14">
+          {t(content.description)
+            .split("\n")
+            .map((line, i) => (
+              <span key={i} className="block">
+                {line}
+              </span>
+            ))}
         </p>
 
         <video
@@ -57,18 +83,12 @@ export default function StrategyView({ category }: { category: Category }) {
           playsInline
           preload="auto"
         >
-          <source
-            src="https://res.cloudinary.com/klrhikvq/video/upload/v1788791411/maraca/media/estrategia.mov"
-            type="video/mp4"
-          />
+          <ResponsiveVideoSources video={content.heroVideo} />
         </video>
 
         {/* closing line — sits below the video, just grazing its bottom edge */}
         <p className="relative z-10 mx-auto mt-6 max-w-xl text-center font-serif text-[clamp(1rem,2.08vw,1.875rem)] italic leading-[1.2] tracking-[-0.05em] text-cream [text-shadow:0_2px_16px_rgba(0,0,0,0.85)] md:-mt-6">
-          {t({
-            es: "Para que la marca no solo esté presente, sino que tenga una voz propia y sepa cuándo usarla.",
-            en: "So the brand isn't just present, but has a voice of its own and knows when to use it.",
-          })}
+          {t(content.closingLine)}
         </p>
       </div>
     </article>

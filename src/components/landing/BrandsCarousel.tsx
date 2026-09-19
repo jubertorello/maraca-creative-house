@@ -32,7 +32,13 @@ export default function BrandsCarousel({
               alt={c.name}
               width={160}
               height={32}
-              className="h-full w-auto object-contain opacity-60"
+              // max-w caps how wide a logo can stretch before object-contain
+              // starts shrinking it to fit — without it, a wordmark with a
+              // much wider aspect ratio than the rest (e.g. a single-line
+              // logo vs. a compact mark) renders far wider than its
+              // neighbors at the same fixed height, and visually dominates
+              // the row even though the box height is identical for all.
+              className="h-full w-auto max-w-[120px] object-contain md:max-w-[140px]"
             />
           </span>
         ))}

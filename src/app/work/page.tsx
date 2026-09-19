@@ -32,13 +32,13 @@ export default async function WorkPage() {
   const [categories, cases] = await Promise.all([getCategoriesLive(), getCasesLive()]);
 
   return (
-    <section className="-mt-20 bg-cream pt-32 pb-24 md:-mt-[120px] md:pt-[184px]">
+    <section className="-mt-20 bg-cream pt-[92px] pb-24 md:-mt-[120px] md:pt-[136px]">
       {/* Bottom padding: the hover client-lists below rise into this space
           (title + up to MAX_REVEAL_CLIENTS lines) without touching this
           header. On mobile the tap-to-open list (see CategoryGrid) is
           capped at 160px, so this needs to clear at least that much — kept
           as tight as that allows. */}
-      <header className="px-6 pb-44 text-center md:px-[120px] md:pb-[170px]">
+      <header className="px-6 pb-44 text-center md:px-[120px] md:pb-[140px]">
         <h1 className="font-serif text-[clamp(1.75rem,3.05vw,2.75rem)] font-light uppercase leading-[1.2] tracking-[-0.06em] text-ink">
           <span className="block">What&apos;s on</span>
           <span className="block">the menu.</span>

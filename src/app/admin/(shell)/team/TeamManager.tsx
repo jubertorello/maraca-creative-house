@@ -72,11 +72,12 @@ export default function TeamManager({
         <label className="block text-sm">
           <span className="mb-1 block text-ink/60">
             Frase (siempre en inglés, como en el sitio — ej. &quot;Many minds, one creative
-            house&quot;)
+            house&quot;) — Enter corta la línea.
           </span>
-          <input
+          <textarea
             value={tagline}
             onChange={(e) => setTagline(e.target.value)}
+            rows={2}
             className="w-full rounded-md border border-black/15 px-3 py-2 text-sm outline-none focus:border-ink/40"
           />
         </label>

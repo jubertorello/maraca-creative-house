@@ -21,6 +21,58 @@ export function configuredCloudinary() {
   return cloudinary;
 }
 
+export type CloudinaryAsset = {
+  url: string;
+  publicId: string;
+  resourceType: "image" | "video";
+  width?: number;
+  height?: number;
+  bytes?: number;
+  format?: string;
+  createdAt: string;
+};
+
+/** Every asset in the Cloudinary account — images and videos both, paginated
+ * past Cloudinary's 500-per-page cap, not scoped to the "maraca" folder our
+ * own upload widget uses (a file added straight from Cloudinary's own
+ * console, in some other folder, still needs to show up here). Safe to list
+ * unscoped: this account is dedicated to this one site. Powers /admin/media
+ * (the "is this file used anywhere?" gallery); MediaLibraryPicker's own
+ * listing stays on the lighter single-type route (`/api/admin/media`) since
+ * it only ever needs one kind at a time. */
+export async function listAllCloudinaryAssets(): Promise<CloudinaryAsset[]> {
+  const cl = configuredCloudinary();
+  const assets: CloudinaryAsset[] = [];
+
+  for (const resourceType of ["image", "video"] as const) {
+    let cursor: string | undefined;
+    do {
+      const result = await cl.api.resources({
+        type: "upload",
+        resource_type: resourceType,
+        max_results: 500,
+        next_cursor: cursor,
+      });
+      for (const r of result.resources as Array<Record<string, unknown>>) {
+        assets.push({
+          url: r.secure_url as string,
+          publicId: r.public_id as string,
+          resourceType,
+          width: r.width as number | undefined,
+          height: r.height as number | undefined,
+          bytes: r.bytes as number | undefined,
+          format: r.format as string | undefined,
+          createdAt: r.created_at as string,
+        });
+      }
+      cursor = result.next_cursor as string | undefined;
+    } while (cursor);
+  }
+
+  assets.sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
+  return assets;
+}
+
 const CLOUDINARY_URL_RE =
   /^https:\/\/res\.cloudinary\.com\/[^/]+\/(image|video)\/upload\/(?:[^/]+\/)*?(?:v\d+\/)?(.+)\.[a-zA-Z0-9]+(?:\?.*)?$/;
 

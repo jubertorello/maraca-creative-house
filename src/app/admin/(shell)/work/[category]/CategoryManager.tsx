@@ -105,7 +105,18 @@ export default function CategoryManager({
         ← Work
       </Link>
 
-      <h1 className="mb-8 text-2xl font-medium">{category.name.es}</h1>
+      <h1 className="mb-2 text-2xl font-medium">{category.name.es}</h1>
+
+      {kind === "manifesto" && (
+        <p className="mb-6 rounded-md border border-dashed border-black/15 bg-[#faf9f6] p-3 text-sm text-ink/60">
+          Esta categoría es una página única (sin marcas ni casos propios). Su video y textos
+          se editan en{" "}
+          <Link href="/admin/strategy" className="underline hover:text-ink">
+            Estrategia
+          </Link>
+          .
+        </p>
+      )}
 
       {/* --- Category settings --- */}
       <section className="mb-10 rounded-lg border border-black/10 bg-white p-6">

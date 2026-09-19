@@ -95,6 +95,20 @@ export type SeoContent = {
   pages: Record<SeoPageKey, SeoPageFields>;
 };
 
+export type StrategyContent = {
+  heroVideo: ResponsiveVideo;
+  /** The 2-line headline ("Hablar es fácil." / "Tener algo que decir, no
+   * tanto.") — always exactly these 2 lines in the design, so 2 separate
+   * fields rather than one field split on a markup convention. */
+  titleLine1: Lang;
+  titleLine2: Lang;
+  /** Line breaks are literal `\n` in the stored text (typed as separate
+   * lines in the admin's textarea) — Figma sets this in exactly 3 lines,
+   * and free-flowing/reflowing text couldn't reliably reproduce that. */
+  description: Lang;
+  closingLine: Lang;
+};
+
 export type FooterSocialLink = { label: "Instagram" | "LinkedIn" | "TikTok"; href: string };
 
 export type FooterContent = {
@@ -110,6 +124,7 @@ type SiteContentData = {
   privacyPolicy: PrivacyPolicyContent;
   contact: ContactContent;
   footer: FooterContent;
+  strategy: StrategyContent;
 };
 
 const STATIC: SiteContentData = siteContentData as SiteContentData;
@@ -132,6 +147,7 @@ export const getSeoContentLive = () => readRow("seo");
 export const getPrivacyPolicyContentLive = () => readRow("privacyPolicy");
 export const getContactContentLive = () => readRow("contact");
 export const getFooterContentLive = () => readRow("footer");
+export const getStrategyContentLive = () => readRow("strategy");
 
 /** "Somos una *creative house* y *partner creativo*..." -> chunks, so the
  * component can render the starred parts as red italic without the field

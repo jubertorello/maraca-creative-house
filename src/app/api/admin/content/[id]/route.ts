@@ -1,7 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { readSiteContent, writeSiteContent } from "@/lib/admin-data";
 
-const IDS = ["home", "about", "team", "seo", "privacyPolicy", "contact", "footer"] as const;
+const IDS = [
+  "home",
+  "about",
+  "team",
+  "seo",
+  "privacyPolicy",
+  "contact",
+  "footer",
+  "strategy",
+] as const;
 type ContentId = (typeof IDS)[number];
 
 function asId(id: string): ContentId {
