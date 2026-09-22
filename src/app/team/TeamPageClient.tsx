@@ -52,6 +52,7 @@ export default function TeamPageClient({
         alt="El equipo de MARACA"
         className="bg-sky"
         video={content.heroVideo}
+        lockLandscapeOnMobile
       />
 
       {/* Figma "Equipo" > Participadas (6049:575) */}

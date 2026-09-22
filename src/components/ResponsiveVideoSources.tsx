@@ -10,14 +10,12 @@ import { cldVideoMp4 } from "@/lib/cloudinary-url";
  * what got uploaded was a .mov, which some browsers otherwise fail to
  * decode despite the file being perfectly fine (see its own comment). */
 export default function ResponsiveVideoSources({ video }: { video: ResponsiveVideo }) {
+  const mobileSrc = cldVideoMp4(video.mobile || video.desktop || undefined);
+  const desktopSrc = cldVideoMp4(video.desktop || undefined);
   return (
     <>
-      <source
-        media="(max-width: 767px)"
-        src={cldVideoMp4(video.mobile ?? video.desktop)}
-        type="video/mp4"
-      />
-      <source src={cldVideoMp4(video.desktop)} type="video/mp4" />
+      {mobileSrc && <source media="(max-width: 767px)" src={mobileSrc} type="video/mp4" />}
+      {desktopSrc && <source src={desktopSrc} type="video/mp4" />}
     </>
   );
 }

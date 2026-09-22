@@ -20,11 +20,6 @@ const PAGES: Item[] = [
     description: "Los 6 tipos de trabajo, sus marcas y casos con página propia.",
   },
   {
-    href: "/admin/strategy",
-    name: "Estrategia",
-    description: "Video y textos de la página de Estrategia (dentro de Work).",
-  },
-  {
     href: "/admin/team",
     name: "Team",
     description: "Video del hero, el equipo y el bloque de \"únete\".",

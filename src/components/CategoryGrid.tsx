@@ -83,7 +83,7 @@ export default function CategoryGrid({
 
   return (
     <div className="mx-auto w-full max-w-[1283px] px-[5.5vw] xl:px-0">
-      <ul className="grid grid-cols-2 gap-1 sm:grid-cols-3 lg:grid-cols-6">
+      <ul className="grid grid-cols-2 gap-x-1 gap-y-10 sm:grid-cols-3 lg:grid-cols-6">
         {categories.map((c) => {
           // Hovering the tile reveals the client list (if any) — the type
           // name should redden whenever hover does something, i.e. it's

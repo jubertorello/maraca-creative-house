@@ -1,9 +1,9 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { ENABLED_CATEGORIES, getCategoryLive, casesByCategoryLive } from "@/lib/work";
-import { getStrategyContentLive } from "@/lib/site-content";
 import CategoryView from "./CategoryView";
-import StrategyView from "./StrategyView";
+import ManifestoView from "./ManifestoView";
+import VideoOnlyView from "./VideoOnlyView";
 import PendingView from "./PendingView";
 
 export const revalidate = 60;
@@ -48,7 +48,11 @@ export default async function CategoryPage({
   if (!cat || !cat.enabled) notFound();
 
   if (cat.kind === "manifesto") {
-    return <StrategyView category={cat} content={await getStrategyContentLive()} />;
+    return <ManifestoView category={cat} content={cat.manifesto} />;
+  }
+
+  if (cat.kind === "video") {
+    return <VideoOnlyView category={cat} video={cat.manifesto?.heroVideo} />;
   }
 
   if (cat.kind === "pending") {

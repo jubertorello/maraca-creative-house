@@ -3,10 +3,19 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import type { Category, CaseStudy } from "@/lib/work";
+import type { Category, CaseStudy, ManifestoContent } from "@/lib/work";
 import MediaUrlInput from "../../MediaUrlInput";
 import CharCounter from "../../CharCounter";
 import SaveBar from "../../SaveBar";
+import ResponsiveVideoField from "../../ResponsiveVideoField";
+
+const EMPTY_MANIFESTO: ManifestoContent = {
+  heroVideo: { desktop: "" },
+  titleLine1: { es: "", en: "" },
+  titleLine2: { es: "", en: "" },
+  description: { es: "", en: "" },
+  closingLine: { es: "", en: "" },
+};
 
 function move<T>(arr: T[], from: number, to: number): T[] {
   if (to < 0 || to >= arr.length) return arr;
@@ -34,6 +43,9 @@ export default function CategoryManager({
   const [clients, setClients] = useState(category.clients);
   const [newClient, setNewClient] = useState("");
   const [caseList, setCaseList] = useState(cases);
+  const [manifesto, setManifesto] = useState<ManifestoContent>(
+    category.manifesto ?? EMPTY_MANIFESTO,
+  );
   const [saving, setSaving] = useState(false);
   const [savedAt, setSavedAt] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -55,6 +67,7 @@ export default function CategoryManager({
         // (see syncCategoryClientsFromCases) — don't overwrite it with
         // whatever this form last loaded.
         ...(kind === "listing" ? {} : { clients }),
+        ...(kind === "manifesto" || kind === "video" ? { manifesto } : {}),
       }),
     });
     setSaving(false);
@@ -107,17 +120,6 @@ export default function CategoryManager({
 
       <h1 className="mb-2 text-2xl font-medium">{category.name.es}</h1>
 
-      {kind === "manifesto" && (
-        <p className="mb-6 rounded-md border border-dashed border-black/15 bg-[#faf9f6] p-3 text-sm text-ink/60">
-          Esta categoría es una página única (sin marcas ni casos propios). Su video y textos
-          se editan en{" "}
-          <Link href="/admin/strategy" className="underline hover:text-ink">
-            Estrategia
-          </Link>
-          .
-        </p>
-      )}
-
       {/* --- Category settings --- */}
       <section className="mb-10 rounded-lg border border-black/10 bg-white p-6">
         <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-ink/50">
@@ -151,6 +153,7 @@ export default function CategoryManager({
             >
               <option value="listing">Listado con casos propios (branding)</option>
               <option value="manifesto">Página única / manifiesto (estrategia)</option>
+              <option value="video">Solo video, pantalla completa (sin texto)</option>
               <option value="pending">Diseño pendiente (placeholder)</option>
             </select>
           </label>
@@ -289,6 +292,161 @@ export default function CategoryManager({
         )}
 
       </section>
+
+      {kind === "video" && (
+        <section className="mb-10 rounded-lg border border-black/10 bg-white p-6">
+          <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-ink/50">
+            Video
+          </h2>
+          <ResponsiveVideoField
+            label="Video"
+            value={manifesto.heroVideo}
+            onChange={(heroVideo) => setManifesto((m) => ({ ...m, heroVideo }))}
+          />
+        </section>
+      )}
+
+      {kind === "manifesto" && (
+        <section className="mb-10 rounded-lg border border-black/10 bg-white p-6">
+          <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-ink/50">
+            Contenido del manifiesto
+          </h2>
+
+          <ResponsiveVideoField
+            label="Video"
+            value={manifesto.heroVideo}
+            onChange={(heroVideo) => setManifesto((m) => ({ ...m, heroVideo }))}
+          />
+
+          <div className="mb-4 grid gap-4 sm:grid-cols-2">
+            <label className="block text-sm">
+              <span className="mb-1 block text-ink/60">Título línea 1 (ES)</span>
+              <input
+                value={manifesto.titleLine1.es}
+                onChange={(e) =>
+                  setManifesto((m) => ({
+                    ...m,
+                    titleLine1: { ...m.titleLine1, es: e.target.value },
+                  }))
+                }
+                className="w-full rounded-md border border-black/15 px-3 py-2 text-sm outline-none focus:border-ink/40"
+              />
+            </label>
+            <label className="block text-sm">
+              <span className="mb-1 block text-ink/60">Título línea 1 (EN)</span>
+              <input
+                value={manifesto.titleLine1.en}
+                onChange={(e) =>
+                  setManifesto((m) => ({
+                    ...m,
+                    titleLine1: { ...m.titleLine1, en: e.target.value },
+                  }))
+                }
+                className="w-full rounded-md border border-black/15 px-3 py-2 text-sm outline-none focus:border-ink/40"
+              />
+            </label>
+          </div>
+
+          <div className="mb-6 grid gap-4 sm:grid-cols-2">
+            <label className="block text-sm">
+              <span className="mb-1 block text-ink/60">Título línea 2 (ES)</span>
+              <input
+                value={manifesto.titleLine2.es}
+                onChange={(e) =>
+                  setManifesto((m) => ({
+                    ...m,
+                    titleLine2: { ...m.titleLine2, es: e.target.value },
+                  }))
+                }
+                className="w-full rounded-md border border-black/15 px-3 py-2 text-sm outline-none focus:border-ink/40"
+              />
+            </label>
+            <label className="block text-sm">
+              <span className="mb-1 block text-ink/60">Título línea 2 (EN)</span>
+              <input
+                value={manifesto.titleLine2.en}
+                onChange={(e) =>
+                  setManifesto((m) => ({
+                    ...m,
+                    titleLine2: { ...m.titleLine2, en: e.target.value },
+                  }))
+                }
+                className="w-full rounded-md border border-black/15 px-3 py-2 text-sm outline-none focus:border-ink/40"
+              />
+            </label>
+          </div>
+
+          <div className="mb-6 grid gap-4 sm:grid-cols-2">
+            <label className="block text-sm">
+              <span className="mb-1 block text-ink/60">
+                Descripción (ES) — Enter corta la línea
+              </span>
+              <textarea
+                value={manifesto.description.es}
+                onChange={(e) =>
+                  setManifesto((m) => ({
+                    ...m,
+                    description: { ...m.description, es: e.target.value },
+                  }))
+                }
+                rows={3}
+                className="w-full rounded-md border border-black/15 px-3 py-2 text-sm outline-none focus:border-ink/40"
+              />
+            </label>
+            <label className="block text-sm">
+              <span className="mb-1 block text-ink/60">
+                Descripción (EN) — Enter corta la línea
+              </span>
+              <textarea
+                value={manifesto.description.en}
+                onChange={(e) =>
+                  setManifesto((m) => ({
+                    ...m,
+                    description: { ...m.description, en: e.target.value },
+                  }))
+                }
+                rows={3}
+                className="w-full rounded-md border border-black/15 px-3 py-2 text-sm outline-none focus:border-ink/40"
+              />
+            </label>
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            <label className="block text-sm">
+              <span className="mb-1 block text-ink/60">
+                Frase de cierre (ES) — Enter corta la línea
+              </span>
+              <textarea
+                value={manifesto.closingLine.es}
+                onChange={(e) =>
+                  setManifesto((m) => ({
+                    ...m,
+                    closingLine: { ...m.closingLine, es: e.target.value },
+                  }))
+                }
+                rows={2}
+                className="w-full rounded-md border border-black/15 px-3 py-2 text-sm outline-none focus:border-ink/40"
+              />
+            </label>
+            <label className="block text-sm">
+              <span className="mb-1 block text-ink/60">
+                Frase de cierre (EN) — Enter corta la línea
+              </span>
+              <textarea
+                value={manifesto.closingLine.en}
+                onChange={(e) =>
+                  setManifesto((m) => ({
+                    ...m,
+                    closingLine: { ...m.closingLine, en: e.target.value },
+                  }))
+                }
+                rows={2}
+                className="w-full rounded-md border border-black/15 px-3 py-2 text-sm outline-none focus:border-ink/40"
+              />
+            </label>
+          </div>
+        </section>
+      )}
 
       <SaveBar saving={saving} savedAt={savedAt} error={error} onSave={saveSettings} />
 

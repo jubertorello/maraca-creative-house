@@ -9,7 +9,6 @@ const IDS = [
   "privacyPolicy",
   "contact",
   "footer",
-  "strategy",
 ] as const;
 type ContentId = (typeof IDS)[number];
 

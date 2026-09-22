@@ -13,8 +13,16 @@ const LOCALES: Locale[] = ["es", "en"];
 // hero — the resting (unpainted) navbar needs dark text on these.
 const LIGHT_AT_REST = ["/work", "/contact", "/privacy-policy"];
 // ...except these — a light-listed page (or one of its sub-paths) whose own
-// top is actually dark, like the Estrategia manifesto page.
-const LIGHT_AT_REST_EXCEPT = ["/work/estrategia"];
+// top is actually dark: the Estrategia manifesto page, and the video-only
+// Work category pages (Campañas, Contenido, Web, Eventos), which behave
+// like About's hero — dark at rest, then a normal cream bar once scrolled.
+const LIGHT_AT_REST_EXCEPT = [
+  "/work/estrategia",
+  "/work/campanas",
+  "/work/contenido",
+  "/work/web",
+  "/work/eventos",
+];
 // Pages painted charcoal (not cream) once scrolled, same as home — every
 // section on these pages is dark, so a cream bar (and its border) would be
 // the wrong call.

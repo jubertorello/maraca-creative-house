@@ -2,11 +2,10 @@
 
 import Link from "next/link";
 import { useLocale } from "@/lib/i18n";
-import type { Category } from "@/lib/work";
-import type { StrategyContent } from "@/lib/site-content";
+import type { Category, ManifestoContent } from "@/lib/work";
 import ResponsiveVideoSources from "@/components/ResponsiveVideoSources";
 
-const FALLBACK: StrategyContent = {
+const FALLBACK: ManifestoContent = {
   heroVideo: {
     desktop: "https://res.cloudinary.com/klrhikvq/video/upload/v1788791411/maraca/media/estrategia.mov",
   },
@@ -16,8 +15,8 @@ const FALLBACK: StrategyContent = {
     en: "Having something to say, not so much.",
   },
   description: {
-    es: "En Maraca construimos la estrategia que hay detrás de cada conversación:\ndefinimos a quién hablamos, qué queremos contar,\ncómo queremos sonar y dónde tiene sentido hacerlo.",
-    en: "At Maraca we build the strategy behind every conversation:\nwho we're talking to, what we want to say,\nhow we want to sound and where it makes sense to do it.",
+    es: "En Maraca construimos la estrategia que hay detrás de cada conversación:\ndefinimos a quién hablamos, qué queremos contar, cómo queremos sonar y\ndónde tiene sentido hacerlo.",
+    en: "At Maraca we build the strategy behind every conversation:\nwho we're talking to, what we want to say, how we want to sound and\nwhere it makes sense to do it.",
   },
   closingLine: {
     es: "Para que la marca no solo esté presente, sino que tenga una voz propia y sepa cuándo usarla.",
@@ -26,18 +25,18 @@ const FALLBACK: StrategyContent = {
 };
 
 /**
- * "Estrategia" — Figma "Work estrategia I" (6116:69), adapted to lead with
- * the brand video: title, description, video, closing line — the
- * description overlaps the top of the video and the closing line overlaps
- * its bottom. No client here gets its own page. Content editable from
- * /admin/strategy.
+ * Page for any `kind: "manifesto"` category — Estrategia (Figma "Work
+ * estrategia I", 6116:69) is the design source: title, description, boxed
+ * video, closing line, no per-client cases. Editable from
+ * /admin/work/[category]. See also `VideoOnlyView` for `kind: "video"`,
+ * the same idea but without any text.
  */
-export default function StrategyView({
+export default function ManifestoView({
   category,
   content = FALLBACK,
 }: {
   category: Category;
-  content?: StrategyContent;
+  content?: ManifestoContent;
 }) {
   const { t } = useLocale();
 
@@ -63,8 +62,9 @@ export default function StrategyView({
             fixed px amount but the video's height (aspect-video) shrinks a
             lot on narrow screens, so it's kept small at mobile widths and
             only grows to the tuned desktop amount from `md` up. Line breaks
-            are literal `\n`s in the stored text (see StrategyContent) —
-            Figma sets this in exactly 3 lines, not flowing/reflowing text. */}
+            are literal `\n`s in the stored text (see ManifestoContent) —
+            the design sets this in a fixed number of lines, not
+            flowing/reflowing text. */}
         <p className="relative z-10 mx-auto -mb-4 max-w-4xl text-center font-serif text-[clamp(1rem,2.08vw,1.875rem)] italic leading-[1.2] tracking-[-0.05em] text-cream [text-shadow:0_2px_16px_rgba(0,0,0,0.85)] md:-mb-14">
           {t(content.description)
             .split("\n")

@@ -26,7 +26,6 @@ import type {
   PrivacyPolicyContent,
   ContactContent,
   FooterContent,
-  StrategyContent,
 } from "@/lib/site-content";
 import { SUPABASE_ENABLED, supabaseAdmin } from "@/lib/supabase";
 import { deleteCloudinaryAssetByUrl } from "@/lib/cloudinary";
@@ -51,6 +50,7 @@ type CategoryRow = {
   image: string | null;
   seo_title: string | null;
   seo_description: string | null;
+  manifesto: Category["manifesto"] | null;
 };
 
 type CaseRow = {
@@ -78,6 +78,7 @@ const categoryFromRow = (r: CategoryRow): Category => ({
   image: r.image ?? undefined,
   seoTitle: r.seo_title ?? undefined,
   seoDescription: r.seo_description ?? undefined,
+  manifesto: r.manifesto ?? undefined,
 });
 
 const categoryToRow = (c: Category): CategoryRow => ({
@@ -91,6 +92,7 @@ const categoryToRow = (c: Category): CategoryRow => ({
   image: c.image ?? null,
   seo_title: c.seoTitle ?? null,
   seo_description: c.seoDescription ?? null,
+  manifesto: c.manifesto ?? null,
 });
 
 const caseFromRow = (r: CaseRow): CaseStudy => ({
@@ -316,7 +318,6 @@ type SiteContentData = {
   privacyPolicy: PrivacyPolicyContent;
   contact: ContactContent;
   footer: FooterContent;
-  strategy: StrategyContent;
 };
 
 async function readSiteContentJson(): Promise<SiteContentData> {

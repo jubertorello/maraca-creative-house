@@ -39,6 +39,7 @@
 
 import categoriesData from "@/data/categories.json";
 import casesData from "@/data/cases.json";
+import type { ResponsiveVideo } from "@/lib/site-content";
 
 /** Client names for the two "stub" campañas cases share their brand's real
  * client, not the case title (title = campaign name, client = brand name). */
@@ -54,6 +55,23 @@ export type CategorySlug =
   | "campanas"
   | "eventos";
 
+/** Content for a `kind: "manifesto"` category's single page (Estrategia,
+ * and any of Campañas/Contenido/Web/Eventos once switched to this kind) —
+ * a video-led page with no per-client cases. Editable from the category's
+ * own /admin/work/[category] page, right alongside its other settings. */
+export type ManifestoContent = {
+  heroVideo: ResponsiveVideo;
+  /** Always exactly 2 lines in the design — 2 separate fields rather than
+   * one split on a markup convention. */
+  titleLine1: Lang;
+  titleLine2: Lang;
+  /** Line breaks are literal `\n`s in the stored text (typed as separate
+   * lines in the admin's textarea) — the design sets this in a fixed
+   * number of lines, not free-flowing text. */
+  description: Lang;
+  closingLine: Lang;
+};
+
 export type Category = {
   slug: CategorySlug;
   index: string;
@@ -63,11 +81,13 @@ export type Category = {
   clients: string[];
   /** "listing" (default) = area page with a grid of client cases, each with
    * its own detail page. "manifesto" = one single page for the whole
-   * category (Figma "Work estrategia I", 6116:69) — clients are named but
-   * none of them has its own page. "pending" = clients are named (shown on
-   * hover from the Work index) but the category page itself isn't designed
-   * yet — just a "Diseño pendiente" placeholder. */
-  kind?: "listing" | "manifesto" | "pending";
+   * category (Figma "Work estrategia I", 6116:69) — title, description,
+   * boxed video and closing line; clients are named but none of them has
+   * its own page. "video" = same idea but just a full-bleed video (same
+   * component/styles as About's hero), no text at all. "pending" = clients
+   * are named (shown on hover from the Work index) but the category page
+   * itself isn't designed yet — just a "Diseño pendiente" placeholder. */
+  kind?: "listing" | "manifesto" | "video" | "pending";
   /** Tile image on the Home "Participadas" row and /work index (Figma
    * 6013:15). Falls back to /media/services/<slug>.jpg when unset, so
    * existing data without this field keeps working. Editable from
@@ -78,6 +98,10 @@ export type Category = {
    * from /admin/work/[category]. */
   seoTitle?: string;
   seoDescription?: string;
+  /** Only meaningful when `kind === "manifesto"` or `kind === "video"` —
+   * for "video", only `heroVideo` is used. Editable from
+   * /admin/work/[category]. */
+  manifesto?: ManifestoContent;
 };
 
 export const CATEGORIES: Category[] = categoriesData as Category[];
@@ -206,6 +230,7 @@ type CategoryRow = {
   image: string | null;
   seo_title: string | null;
   seo_description: string | null;
+  manifesto: ManifestoContent | null;
 };
 
 type CaseRow = {
@@ -233,6 +258,7 @@ const categoryFromRow = (r: CategoryRow): Category => ({
   image: r.image ?? undefined,
   seoTitle: r.seo_title ?? undefined,
   seoDescription: r.seo_description ?? undefined,
+  manifesto: r.manifesto ?? undefined,
 });
 
 const caseFromRow = (r: CaseRow): CaseStudy => ({
