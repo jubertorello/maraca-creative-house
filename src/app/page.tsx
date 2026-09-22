@@ -32,7 +32,7 @@ export default async function Home() {
 
   return (
     <>
-      <HeroVideo video={content.heroVideo} />
+      <HeroVideo video={content.heroVideo} categories={categories} />
       <AboutIntro text={content.aboutText} />
       <Services categories={categories} cases={cases} />
       <BrandsCarousel clients={clients} />

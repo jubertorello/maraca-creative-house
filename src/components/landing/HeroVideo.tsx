@@ -3,7 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocale } from "@/lib/i18n";
 import type { ResponsiveVideo } from "@/lib/site-content";
+import type { Category } from "@/lib/work";
 import ResponsiveVideoSources from "@/components/ResponsiveVideoSources";
+import HeroServices from "@/components/landing/HeroServices";
 
 const FALLBACK: ResponsiveVideo = { desktop: "/media/hero.mp4" };
 
@@ -18,7 +20,13 @@ const FALLBACK: ResponsiveVideo = { desktop: "/media/hero.mp4" };
  * muted so the video still plays. Either way a small, subtle icon lets the
  * visitor toggle sound on/off themselves.
  */
-export default function HeroVideo({ video = FALLBACK }: { video?: ResponsiveVideo }) {
+export default function HeroVideo({
+  video = FALLBACK,
+  categories = [],
+}: {
+  video?: ResponsiveVideo;
+  categories?: Category[];
+}) {
   const { t } = useLocale();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [muted, setMuted] = useState(true);
@@ -58,6 +66,8 @@ export default function HeroVideo({ video = FALLBACK }: { video?: ResponsiveVide
       >
         <ResponsiveVideoSources video={video} />
       </video>
+
+      <HeroServices categories={categories} />
 
       <button
         type="button"
