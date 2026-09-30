@@ -1,6 +1,10 @@
+"use client";
+
+import { useRef } from "react";
 import Image from "next/image";
 import type { ResponsiveVideo } from "@/lib/site-content";
 import ResponsiveVideoSources from "@/components/ResponsiveVideoSources";
+import { useVideoSourceFix } from "@/lib/useVideoSourceFix";
 
 /**
  * Full-bleed page hero that sits below the sticky navbar.
@@ -32,6 +36,9 @@ type MediaHeroProps =
 export default function MediaHero(props: MediaHeroProps) {
   const { kind, poster, alt = "", className = "bg-charcoal" } = props;
   const lockLandscapeOnMobile = kind === "video" && props.lockLandscapeOnMobile;
+  const videoRef = useRef<HTMLVideoElement>(null);
+  useVideoSourceFix(videoRef);
+
   return (
     <section
       className={`relative -mt-20 w-full overflow-hidden md:-mt-[120px] md:h-[100svh] md:min-h-[520px] ${
@@ -40,6 +47,7 @@ export default function MediaHero(props: MediaHeroProps) {
     >
       {kind === "video" && props.video && (
         <video
+          ref={videoRef}
           className="absolute inset-0 h-full w-full object-cover"
           autoPlay
           muted

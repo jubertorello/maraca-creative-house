@@ -5,6 +5,7 @@ import { useLocale } from "@/lib/i18n";
 import type { ResponsiveVideo } from "@/lib/site-content";
 import type { Category } from "@/lib/work";
 import ResponsiveVideoSources from "@/components/ResponsiveVideoSources";
+import { useVideoSourceFix } from "@/lib/useVideoSourceFix";
 import HeroServices from "@/components/landing/HeroServices";
 
 const FALLBACK: ResponsiveVideo = { desktop: "/media/hero.mp4" };
@@ -30,6 +31,8 @@ export default function HeroVideo({
   const { t } = useLocale();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [muted, setMuted] = useState(true);
+
+  useVideoSourceFix(videoRef);
 
   useEffect(() => {
     const video = videoRef.current;

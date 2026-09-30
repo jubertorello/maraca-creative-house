@@ -1,9 +1,11 @@
 "use client";
 
+import { useRef } from "react";
 import Link from "next/link";
 import { useLocale } from "@/lib/i18n";
 import type { Category, ManifestoContent } from "@/lib/work";
 import ResponsiveVideoSources from "@/components/ResponsiveVideoSources";
+import { useVideoSourceFix } from "@/lib/useVideoSourceFix";
 
 const FALLBACK: ManifestoContent = {
   heroVideo: {
@@ -39,6 +41,8 @@ export default function ManifestoView({
   content?: ManifestoContent;
 }) {
   const { t } = useLocale();
+  const videoRef = useRef<HTMLVideoElement>(null);
+  useVideoSourceFix(videoRef);
 
   return (
     <article className="-mt-20 bg-charcoal pb-24 pt-24 text-cream md:-mt-[120px] md:pt-28">
@@ -76,6 +80,7 @@ export default function ManifestoView({
         </p>
 
         <video
+          ref={videoRef}
           className="relative aspect-video w-full bg-black object-cover"
           autoPlay
           muted

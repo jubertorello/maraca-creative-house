@@ -1,9 +1,11 @@
 "use client";
 
+import { useRef } from "react";
 import Link from "next/link";
 import { useLocale } from "@/lib/i18n";
 import type { ResponsiveVideo } from "@/lib/site-content";
 import ResponsiveVideoSources from "@/components/ResponsiveVideoSources";
+import { useVideoSourceFix } from "@/lib/useVideoSourceFix";
 
 const FALLBACK: ResponsiveVideo = { desktop: "/media/recent-work.mp4" };
 
@@ -15,12 +17,15 @@ const FALLBACK: ResponsiveVideo = { desktop: "/media/recent-work.mp4" };
  */
 export default function RecentWork({ video = FALLBACK }: { video?: ResponsiveVideo }) {
   const { t } = useLocale();
+  const videoRef = useRef<HTMLVideoElement>(null);
+  useVideoSourceFix(videoRef);
 
   return (
     <section className="relative bg-charcoal text-cream">
       <Link href="/work" className="group block">
         <div className="relative h-[92svh] min-h-[520px] w-full overflow-hidden">
           <video
+            ref={videoRef}
             className="absolute inset-0 h-full w-full object-cover opacity-70 transition-opacity duration-500 group-hover:opacity-90"
             autoPlay
             muted
