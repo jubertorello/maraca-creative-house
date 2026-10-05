@@ -277,21 +277,16 @@ function FeatureRow({
         const photo = caseThumbnail(study);
         const isActive = hoveredSlug === cell.slug;
 
-        // Same cross-item dimming the generic grid below already has: this
-        // row shares its `group/list` with that grid, so hovering any card
-        // anywhere on the page dims every other one. The "stay bright"
-        // exception is driven by `isActive` (state) instead of this
-        // element's own :hover, so it also applies when a *different* cell
-        // for the same slug is what's actually under the mouse.
-        const dim = `transition-opacity duration-300 group-hover/list:opacity-40 ${isActive ? "!opacity-100" : ""}`;
+        // Hover is driven by the photo only: hovering it reddens that case's
+        // caption/number and dims every other case. The captions themselves
+        // are plain links — they don't start (or take part in) any hover.
+        const dim = `transition-opacity duration-300 ${hoveredSlug && !isActive ? "opacity-40" : ""}`;
 
         if (cell.kind === "text") {
           return (
             <Link
               key={i}
               href={href}
-              onMouseEnter={() => onHoverSlug(cell.slug)}
-              onMouseLeave={() => onHoverSlug(null)}
               style={{ aspectRatio: `${cell.width} / 178`, ...growStyle }}
               className={`flex min-w-0 items-center justify-center bg-cream ${dim}`}
             >
@@ -341,8 +336,6 @@ function FeatureRow({
               {extra && cell.extraCaption && (
                 <Link
                   href={`/work/${category}/${cell.extraCaption.slug}`}
-                  onMouseEnter={() => onHoverSlug(cell.slug)}
-                  onMouseLeave={() => onHoverSlug(null)}
                   style={{
                     left: `${cell.extraCaption.leftPct}%`,
                     top: `calc(100% + ${cell.extraCaption.topPct}%)`,
