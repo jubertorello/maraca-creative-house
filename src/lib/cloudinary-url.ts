@@ -42,3 +42,15 @@ export function cldVideoMp4(url: string | undefined): string | undefined {
     "$1f_mp4,q_auto/",
   );
 }
+
+/**
+ * First-frame still of a Cloudinary video, as a small JPG — shown behind the
+ * <video> so there's a picture immediately instead of a black box while the
+ * video itself buffers. A no-op (undefined) for non-Cloudinary URLs.
+ */
+export function cldVideoPoster(url: string | undefined, width = 1280): string | undefined {
+  if (!url) return undefined;
+  const m = url.match(/^(https:\/\/res\.cloudinary\.com\/[^/]+\/video\/upload\/)(.+?)(?:\.\w+)?$/);
+  if (!m) return undefined;
+  return `${m[1]}so_0,f_jpg,q_auto,w_${width}/${m[2]}.jpg`;
+}

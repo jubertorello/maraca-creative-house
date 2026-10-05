@@ -2,6 +2,12 @@ import Link from "next/link";
 import Script from "next/script";
 import LogoutButton from "./LogoutButton";
 
+// The admin reads live data (Supabase) on every page — without this, Next
+// prerenders them at build time and keeps showing that snapshot, so anything
+// added after the last deploy (a team member, a brand) is missing here even
+// though the public site (which revalidates) shows it.
+export const dynamic = "force-dynamic";
+
 export default function AdminShellLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-[#f4f4ef] text-ink">

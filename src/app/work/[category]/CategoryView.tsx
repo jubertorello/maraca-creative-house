@@ -137,6 +137,39 @@ const BRANDING_ROWS: FeatureCell[][] = [
   ],
 ];
 
+/** Rows 6, 7, 8... for cases beyond the ones the Figma rows name: row 6
+ * reuses row 1's shape, row 7 row 2's, and so on, cycling through
+ * `templates`. Each template row has its own number of distinct cases (3
+ * today), filled in order from `slugs`; a last row with fewer cases than its
+ * template keeps the template's proportions (missing cells render as empty
+ * spacers — see FeatureRow) instead of stretching what's left. */
+function buildRepeatedRows(templates: FeatureCell[][], slugs: string[]): FeatureCell[][] {
+  const rows: FeatureCell[][] = [];
+  let next = 0;
+  for (let r = 0; next < slugs.length; r++) {
+    const tpl = templates[r % templates.length];
+    const distinct = [
+      ...new Set(
+        tpl.flatMap((c) =>
+          c.kind === "image" && c.extraCaption ? [c.slug, c.extraCaption.slug] : [c.slug],
+        ),
+      ),
+    ];
+    const bySlug = new Map(distinct.map((s, i) => [s, slugs[next + i] ?? ""]));
+    next += distinct.length;
+    rows.push(
+      tpl.map((cell) => {
+        const slug = bySlug.get(cell.slug) ?? "";
+        if (cell.kind === "image" && cell.extraCaption) {
+          return { ...cell, slug, extraCaption: { ...cell.extraCaption, slug } };
+        }
+        return { ...cell, slug };
+      }),
+    );
+  }
+  return rows;
+}
+
 /** The "[n] CLIENT [year]" text, shared by the row's text cells and by an
  * image's floating `extraCaption`. `width` matches the Figma text layer's
  * own box (it varies per client — short names get a narrower box).
@@ -238,10 +271,10 @@ function FeatureRow({
     >
       {cells.map((cell, i) => {
         const study = getCase(cell.slug);
-        if (!study) return null;
+        const growStyle = { flexGrow: cell.width, flexBasis: 0 } as CSSProperties;
+        if (!study) return <div key={i} style={growStyle} className="min-w-0" />;
         const href = `/work/${category}/${cell.slug}`;
         const photo = caseThumbnail(study);
-        const growStyle = { flexGrow: cell.width, flexBasis: 0 } as CSSProperties;
         const isActive = hoveredSlug === cell.slug;
 
         // Same cross-item dimming the generic grid below already has: this
@@ -397,9 +430,16 @@ export default function CategoryView({
   const { t, locale } = useLocale();
   const [hoveredSlug, setHoveredSlug] = useState<string | null>(null);
 
-  const exactRows = category.slug === "branding" ? BRANDING_ROWS : [];
-  const exactSlugs = new Set(exactRows.flat().map((cell) => cell.slug));
-  const remainingCases = cases.filter((c) => !exactSlugs.has(c.slug));
+  const templateRows = category.slug === "branding" ? BRANDING_ROWS : [];
+  const templateSlugs = new Set(templateRows.flat().map((cell) => cell.slug));
+  const extraSlugs = cases.filter((c) => !templateSlugs.has(c.slug)).map((c) => c.slug);
+  // Branding: every case beyond the 15 the Figma rows name keeps going in
+  // the same row designs, repeating from row 1 (see buildRepeatedRows).
+  const exactRows =
+    templateRows.length > 0
+      ? [...templateRows, ...buildRepeatedRows(templateRows, extraSlugs)]
+      : [];
+  const remainingCases = templateRows.length > 0 ? [] : cases;
 
   // Looks up a case by slug in the *live* `cases` prop (Supabase-backed —
   // reflects admin edits immediately) instead of the static build-time

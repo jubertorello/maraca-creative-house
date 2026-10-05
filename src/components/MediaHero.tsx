@@ -5,6 +5,7 @@ import Image from "next/image";
 import type { ResponsiveVideo } from "@/lib/site-content";
 import ResponsiveVideoSources from "@/components/ResponsiveVideoSources";
 import { useVideoSourceFix } from "@/lib/useVideoSourceFix";
+import { cldVideoPoster } from "@/lib/cloudinary-url";
 
 /**
  * Full-bleed page hero that sits below the sticky navbar.
@@ -38,6 +39,9 @@ export default function MediaHero(props: MediaHeroProps) {
   const lockLandscapeOnMobile = kind === "video" && props.lockLandscapeOnMobile;
   const videoRef = useRef<HTMLVideoElement>(null);
   useVideoSourceFix(videoRef);
+  const posterDesktop = kind === "video" ? cldVideoPoster(props.video?.desktop) : undefined;
+  const posterMobile =
+    kind === "video" && props.video?.mobile ? cldVideoPoster(props.video.mobile, 750) : undefined;
 
   return (
     <section
@@ -46,17 +50,37 @@ export default function MediaHero(props: MediaHeroProps) {
       } ${className}`}
     >
       {kind === "video" && props.video && (
-        <video
-          ref={videoRef}
-          className="absolute inset-0 h-full w-full object-cover"
-          autoPlay
-          muted
-          loop
-          playsInline
-          poster={poster}
-        >
-          <ResponsiveVideoSources video={props.video} />
-        </video>
+        <>
+          {/* First-frame stills behind the video (one per cut, switched by
+              breakpoint like the video sources) so a picture shows right
+              away while the video buffers instead of a blank colour block. */}
+          {posterMobile && (
+            <div
+              aria-hidden
+              className="absolute inset-0 bg-cover bg-center md:hidden"
+              style={{ backgroundImage: `url(${posterMobile})` }}
+            />
+          )}
+          {posterDesktop && (
+            <div
+              aria-hidden
+              className={`absolute inset-0 bg-cover bg-center ${posterMobile ? "hidden md:block" : ""}`}
+              style={{ backgroundImage: `url(${posterDesktop})` }}
+            />
+          )}
+          <video
+            ref={videoRef}
+            className="absolute inset-0 h-full w-full object-cover"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            poster={poster}
+          >
+            <ResponsiveVideoSources video={props.video} />
+          </video>
+        </>
       )}
       {kind === "image" && props.src && (
         <Image src={props.src} alt={alt} fill priority className="object-cover" />
