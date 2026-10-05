@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import CategoryGrid from "@/components/CategoryGrid";
 import { getCategoriesLive, getCasesLive } from "@/lib/work";
 import { getSeoContentLive } from "@/lib/site-content";
+import { clip, pageSocial } from "@/lib/seo";
 
 export const revalidate = 60;
 
@@ -9,12 +10,12 @@ export async function generateMetadata(): Promise<Metadata> {
   const seo = await getSeoContentLive();
   const page = seo.pages.work;
   const title = page.title || "Nuestro trabajo";
-  const description = page.description || undefined;
+  const description = page.description ? clip(page.description) : undefined;
   return {
     title,
     description,
     alternates: { canonical: "/work" },
-    openGraph: description ? { title: `${title} | MARACA`, description } : undefined,
+    ...(await pageSocial({ title, description, path: "/work" })),
   };
 }
 

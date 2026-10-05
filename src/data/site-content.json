@@ -127,68 +127,78 @@
   },
   "privacyPolicy": {
     "lastUpdated": {
-      "es": "septiembre 2026",
-      "en": "September 2026"
+      "es": "octubre 2026",
+      "en": "October 2026"
     },
     "sections": [
       {
         "heading": {
-          "es": "Responsable del tratamiento",
+          "es": "Responsable del tratamiento de datos personales",
           "en": "Data controller"
         },
         "body": {
-          "es": "MARACA (en adelante, «la agencia») es responsable del tratamiento de los datos personales que nos facilites a través de este sitio web. Puedes contactarnos en hello@lamaraca.com.",
-          "en": "MARACA (\"the agency\") is the controller of the personal data you provide through this website. You can reach us at hello@lamaraca.com."
+          "es": "El responsable del tratamiento de los datos personales es MAMARACA S.L., con domicilio social en Calle Cartagena 64, 3B, 28028 Madrid. El correo electrónico de contacto es hello@lamaraca.com.",
+          "en": "The controller of the personal data is MAMARACA S.L., with registered office at Calle Cartagena 64, 3B, 28028 Madrid, Spain. The contact email is hello@lamaraca.com."
         }
       },
       {
         "heading": {
-          "es": "Datos que recogemos",
-          "en": "Data we collect"
+          "es": "Finalidad del tratamiento",
+          "en": "Purpose of the processing"
         },
         "body": {
-          "es": "A través del formulario de contacto recogemos el nombre, la dirección de correo electrónico y el mensaje que nos envías. No recogemos categorías especiales de datos.",
-          "en": "Through the contact form we collect the name, email address and message you send us. We do not collect special categories of data."
+          "es": "Los datos personales que recopilamos a través de los formularios de contacto y otros mecanismos de la web serán tratados con las siguientes finalidades:\n* Gestionar las solicitudes de información realizadas por los usuarios.\n* Enviar comunicaciones comerciales (si el usuario ha dado su consentimiento expreso para ello).\n* Proporcionar los servicios solicitados a través de la web.",
+          "en": "The personal data we collect through the contact forms and other mechanisms on the website will be processed for the following purposes:\n* Handling the information requests made by users.\n* Sending commercial communications (if the user has given their express consent).\n* Providing the services requested through the website."
         }
       },
       {
         "heading": {
-          "es": "Finalidad y base legal",
-          "en": "Purpose and legal basis"
+          "es": "Base legal para el tratamiento",
+          "en": "Legal basis for the processing"
         },
         "body": {
-          "es": "Usamos tus datos únicamente para responder a tu consulta y, en su caso, gestionar una posible colaboración. La base legal es tu consentimiento y el interés legítimo en atender tu solicitud.",
-          "en": "We use your data only to respond to your enquiry and, where applicable, to manage a possible collaboration. The legal basis is your consent and our legitimate interest in handling your request."
+          "es": "El tratamiento de los datos personales se realiza con el consentimiento del usuario, quien puede retirarlo en cualquier momento sin que ello afecte a la licitud del tratamiento realizado previamente.",
+          "en": "Personal data is processed on the basis of the user's consent, which the user may withdraw at any time without affecting the lawfulness of the processing carried out before."
         }
       },
       {
         "heading": {
-          "es": "Conservación",
-          "en": "Retention"
+          "es": "Derechos del usuario",
+          "en": "User rights"
         },
         "body": {
-          "es": "Conservamos los datos durante el tiempo necesario para atender tu consulta y, después, durante los plazos legalmente exigibles.",
-          "en": "We keep the data for as long as needed to handle your enquiry and, afterwards, for the periods required by law."
+          "es": "El usuario tiene derecho a acceder, rectificar, suprimir, limitar el tratamiento, oponerse al tratamiento y a la portabilidad de sus datos. Para ejercer estos derechos, el usuario puede enviar una solicitud por correo electrónico a hello@lamaraca.com.",
+          "en": "The user has the right to access, rectify, erase, restrict the processing of, object to the processing of, and port their data. To exercise these rights, the user can send a request by email to hello@lamaraca.com."
         }
       },
       {
         "heading": {
-          "es": "Destinatarios",
-          "en": "Recipients"
+          "es": "Destinatarios de los datos",
+          "en": "Recipients of the data"
         },
         "body": {
-          "es": "No cedemos tus datos a terceros salvo obligación legal. Utilizamos proveedores de servicios (por ejemplo, de envío de correo electrónico) que actúan como encargados del tratamiento.",
-          "en": "We do not share your data with third parties except where legally required. We use service providers (e.g. email delivery) acting as processors."
+          "es": "MAMARACA S.L. no cederá los datos personales a terceros, salvo en los casos en que sea necesario para la prestación de los servicios solicitados o cuando sea requerido por ley.",
+          "en": "MAMARACA S.L. will not disclose personal data to third parties, except where necessary to provide the requested services or where required by law."
         }
       },
       {
         "heading": {
-          "es": "Tus derechos",
-          "en": "Your rights"
+          "es": "Seguridad de los datos",
+          "en": "Data security"
         },
         "body": {
-          "es": "Puedes ejercer los derechos de acceso, rectificación, supresión, oposición, limitación y portabilidad escribiendo a hello@lamaraca.com. También puedes reclamar ante la autoridad de control competente.",
-          "en": "You can exercise your rights of access, rectification, erasure, objection, restriction and portability by writing to hello@lamaraca.com. You may also lodge a complaint with the competent supervisory authority."
+          "es": "MAMARACA S.L. ha implementado las medidas de seguridad necesarias para proteger los datos personales de los usuarios frente a accesos no autorizados, alteraciones, divulgación o destrucción.",
+          "en": "MAMARACA S.L. has implemented the security measures necessary to protect users' personal data against unauthorised access, alteration, disclosure or destruction."
+        }
+      },
+      {
+        "heading": {
+          "es": "Plazo de conservación",
+          "en": "Retention period"
+        },
+        "body": {
+          "es": "Los datos personales serán conservados durante el tiempo necesario para cumplir con la finalidad para la cual fueron recabados y para determinar las posibles responsabilidades que pudieran derivarse de dicha finalidad y del tratamiento de los datos.",
+          "en": "Personal data will be kept for as long as necessary to fulfil the purpose for which it was collected and to determine any liabilities that may arise from that purpose and from the processing of the data."
         }
       }
     ]
@@ -209,15 +219,15 @@
     "socials": [
       {
         "label": "Instagram",
-        "href": "https://instagram.com"
+        "href": "https://www.instagram.com/maraca__creative/"
       },
       {
         "label": "LinkedIn",
-        "href": "https://linkedin.com"
+        "href": "https://www.linkedin.com/company/lamaraca/"
       },
       {
         "label": "TikTok",
-        "href": "https://tiktok.com"
+        "href": "https://www.tiktok.com/@maraca__creative"
       }
     ]
   },
@@ -241,5 +251,63 @@
       "es": "Para que la marca no solo esté presente, sino que tenga una voz propia y sepa cuándo usarla.",
       "en": "So the brand isn't just present, but has a voice of its own and knows when to use it."
     }
+  },
+  "legalNotice": {
+    "lastUpdated": {
+      "es": "octubre 2026",
+      "en": "October 2026"
+    },
+    "sections": [
+      {
+        "heading": {
+          "es": "Identificación del titular",
+          "en": "Identification of the owner"
+        },
+        "body": {
+          "es": "En cumplimiento con el artículo 10 de la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la Información y de Comercio Electrónico (LSSI-CE), se informa a los usuarios de la página web www.lamaraca.com que la empresa titular es:\n\nMAMARACA S.L.\nNIF: B70635123\nDomicilio Social: Calle Cartagena 64, 3B, 28028 Madrid\nTeléfono: +34 662 66 92 86\nCorreo electrónico: hello@lamaraca.com\nWeb: www.lamaraca.com",
+          "en": "In compliance with Article 10 of Law 34/2002, of 11 July, on Information Society Services and Electronic Commerce (LSSI-CE), users of the website www.lamaraca.com are informed that the owner company is:\n\nMAMARACA S.L.\nTax ID (NIF): B70635123\nRegistered office: Calle Cartagena 64, 3B, 28028 Madrid, Spain\nPhone: +34 662 66 92 86\nEmail: hello@lamaraca.com\nWebsite: www.lamaraca.com"
+        }
+      },
+      {
+        "heading": {
+          "es": "Objeto social",
+          "en": "Corporate purpose"
+        },
+        "body": {
+          "es": "MAMARACA S.L. tiene como actividad principal la prestación de servicios profesionales de marketing digital, publicidad, gestión de redes sociales, asesoramiento estratégico y otros servicios relacionados con el marketing para empresas y particulares.",
+          "en": "MAMARACA S.L.'s main activity is the provision of professional services in digital marketing, advertising, social media management, strategic consulting and other marketing-related services for companies and individuals."
+        }
+      },
+      {
+        "heading": {
+          "es": "Propiedad Intelectual e Industrial",
+          "en": "Intellectual and industrial property"
+        },
+        "body": {
+          "es": "Los contenidos de la web, incluyendo textos, imágenes, logotipos, gráficos, sonidos, animaciones, software, así como el diseño de la página web, son propiedad de MAMARACA S.L. o de sus licenciantes y están protegidos por las leyes de propiedad intelectual e industrial. Queda prohibida la reproducción, distribución, comunicación pública, transformación y cualquier otra explotación de los contenidos sin autorización expresa.",
+          "en": "The contents of the website, including texts, images, logos, graphics, sounds, animations and software, as well as the design of the website, are the property of MAMARACA S.L. or its licensors and are protected by intellectual and industrial property laws. Reproduction, distribution, public communication, transformation and any other exploitation of the contents without express authorisation is prohibited."
+        }
+      },
+      {
+        "heading": {
+          "es": "Exclusión de responsabilidad",
+          "en": "Disclaimer of liability"
+        },
+        "body": {
+          "es": "MAMARACA S.L. no se responsabiliza de los errores u omisiones en los contenidos del sitio web, ni de los daños derivados del uso de la web, ni de la falta de disponibilidad del sitio. Asimismo, no se hace responsable de los contenidos de los enlaces a otras páginas de internet que puedan aparecer en la web.",
+          "en": "MAMARACA S.L. is not responsible for errors or omissions in the contents of the website, for damages arising from its use, or for the site being unavailable. Nor is it responsible for the contents of links to other websites that may appear on the site."
+        }
+      },
+      {
+        "heading": {
+          "es": "Modificación de los términos de uso",
+          "en": "Changes to the terms of use"
+        },
+        "body": {
+          "es": "MAMARACA S.L. se reserva el derecho de modificar, en cualquier momento y sin previo aviso, la presentación y configuración de la web, así como los contenidos y servicios que se ofrecen en ella.",
+          "en": "MAMARACA S.L. reserves the right to modify, at any time and without prior notice, the presentation and configuration of the website, as well as the contents and services offered on it."
+        }
+      }
+    ]
   }
 }

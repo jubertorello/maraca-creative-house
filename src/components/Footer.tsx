@@ -55,6 +55,10 @@ export default function Footer({ content = FALLBACK }: { content?: FooterContent
           <Link href="/privacy-policy" className="transition-colors hover:text-red">
             {t({ es: "Política de privacidad", en: "Privacy Policy" })}
           </Link>
+          <span className="text-cream/30">|</span>
+          <Link href="/legal-notice" className="transition-colors hover:text-red">
+            {t({ es: "Aviso legal", en: "Legal Notice" })}
+          </Link>
         </p>
 
         <div className="flex items-center gap-5">

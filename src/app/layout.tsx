@@ -3,7 +3,7 @@ import { Bricolage_Grotesque } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import { LocaleProvider } from "@/lib/i18n";
-import { SITE_URL, SITE_NAME } from "@/lib/site";
+import { SITE_URL, SITE_NAME, COMPANY } from "@/lib/site";
 import { getSeoContentLive, getFooterContentLive } from "@/lib/site-content";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -71,23 +71,52 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   const [seo, footer] = await Promise.all([getSeoContentLive(), getFooterContentLive()]);
 
-  // Organization structured data (JSON-LD) — helps Google show a knowledge
-  // panel / rich result for brand-name searches ("MARACA agencia creativa").
-  const orgJsonLd = {
+  // Structured data (JSON-LD): the agency as an Organization/ProfessionalService
+  // (name, address, phone, social profiles → what feeds the knowledge panel and
+  // local results for "agencia creativa Madrid") plus the WebSite it publishes.
+  // Social profiles come from the footer content (editable in /admin/footer);
+  // bare placeholders like "https://instagram.com" are left out.
+  const sameAs = footer.socials
+    .map((s) => s.href)
+    .filter((href) => !/^https?:\/\/(www\.)?[a-z]+\.com\/?$/i.test(href));
+
+  const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "Organization",
-    name: "MARACA",
-    alternateName: "MARACA Creative House",
-    url: SITE_URL,
-    logo: `${SITE_URL}/brand/maraca-lockup.png`,
-    description: seo.global.description,
-    email: footer.email,
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: "Madrid",
-      addressCountry: "ES",
-    },
-    sameAs: [] as string[],
+    "@graph": [
+      {
+        "@type": ["Organization", "ProfessionalService"],
+        "@id": `${SITE_URL}/#organization`,
+        name: "MARACA",
+        legalName: COMPANY.legalName,
+        alternateName: "MARACA Creative House",
+        taxID: COMPANY.taxId,
+        url: SITE_URL,
+        logo: `${SITE_URL}/brand/maraca-lockup.png`,
+        image: `${SITE_URL}${seo.global.ogImageUrl}`,
+        description: seo.global.description,
+        email: footer.email,
+        telephone: COMPANY.phone,
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: COMPANY.street,
+          postalCode: COMPANY.postalCode,
+          addressLocality: COMPANY.city,
+          addressRegion: COMPANY.region,
+          addressCountry: COMPANY.country,
+        },
+        areaServed: [{ "@type": "Country", name: "España" }],
+        knowsAbout: seo.global.keywords,
+        sameAs,
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${SITE_URL}/#website`,
+        url: SITE_URL,
+        name: SITE_NAME,
+        inLanguage: ["es", "en"],
+        publisher: { "@id": `${SITE_URL}/#organization` },
+      },
+    ],
   };
 
   return (
@@ -105,7 +134,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
           // comes from /admin/seo) could otherwise break out of this tag.
           // < is the same character to JSON, invisible to it either way.
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(orgJsonLd).replace(/</g, "\\u003c"),
+            __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
           }}
         />
       </head>

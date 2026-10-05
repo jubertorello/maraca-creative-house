@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { ENABLED_CATEGORIES, getCategoryLive, casesByCategoryLive } from "@/lib/work";
+import { clip, pageSocial } from "@/lib/seo";
 import CategoryView from "./CategoryView";
 import ManifestoView from "./ManifestoView";
 import VideoOnlyView from "./VideoOnlyView";
@@ -27,16 +28,22 @@ export async function generateMetadata({
 
   const clients = cat.clients.slice(0, 6).join(", ");
   const title = cat.seoTitle || cat.name.es;
-  const description =
+  const description = clip(
     cat.seoDescription ||
-    (clients
-      ? `${cat.name.es} en MARACA, agencia creativa de Madrid — con marcas como ${clients}.`
-      : `${cat.name.es} en MARACA, agencia creativa de Madrid.`);
+      (clients
+        ? `${cat.name.es} en MARACA, agencia creativa de Madrid — con marcas como ${clients}.`
+        : `${cat.name.es} en MARACA, agencia creativa de Madrid.`),
+  );
   return {
     title,
     description,
     alternates: { canonical: `/work/${cat.slug}` },
-    openGraph: { title: `${title} | MARACA`, description },
+    ...(await pageSocial({
+      title,
+      description,
+      path: `/work/${cat.slug}`,
+      image: cat.image,
+    })),
   };
 }
 

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import TeamPageClient from "./TeamPageClient";
 import { getTeamContentLive, getSeoContentLive } from "@/lib/site-content";
 import { getTeamLive } from "@/lib/team";
+import { clip, pageSocial } from "@/lib/seo";
 
 export const revalidate = 60;
 
@@ -9,12 +10,12 @@ export async function generateMetadata(): Promise<Metadata> {
   const seo = await getSeoContentLive();
   const page = seo.pages.team;
   const title = page.title || "El equipo";
-  const description = page.description || undefined;
+  const description = page.description ? clip(page.description) : undefined;
   return {
     title,
     description,
     alternates: { canonical: "/team" },
-    openGraph: description ? { title: `${title} | MARACA`, description } : undefined,
+    ...(await pageSocial({ title, description, path: "/team" })),
   };
 }
 

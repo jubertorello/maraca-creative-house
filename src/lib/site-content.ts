@@ -49,6 +49,9 @@ export type PrivacyPolicyContent = {
   sections: PrivacyPolicySection[];
 };
 
+/** Aviso legal — same shape as the privacy policy (title-less sections). */
+export type LegalNoticeContent = PrivacyPolicyContent;
+
 export type ContactContent = {
   /** The line above the email — "We're in Madrid, but good ideas tend to
    * travel:" (kept es/en even though today both are the same English text
@@ -108,6 +111,7 @@ type SiteContentData = {
   team: TeamContent;
   seo: SeoContent;
   privacyPolicy: PrivacyPolicyContent;
+  legalNotice: LegalNoticeContent;
   contact: ContactContent;
   footer: FooterContent;
 };
@@ -130,6 +134,7 @@ export const getAboutContentLive = () => readRow("about");
 export const getTeamContentLive = () => readRow("team");
 export const getSeoContentLive = () => readRow("seo");
 export const getPrivacyPolicyContentLive = () => readRow("privacyPolicy");
+export const getLegalNoticeContentLive = () => readRow("legalNotice");
 export const getContactContentLive = () => readRow("contact");
 export const getFooterContentLive = () => readRow("footer");
 

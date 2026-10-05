@@ -8,12 +8,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     getCasesLive(),
   ]);
 
+  const lastModified = new Date();
+
   const staticRoutes: MetadataRoute.Sitemap = [
-    { url: `${SITE_URL}/`, changeFrequency: "monthly", priority: 1 },
-    { url: `${SITE_URL}/work`, changeFrequency: "weekly", priority: 0.9 },
-    { url: `${SITE_URL}/about`, changeFrequency: "monthly", priority: 0.7 },
-    { url: `${SITE_URL}/team`, changeFrequency: "monthly", priority: 0.6 },
-    { url: `${SITE_URL}/contact`, changeFrequency: "yearly", priority: 0.6 },
+    { url: `${SITE_URL}/`, lastModified, changeFrequency: "monthly", priority: 1 },
+    { url: `${SITE_URL}/work`, lastModified, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${SITE_URL}/about`, lastModified, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${SITE_URL}/team`, lastModified, changeFrequency: "monthly", priority: 0.6 },
+    { url: `${SITE_URL}/contact`, lastModified, changeFrequency: "yearly", priority: 0.6 },
     // /privacy-policy is marked `noindex` (see its own metadata) — left out
     // of the sitemap on purpose, don't add it back without removing that.
   ];
@@ -26,6 +28,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .filter((c) => c.kind !== "pending")
     .map((c) => ({
       url: `${SITE_URL}/work/${c.slug}`,
+      lastModified,
       changeFrequency: "weekly",
       priority: 0.8,
     }));
@@ -35,6 +38,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // filed under the "manifesto" category (Estrategia), which has no cases.
   const caseRoutes: MetadataRoute.Sitemap = cases.map((study) => ({
     url: `${SITE_URL}/work/${study.category}/${study.slug}`,
+    lastModified,
     changeFrequency: "monthly",
     priority: 0.6,
   }));

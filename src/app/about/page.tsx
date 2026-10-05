@@ -2,18 +2,20 @@ import type { Metadata } from "next";
 import AboutPageClient from "./AboutPageClient";
 import { getAboutContentLive, getSeoContentLive } from "@/lib/site-content";
 import { getClientsLive } from "@/lib/clients";
+import { clip, pageSocial } from "@/lib/seo";
 
 export const revalidate = 60;
 
 export async function generateMetadata(): Promise<Metadata> {
   const seo = await getSeoContentLive();
   const page = seo.pages.about;
-  const description = page.description || undefined;
+  const title = page.title || "Sobre nosotros";
+  const description = page.description ? clip(page.description) : undefined;
   return {
-    title: page.title || "Sobre nosotros",
+    title,
     description,
     alternates: { canonical: "/about" },
-    openGraph: description ? { title: `${page.title || "Sobre nosotros"} | MARACA`, description } : undefined,
+    ...(await pageSocial({ title, description, path: "/about" })),
   };
 }
 

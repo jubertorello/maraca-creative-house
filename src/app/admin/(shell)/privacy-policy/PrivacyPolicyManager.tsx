@@ -18,7 +18,17 @@ const EMPTY_SECTION: PrivacyPolicySection = {
   body: { es: "", en: "" },
 };
 
-export default function PrivacyPolicyManager({ content }: { content: PrivacyPolicyContent }) {
+export default function PrivacyPolicyManager({
+  content,
+  contentId = "privacyPolicy",
+  title = "Política de privacidad",
+  route = "/privacy-policy",
+}: {
+  content: PrivacyPolicyContent;
+  contentId?: "privacyPolicy" | "legalNotice";
+  title?: string;
+  route?: string;
+}) {
   const [lastUpdatedEs, setLastUpdatedEs] = useState(content.lastUpdated.es);
   const [lastUpdatedEn, setLastUpdatedEn] = useState(content.lastUpdated.en);
   const [sections, setSections] = useState(content.sections);
@@ -32,7 +42,7 @@ export default function PrivacyPolicyManager({ content }: { content: PrivacyPoli
   async function save() {
     setSaving(true);
     setError(null);
-    const res = await fetch("/api/admin/content/privacyPolicy", {
+    const res = await fetch(`/api/admin/content/${contentId}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -54,9 +64,9 @@ export default function PrivacyPolicyManager({ content }: { content: PrivacyPoli
         ← Páginas
       </Link>
 
-      <h1 className="mb-1 text-2xl font-medium">Política de privacidad</h1>
+      <h1 className="mb-1 text-2xl font-medium">{title}</h1>
       <p className="mb-8 text-sm text-ink/50">
-        El texto legal de /privacy-policy. Revisalo con quien corresponda antes de
+        El texto legal de {route}. Línea en blanco = nuevo párrafo; una línea que empieza con "* " es un punto de lista; los mails y webs se vuelven enlaces. Revisalo con quien corresponda antes de
         publicarlo — este editor no reemplaza asesoría legal.
       </p>
 
@@ -133,14 +143,14 @@ export default function PrivacyPolicyManager({ content }: { content: PrivacyPoli
                   value={s.body.es}
                   onChange={(e) => updateSection(i, { body: { ...s.body, es: e.target.value } })}
                   placeholder="Texto (ES)"
-                  rows={3}
+                  rows={6}
                   className="rounded-md border border-black/15 px-3 py-2 text-sm outline-none focus:border-ink/40"
                 />
                 <textarea
                   value={s.body.en}
                   onChange={(e) => updateSection(i, { body: { ...s.body, en: e.target.value } })}
                   placeholder="Text (EN)"
-                  rows={3}
+                  rows={6}
                   className="rounded-md border border-black/15 px-3 py-2 text-sm outline-none focus:border-ink/40"
                 />
               </div>

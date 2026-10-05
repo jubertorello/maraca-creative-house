@@ -322,8 +322,10 @@ function FeatureRow({
                 {photo?.type === "image" && photo.src && (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
-                    src={cldOptimize(photo.src)}
-                    alt=""
+                    src={cldOptimize(photo.src, 900)}
+                    alt={`${study.client} — ${study.title}`}
+                    loading="lazy"
+                    decoding="async"
                     className={`h-full w-full object-cover transition-transform duration-500 ${isActive ? "scale-[1.03]" : ""}`}
                   />
                 )}
@@ -400,8 +402,10 @@ function MobileFeatureList({
               {photo?.type === "image" && photo.src && (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
-                  src={cldOptimize(photo.src)}
-                  alt=""
+                  src={cldOptimize(photo.src, 900)}
+                  alt={`${study.client} — ${study.title}`}
+                  loading="lazy"
+                  decoding="async"
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                 />
               )}
@@ -502,8 +506,10 @@ export default function CategoryView({
                   {photo?.type === "image" && photo.src && (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
-                      src={cldOptimize(photo.src)}
-                      alt=""
+                      src={cldOptimize(photo.src, 900)}
+                      alt={`${c.client} — ${c.title}`}
+                      loading="lazy"
+                      decoding="async"
                       className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                     />
                   )}

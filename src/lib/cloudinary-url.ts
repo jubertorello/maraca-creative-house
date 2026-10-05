@@ -12,11 +12,13 @@
  * Cloudinary delivery URL (local /media paths, external URLs), so it's
  * safe to wrap every image/video src with this unconditionally.
  */
-export function cldOptimize(url: string | undefined): string | undefined {
+export function cldOptimize(url: string | undefined, width?: number): string | undefined {
   if (!url) return url;
+  // `width` caps the delivered size (never upscales) — uploads are often
+  // 2000px+ wide while a thumbnail is shown ~400px wide.
   return url.replace(
     /^(https:\/\/res\.cloudinary\.com\/[^/]+\/(?:image|video)\/upload\/)(?!f_auto)/,
-    "$1f_auto,q_auto/",
+    `$1f_auto,q_auto${width ? `,w_${width},c_limit` : ""}/`,
   );
 }
 

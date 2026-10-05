@@ -86,10 +86,12 @@ function MediaTile({
   item,
   onOpen,
   className = "",
+  alt = "",
 }: {
   item: MediaBlock;
   onOpen: () => void;
   className?: string;
+  alt?: string;
 }) {
   const { t } = useLocale();
   const ratio =
@@ -118,7 +120,7 @@ function MediaTile({
         // eslint-disable-next-line @next/next/no-img-element
         <img
           src={cldOptimize(item.src)}
-          alt=""
+          alt={alt}
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
         />
       )}
@@ -227,7 +229,7 @@ function GalleryLayout({ study }: { study: CaseStudy }) {
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={cldOptimize(item!.src)}
-            alt=""
+            alt={`${study.title} — ${study.client} (${idx + 1})`}
             className={`h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03] ${align === "left" ? "object-left" : ""} ${flip ? "scale-x-[-1]" : ""}`}
           />
         ) : (
@@ -432,7 +434,7 @@ function MobileGalleryView({
           >
             {media[0].type === "image" && media[0].src && (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={cldOptimize(media[0].src)} alt="" className="h-full w-full object-cover" />
+              <img src={cldOptimize(media[0].src)} alt={`${study.title} — ${study.client}`} className="h-full w-full object-cover" />
             )}
           </button>
         )}
@@ -450,7 +452,7 @@ function MobileGalleryView({
           >
             {item.type === "image" && item.src && (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={cldOptimize(item.src)} alt="" className="h-full w-full object-cover" />
+              <img src={cldOptimize(item.src)} alt={`${study.title} — ${study.client} (${i + 2})`} className="h-full w-full object-cover" />
             )}
           </button>
         ))}
@@ -514,6 +516,7 @@ function StaticLayoutView({ study }: { study: CaseStudy }) {
 
         <MediaTile
           item={layout.media}
+          alt={`${study.title} — ${study.client}`}
           onOpen={() => setLightbox(0)}
           className="h-full min-h-[280px] md:row-span-1"
         />
@@ -525,6 +528,7 @@ function StaticLayoutView({ study }: { study: CaseStudy }) {
             <MediaTile
               key={i}
               item={m}
+              alt={`${study.title} — ${study.client} (${i + 2})`}
               onOpen={() => setLightbox(i + 1)}
               className="aspect-[4/3]"
             />

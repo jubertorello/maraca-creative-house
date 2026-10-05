@@ -24,6 +24,7 @@ import type {
   TeamContent,
   SeoContent,
   PrivacyPolicyContent,
+  LegalNoticeContent,
   ContactContent,
   FooterContent,
 } from "@/lib/site-content";
@@ -316,6 +317,7 @@ type SiteContentData = {
   team: TeamContent;
   seo: SeoContent;
   privacyPolicy: PrivacyPolicyContent;
+  legalNotice: LegalNoticeContent;
   contact: ContactContent;
   footer: FooterContent;
 };

@@ -7,6 +7,7 @@ const IDS = [
   "team",
   "seo",
   "privacyPolicy",
+  "legalNotice",
   "contact",
   "footer",
 ] as const;

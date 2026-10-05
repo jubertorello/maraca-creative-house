@@ -70,6 +70,13 @@ export default function HeroVideo({
         <ResponsiveVideoSources video={video} />
       </video>
 
+      <h1 className="sr-only">
+        {t({
+          es: "MARACA, agencia creativa en Madrid: branding, estrategia, contenido, diseño web, campañas y eventos",
+          en: "MARACA, creative agency in Madrid: branding, strategy, content, web design, campaigns and events",
+        })}
+      </h1>
+
       <HeroServices categories={categories} />
 
       <button

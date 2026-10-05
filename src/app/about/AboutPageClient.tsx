@@ -83,6 +83,12 @@ export default function AboutPageClient({
   return (
     <>
       {/* Figma "About us" > Hero — dark video */}
+      <h1 className="sr-only">
+        {t({
+          es: "Sobre MARACA, agencia creativa en Madrid",
+          en: "About MARACA, creative agency in Madrid",
+        })}
+      </h1>
       <MediaHero kind="video" className="bg-charcoal" video={content.heroVideo} />
 
       {/* Figma "About us" > Quiénes somos (6019:50). -mt-px seals the seam

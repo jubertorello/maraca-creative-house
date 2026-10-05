@@ -135,7 +135,7 @@ export default function CategoryGrid({
               {HAS_PHOTOS && (
                 <Image
                   src={c.image ?? `/media/services/${c.slug}.jpg`}
-                  alt=""
+                  alt={c.name[locale]}
                   fill
                   sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 214px"
                   className="object-cover"

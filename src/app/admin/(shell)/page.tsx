@@ -30,6 +30,11 @@ const PAGES: Item[] = [
     description: "Textos y datos de contacto.",
   },
   {
+    href: "/admin/legal-notice",
+    name: "Aviso legal",
+    description: "Titular, objeto social, propiedad intelectual y exclusión de responsabilidad.",
+  },
+  {
     href: "/admin/privacy-policy",
     name: "Política de privacidad",
     description: "El texto legal completo, sección por sección.",

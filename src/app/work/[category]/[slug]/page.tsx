@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { CASES, getCaseLive, getCategoryLive } from "@/lib/work";
+import { clip, pageSocial } from "@/lib/seo";
 import CaseStudyView from "./CaseStudyView";
 
 // Revalidate periodically so edits made in /admin (once Supabase is
@@ -22,11 +23,12 @@ export async function generateMetadata({
   const categoryName = cat?.name.es;
   const sameName = study.title.toLowerCase() === study.client.toLowerCase();
   const lead = study.blocks.find((b) => b.type === "text" && b.variant === "lead");
-  const description =
+  const description = clip(
     study.seoDescription ||
-    (lead && lead.type === "text"
-      ? lead.content.es
-      : `${study.title}${sameName ? "" : ` — ${study.client}`}, un proyecto de ${categoryName ?? "MARACA"}.`);
+      (lead && lead.type === "text"
+        ? lead.content.es
+        : `${study.title}${sameName ? "" : ` — ${study.client}`}, un proyecto de ${categoryName ?? "MARACA"}.`),
+  );
 
   const title = study.seoTitle || (sameName ? study.title : `${study.title} — ${study.client}`);
   const firstImage = study.blocks.find(
@@ -37,11 +39,12 @@ export async function generateMetadata({
     title,
     description,
     alternates: { canonical: `/work/${study.category}/${study.slug}` },
-    openGraph: {
-      title: `${title} | MARACA`,
+    ...(await pageSocial({
+      title,
       description,
-      ...(firstImage?.src ? { images: [{ url: firstImage.src }] } : {}),
-    },
+      path: `/work/${study.category}/${study.slug}`,
+      image: study.area?.image || firstImage?.src,
+    })),
   };
 }
 

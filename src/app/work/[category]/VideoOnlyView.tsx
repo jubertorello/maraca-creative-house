@@ -23,6 +23,7 @@ export default function VideoOnlyView({
 
   return (
     <article className="relative bg-charcoal">
+      <h1 className="sr-only">{t(category.name)}</h1>
       <MediaHero kind="video" className="bg-charcoal" video={video} />
       <Link
         href="/work"

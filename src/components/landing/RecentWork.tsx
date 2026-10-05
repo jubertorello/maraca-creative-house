@@ -31,7 +31,7 @@ export default function RecentWork({ video = FALLBACK }: { video?: ResponsiveVid
             muted
             loop
             playsInline
-            preload="auto"
+            preload="metadata"
           >
             <ResponsiveVideoSources video={video} />
           </video>

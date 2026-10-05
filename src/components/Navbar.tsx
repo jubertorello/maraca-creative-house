@@ -11,7 +11,7 @@ const LOCALES: Locale[] = ["es", "en"];
 
 // Pages whose top section is a light (cream) background rather than a dark
 // hero — the resting (unpainted) navbar needs dark text on these.
-const LIGHT_AT_REST = ["/work", "/contact", "/privacy-policy"];
+const LIGHT_AT_REST = ["/work", "/contact", "/privacy-policy", "/legal-notice"];
 // ...except these — a light-listed page (or one of its sub-paths) whose own
 // top is actually dark: the Estrategia manifesto page, and the video-only
 // Work category pages (Campañas, Contenido, Web, Eventos), which behave
