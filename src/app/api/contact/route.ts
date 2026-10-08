@@ -57,7 +57,7 @@ export async function POST(req: Request) {
     from,
     to,
     replyTo: email,
-    subject: `Nuevo mensaje de ${name} — maraca.house`,
+    subject: `Contacto web: ${name}`,
     text: `Nombre: ${name}\nEmail: ${email}\n\n${message}`,
   });
 
