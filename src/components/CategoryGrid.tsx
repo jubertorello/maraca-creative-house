@@ -3,7 +3,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { CATEGORIES, CASES, MAX_REVEAL_CLIENTS, type Category, type CaseStudy } from "@/lib/work";
+import {
+  BRANDING_CASE_PAGES_OPEN,
+  CATEGORIES,
+  CASES,
+  MAX_REVEAL_CLIENTS,
+  type Category,
+  type CaseStudy,
+} from "@/lib/work";
 import { useLocale } from "@/lib/i18n";
 
 /**
@@ -73,6 +80,7 @@ export default function CategoryGrid({
   const [openSlug, setOpenSlug] = useState<string | null>(null);
 
   const getCaseHref = (category: string, client: string): string | null => {
+    if (category === "branding" && !BRANDING_CASE_PAGES_OPEN) return null;
     const found = cases.find(
       (c) =>
         c.category === category &&

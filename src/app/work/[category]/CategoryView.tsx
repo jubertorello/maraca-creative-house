@@ -1,9 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useState, type CSSProperties } from "react";
+import { useState, type CSSProperties, type ReactNode } from "react";
 import { useLocale } from "@/lib/i18n";
-import { caseThumbnail, type Category, type CaseStudy } from "@/lib/work";
+import {
+  BRANDING_CASE_PAGES_OPEN,
+  caseThumbnail,
+  type Category,
+  type CaseStudy,
+} from "@/lib/work";
 import { cldOptimize } from "@/lib/cloudinary-url";
 
 /**
@@ -170,6 +175,31 @@ function buildRepeatedRows(templates: FeatureCell[][], slugs: string[]): Feature
   return rows;
 }
 
+/** A link to a case's own page — or, while that page isn't ready (see
+ * BRANDING_CASE_PAGES_OPEN in @/lib/work), the same box without the link, so
+ * the layout, hover effect and spacing stay exactly as designed. */
+function CaseLink({
+  disabled,
+  href,
+  children,
+  ...rest
+}: {
+  disabled: boolean;
+  href: string;
+  children: ReactNode;
+  className?: string;
+  style?: CSSProperties;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
+}) {
+  if (disabled) return <div {...rest}>{children}</div>;
+  return (
+    <Link href={href} {...rest}>
+      {children}
+    </Link>
+  );
+}
+
 /** The "[n] CLIENT [year]" text, shared by the row's text cells and by an
  * image's floating `extraCaption`. `width` matches the Figma text layer's
  * own box (it varies per client — short names get a narrower box).
@@ -263,6 +293,7 @@ function FeatureRow({
   onHoverSlug: (slug: string | null) => void;
 }) {
   const reservedPct = rowReservedSpacePct(cells);
+  const casePagesOpen = category !== "branding" || BRANDING_CASE_PAGES_OPEN;
 
   return (
     <div
@@ -284,7 +315,7 @@ function FeatureRow({
 
         if (cell.kind === "text") {
           return (
-            <Link
+            <CaseLink disabled={!casePagesOpen}
               key={i}
               href={href}
               style={{ aspectRatio: `${cell.width} / 178`, ...growStyle }}
@@ -296,7 +327,7 @@ function FeatureRow({
                 yearOnOwnLine={cell.yearOnOwnLine}
                 active={isActive}
               />
-            </Link>
+            </CaseLink>
           );
         }
 
@@ -313,7 +344,7 @@ function FeatureRow({
             </span>
 
             <div className="relative" style={{ aspectRatio: `${cell.width} / 178` }}>
-              <Link
+              <CaseLink disabled={!casePagesOpen}
                 href={href}
                 onMouseEnter={() => onHoverSlug(cell.slug)}
                 onMouseLeave={() => onHoverSlug(null)}
@@ -329,14 +360,14 @@ function FeatureRow({
                     className={`h-full w-full object-cover transition-transform duration-500 ${isActive ? "scale-[1.03]" : ""}`}
                   />
                 )}
-              </Link>
+              </CaseLink>
 
               {/* Maruch-style floating caption, positioned relative to its
                   own photo's box exactly like the supplied Figma px. Always
                   the same slug as the photo it floats under (see
                   BRANDING_ROWS), so it shares that same `isActive`. */}
               {extra && cell.extraCaption && (
-                <Link
+                <CaseLink disabled={!casePagesOpen}
                   href={`/work/${category}/${cell.extraCaption.slug}`}
                   style={{
                     left: `${cell.extraCaption.leftPct}%`,
@@ -345,7 +376,7 @@ function FeatureRow({
                   className={`absolute ${dim}`}
                 >
                   <CaptionText study={extra} active={isActive} />
-                </Link>
+                </CaseLink>
               )}
             </div>
           </div>
@@ -369,6 +400,7 @@ function MobileFeatureList({
   category: string;
   getCase: (slug: string) => CaseStudy | undefined;
 }) {
+  const casePagesOpen = category !== "branding" || BRANDING_CASE_PAGES_OPEN;
   const seen = new Set<string>();
   const slugs: string[] = [];
   for (const cell of rows.flat()) {
@@ -389,7 +421,7 @@ function MobileFeatureList({
         if (!study) return null;
         const photo = caseThumbnail(study);
         return (
-          <Link
+          <CaseLink disabled={!casePagesOpen}
             key={slug}
             href={`/work/${category}/${slug}`}
             className="group block transition-opacity duration-300 group-hover/list:opacity-40 hover:!opacity-100"
@@ -410,7 +442,7 @@ function MobileFeatureList({
                 />
               )}
             </div>
-          </Link>
+          </CaseLink>
         );
       })}
     </div>

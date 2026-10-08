@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/site";
-import { getEnabledCategoriesLive, getCasesLive } from "@/lib/work";
+import { BRANDING_CASE_PAGES_OPEN, getEnabledCategoriesLive, getCasesLive } from "@/lib/work";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [enabledCategories, cases] = await Promise.all([
@@ -36,12 +36,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Every case gets a static detail page regardless of its category's own
   // listing state (see generateStaticParams in [slug]/page.tsx) — none are
   // filed under the "manifesto" category (Estrategia), which has no cases.
-  const caseRoutes: MetadataRoute.Sitemap = cases.map((study) => ({
-    url: `${SITE_URL}/work/${study.category}/${study.slug}`,
-    lastModified,
-    changeFrequency: "monthly",
-    priority: 0.6,
-  }));
+  const caseRoutes: MetadataRoute.Sitemap = cases
+    .filter((study) => study.category !== "branding" || BRANDING_CASE_PAGES_OPEN)
+    .map((study) => ({
+      url: `${SITE_URL}/work/${study.category}/${study.slug}`,
+      lastModified,
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    }));
 
   return [...staticRoutes, ...categoryRoutes, ...caseRoutes];
 }

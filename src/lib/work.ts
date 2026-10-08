@@ -44,6 +44,12 @@ import type { ResponsiveVideo } from "@/lib/site-content";
 /** Client names for the two "stub" campañas cases share their brand's real
  * client, not the case title (title = campaign name, client = brand name). */
 
+/** While Branding's individual case pages don't have their content yet,
+ * their brands aren't clickable anywhere (Branding listing, Work index hover
+ * lists) and the pages stay out of the sitemap. Flip to `true` once the
+ * content is ready — nothing else needs to change. */
+export const BRANDING_CASE_PAGES_OPEN = false;
+
 /** Work-index hover list: show at most this many clients, then "See all". */
 export const MAX_REVEAL_CLIENTS = 15;
 
