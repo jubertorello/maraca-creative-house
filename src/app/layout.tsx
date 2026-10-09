@@ -46,6 +46,9 @@ export async function generateMetadata(): Promise<Metadata> {
     authors: [{ name: "MARACA" }],
     creator: "MARACA",
     robots: { index: true, follow: true },
+    // Google Search Console ownership verification (renders the
+    // <meta name="google-site-verification"> tag).
+    verification: { google: "6anepS3k3im2-QFyfR6SUBNExW25zkSYymI2SfaReY0" },
     // Deliberately no `alternates.canonical` here — Next.js metadata doesn't
     // relativize an inherited canonical per route, so a blanket one here
     // would make every page claim "/" as canonical. Each page/route sets
